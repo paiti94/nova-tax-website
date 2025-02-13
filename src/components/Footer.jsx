@@ -38,7 +38,7 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Contact Info</h3>
           <ul className="contact-info">
-            <li><i className="fas fa-map-marker-alt"></i> 123 Business Avenue, Toronto</li>
+            {/* <li><i className="fas fa-map-marker-alt"></i> 123 Business Avenue, Toronto</li> */}
             <li><i className="fas fa-phone"></i> +1 (613) 799-5909</li>
             <li><i className="fas fa-envelope"></i> ali@novatax.ca</li>
           </ul>
@@ -46,7 +46,7 @@ const Footer = () => {
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2025 Nova Tax LLP. All rights reserved.</p>
+        <p>&copy; 2025 Nova Tax LLP. All rights reserved. Site by Jinny K</p>
       </div>
     </footer>
   );
