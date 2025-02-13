@@ -4,7 +4,7 @@
 
 .service-hero {
   background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
-              url('/public/assets/hero-bg.jpg');
+              url('/src/assets/hero-bg.jpg');
   background-size: cover;
   background-position: center;
   color: white;
