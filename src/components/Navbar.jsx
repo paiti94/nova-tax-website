@@ -40,7 +40,7 @@ const Navbar = () => {
       <div className="navbar-container">
         <div className="logo">
           <img 
-            src={isServicePage || isScrolled ? "/src/assets/logo.png" : "/src/assets/logo_white.png"} 
+            src={isServicePage || isScrolled ? "/assets/logo.png" : "/assets/logo_white.png"} 
             alt="Nova Tax" 
           />
         </div>
