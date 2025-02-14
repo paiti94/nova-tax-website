@@ -8,14 +8,28 @@ export const useNavigation = () => {
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
     if (!isHomePage) {
-      navigate('/' + sectionId);
+      navigate('/');
+      setTimeout(() => {
+        const element = document.querySelector(sectionId);
+        if (element) {
+          const elementPosition = element.offsetTop;
+          window.scrollTo({
+            top: elementPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 100);
     } else {
       const element = document.querySelector(sectionId);
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        const elementPosition = element.offsetTop;
+        window.scrollTo({
+          top: elementPosition,
+          behavior: 'smooth'
+        });
       }
     }
   };
 
-  return { handleNavClick };
+  return { handleNavClick, navigate };
 }; 

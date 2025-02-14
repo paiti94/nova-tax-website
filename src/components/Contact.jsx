@@ -99,8 +99,8 @@ const Contact = () => {
             <div className="info-item">
               <i className="fas fa-phone"></i>
               <div>
-                <h3>Phone</h3>
-                <p>+1 (613) 799-5909</p>
+                <h3>Call or Text</h3>
+                <p><a href="sms:+16137995909">+1 (613) 799-5909</a></p>
               </div>
             </div>
             
@@ -108,7 +108,7 @@ const Contact = () => {
               <i className="fas fa-envelope"></i>
               <div>
                 <h3>Email</h3>
-                <p>ali@novatax.ca</p>
+                <p><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></p>
               </div>
             </div>
           </div>
@@ -142,6 +142,9 @@ const Contact = () => {
               placeholder="Your Phone"
               value={formData.phone}
               onChange={handleChange}
+              required
+              pattern="[0-9]{10}|[0-9]{11}"  // For 10 or 11 digit phone numbers
+              title="Please enter a valid phone number"
             />
           </div>
           <div className="form-group">

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import '../styles/Footer.css';
 
 const Footer = () => {
@@ -28,10 +29,9 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Services</h3>
           <ul>
-            <li><a href="#tax-planning">Tax Planning</a></li>
-            <li><a href="#tax-prep">Tax Preparation</a></li>
-            <li><a href="#accounting">Accounting</a></li>
-            <li><a href="#cfo">CFO Services</a></li>
+            <li><Link to="/services/tax-planning">Tax Planning</Link></li>
+            <li><Link to="/services/tax-prep">Tax Preparation & Accounting</Link></li>
+            <li><Link to="/services/cfo-services">Fractional CFO Services</Link></li>
           </ul>
         </div>
 
@@ -39,8 +39,8 @@ const Footer = () => {
           <h3>Contact Info</h3>
           <ul className="contact-info">
             {/* <li><i className="fas fa-map-marker-alt"></i> 123 Business Avenue, Toronto</li> */}
-            <li><i className="fas fa-phone"></i> +1 (613) 799-5909</li>
-            <li><i className="fas fa-envelope"></i> ali@novatax.ca</li>
+            <li><i className="fas fa-phone"></i><a href="sms:+16137995909">+1 (613) 799-5909</a></li>
+            <li><i className="fas fa-envelope"></i><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></li>
           </ul>
         </div>
       </div>

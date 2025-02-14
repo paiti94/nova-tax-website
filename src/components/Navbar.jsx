@@ -39,10 +39,22 @@ const Navbar = () => {
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${isServicePage ? 'service-page' : 'page'}`}>
       <div className="navbar-container">
         <div className="logo">
-          <img 
-            src={isServicePage || isScrolled ? "/assets/logo.png" : "/assets/logo_white.png"} 
-            alt="Nova Tax" 
-          />
+            <a 
+              href="/" 
+              onClick={(e) => {
+                e.preventDefault();
+                if (!isHomePage) {
+                  navigate('/');
+                } else {
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+              }}
+            >
+                <img 
+                src={isServicePage || isScrolled ? "/assets/logo.png" : "/assets/logo_white.png"} 
+                alt="Nova Tax" 
+                />
+            </a>
         </div>
         
         <div className={`nav-links ${isMenuOpen ? 'active' : ''}`}>
@@ -59,7 +71,6 @@ const Navbar = () => {
           >
             Home
           </a>
-          <a href="/#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a>
           <div className="dropdown">
             <a href="/#services" onClick={(e) => handleNavClick(e, '#services')}>Services</a>
             <div className="dropdown-content">
@@ -68,6 +79,7 @@ const Navbar = () => {
               <Link to="/services/cfo-services">Fractional CFO Services</Link>
             </div>
           </div>
+          <a href="/#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a>
           <a href="/#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact Us</a>
         </div>
         

@@ -1,9 +1,20 @@
 import React, { useEffect } from 'react';
 import { useNavigation } from '../hooks/useNavigation';
 import '../styles/ServicePage.css';
+const scrollToContact = () => {
+    const contactSection = document.getElementById('contact');
+    // const headerOffset = 96; // This accounts for the fixed navbar height
+    const headerOffset = 0;
+    const elementPosition = contactSection.getBoundingClientRect().top;
+    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: 'smooth'
+    });
+  };
 const TaxPlanning = () => {
-  const { handleNavClick } = useNavigation();
+  const { handleNavClick, navigate } = useNavigation();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -38,8 +49,7 @@ const TaxPlanning = () => {
           </div>
 
           <div className="service-section">
-            <h3>Why Choose Our Tax Planning Services?</h3>
-            <p>Our proactive approach to tax planning helps you:</p>
+            <h3>Our Proactive Approach to Tax Planning Helps You</h3>
             <ul>
               <li>Minimize your tax liability legally and ethically</li>
               <li>Make informed financial decisions</li>
@@ -52,10 +62,12 @@ const TaxPlanning = () => {
 
         <div className="cta-section">
           <h3>Ready to Optimize Your Tax Strategy?</h3>
-          <p>Contact us today for a complimentary consultation</p>
+          <p>Contact us today for a free consultation</p>
           <a 
-            href="/#contact" 
+            // href="/#contact" 
             onClick={(e) => handleNavClick(e, '#contact')} 
+            // onClick={scrollToContact}
+            style={{ cursor: 'pointer' }}
             className="cta-button"
           >
             Get Started

@@ -4,7 +4,8 @@ import '../styles/Hero.css';
 const Hero = () => {
   const scrollToContact = () => {
     const contactSection = document.getElementById('contact');
-    const headerOffset = 96; // This accounts for the fixed navbar height
+    // const headerOffset = 96; // This accounts for the fixed navbar height
+    const headerOffset = 0;
     const elementPosition = contactSection.getBoundingClientRect().top;
     const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
