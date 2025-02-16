@@ -181,8 +181,12 @@ const Navbar = () => {
           <a href="/#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a>
           <Link 
             to="/blog" 
-            onClick={() => setIsMenuOpen(false)}
-            // className="nav-link"
+            onClick={() => {
+              setIsMenuOpen(false);
+              setTimeout(() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+              }, 100);
+            }}
           >
             Blog
           </Link>
