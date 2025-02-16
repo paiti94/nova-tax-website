@@ -1,8 +1,33 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import '../styles/Footer.css';
 
 const Footer = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHomePage = location.pathname === '/';
+
+  const handleNavClick = (e, sectionId) => {
+    e.preventDefault();
+    
+    if (!isHomePage) {
+      // If not on homepage, navigate first then scroll
+      navigate('/');
+      setTimeout(() => {
+        const element = document.querySelector(sectionId);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    } else {
+      // If on homepage, just scroll
+      const element = document.querySelector(sectionId);
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
@@ -19,10 +44,10 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#services">Services</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')}>Home</a></li>
+            <li><a href="#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a></li>
+            <li><a href="#services" onClick={(e) => handleNavClick(e, '#services')}>Services</a></li>
+            <li><a href="#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact</a></li>
           </ul>
         </div>
 
