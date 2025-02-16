@@ -15,6 +15,7 @@ import TaxPlanning from './pages/TaxPlanning';
 import TaxPrep from './pages/TaxPrep';
 import CFOServices from './pages/CFOServices';
 import ScrollToTopOnMount from './components/ScrollToTopOnMount';
+import VancouverTax from './pages/VancouverTax';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -34,6 +35,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/vancouver-tax-services" element={<VancouverTax />} />
         <Route path="/services/tax-planning" element={<TaxPlanning />} />
         <Route path="/services/tax-prep" element={<TaxPrep />} />
         <Route path="/services/cfo-services" element={<CFOServices />} />

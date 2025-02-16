@@ -84,17 +84,18 @@ const Contact = () => {
     <section className="contact" id="contact">
       <div className="contact-container">
         <div className="contact-info">
-          <h2>Get In Touch</h2>
-          <p>We're here to help with all your tax and accounting needs</p>
+          <h2>Contact Your Vancouver & Canadian Tax Experts</h2>
+          <p>Professional tax and accounting services serving Vancouver and nationwide</p>
           
           <div className="info-items">
-            {/* <div className="info-item">
+            <div className="info-item">
               <i className="fas fa-map-marker-alt"></i>
               <div>
-                <h3>Location</h3>
-                <p>123 Business Avenue, Toronto, ON M5V 2T6</p>
+                <h3>Find Us Near You</h3>
+                <p>Serving All Canadian Provinces</p>
+                <p className="local-service">Local Tax Services Available Nationwide</p>
               </div>
-            </div> */}
+            </div>
             
             <div className="info-item">
               <i className="fas fa-phone"></i>
