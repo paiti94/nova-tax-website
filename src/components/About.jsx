@@ -14,15 +14,15 @@ const About = () => {
           </div>
           <div className="stats-container">
             <div className="stat-item">
-              <h3>10+</h3>
-              <p>Years Experience</p>
+              <h3>20+</h3>
+              <p>Combined Years Experience</p>
             </div>
             <div className="stat-item">
-              <h3>300+</h3>
+              <h3>1000+</h3>
               <p>Clients Served</p>
             </div>
             <div className="stat-item">
-              <h3>3+</h3>
+              <h3>5+</h3>
               <p>Certifications</p>
             </div>
           </div>

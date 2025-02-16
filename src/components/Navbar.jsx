@@ -5,6 +5,7 @@ import '../styles/Navbar.css';
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -22,9 +23,10 @@ const Navbar = () => {
   // Check if we're on a service page
   const isServicePage = location.pathname.includes('/services/');
 
-  // Function to handle navigation
+  // Function to handle navigation and close menu
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
+    setIsMenuOpen(false); // Close menu when nav link is clicked
     if (!isHomePage) {
       navigate('/' + sectionId);
     } else {
@@ -32,6 +34,19 @@ const Navbar = () => {
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
       }
+    }
+  };
+
+  // Function to handle service page navigation
+  const handleServiceClick = (path) => {
+    setIsMenuOpen(false); // Close menu when service link is clicked
+    navigate(path);
+  };
+
+  const handleDropdownClick = (e) => {
+    if (window.innerWidth <= 768) {
+      e.preventDefault();
+      setIsDropdownOpen(!isDropdownOpen);
     }
   };
 
@@ -43,6 +58,7 @@ const Navbar = () => {
               href="/" 
               onClick={(e) => {
                 e.preventDefault();
+                setIsMenuOpen(false); // Close menu when logo is clicked
                 if (!isHomePage) {
                   navigate('/');
                 } else {
@@ -62,6 +78,7 @@ const Navbar = () => {
             href="/" 
             onClick={(e) => {
               e.preventDefault();
+              setIsMenuOpen(false); // Close menu when home is clicked
               if (!isHomePage) {
                 navigate('/');
               } else {
@@ -71,12 +88,46 @@ const Navbar = () => {
           >
             Home
           </a>
-          <div className="dropdown">
-            <a href="/#services" onClick={(e) => handleNavClick(e, '#services')}>Services</a>
+          <div className={`dropdown ${isDropdownOpen ? 'show' : ''}`}>
+            <a 
+              href="/#services" 
+              onClick={(e) => {
+                handleDropdownClick(e);
+                if (window.innerWidth > 768) {
+                  handleNavClick(e, '#services');
+                }
+              }}
+            >
+              Services
+            </a>
             <div className="dropdown-content">
-              <Link to="/services/tax-planning">Tax Planning</Link>
-              <Link to="/services/tax-prep">Tax Preparation & Accounting</Link>
-              <Link to="/services/cfo-services">Fractional CFO Services</Link>
+              <Link 
+                to="/services/tax-planning" 
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                Tax Planning
+              </Link>
+              <Link 
+                to="/services/tax-prep" 
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                Tax Preparation & Accounting
+              </Link>
+              <Link 
+                to="/services/cfo-services" 
+                onClick={() => {
+                  setIsMenuOpen(false);
+                  setIsDropdownOpen(false);
+                }}
+              >
+                Fractional CFO Services
+              </Link>
             </div>
           </div>
           <a href="/#about" onClick={(e) => handleNavClick(e, '#about')}>About Us</a>

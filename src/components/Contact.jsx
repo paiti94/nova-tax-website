@@ -99,7 +99,7 @@ const Contact = () => {
             <div className="info-item">
               <i className="fas fa-phone"></i>
               <div>
-                <h3>Call or Text</h3>
+                <h3>Contact</h3>
                 <p><a href="sms:+16137995909">+1 (613) 799-5909</a></p>
               </div>
             </div>

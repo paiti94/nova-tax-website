@@ -117,15 +117,52 @@ img {
     background: black;
     padding: 1rem;
   }
+
+  /* Service page mobile menu styling */
+  .navbar.service-page .nav-links.active,
+  .navbar.scrolled .nav-links.active {
+    background: white;
+  }
+
+  .navbar.service-page .nav-links.active a,
+  .navbar.scrolled .nav-links.active a {
+    color: #333;
+  }
+
+  .navbar.service-page .nav-links.active .dropdown-content,
+  .navbar.scrolled .nav-links.active .dropdown-content {
+    background: white;
+  }
+
+  .navbar.service-page .nav-links.active .dropdown-content a,
+  .navbar.scrolled .nav-links.active .dropdown-content a {
+    color: #333;
+  }
   
-  .nav-links.active .dropdown-content {
+  .dropdown-content {
+    display: none;
     position: static;
     background: transparent;
     box-shadow: none;
     padding: 0 0 0 20px;
   }
   
+  .dropdown.show .dropdown-content {
+    display: block;
+  }
+  
   .nav-links.active .dropdown {
     width: 100%;
+  }
+
+  .nav-links.active .dropdown-content a {
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+  }
+
+  /* Hamburger menu color for service pages */
+  .navbar.service-page .hamburger span,
+  .navbar.scrolled .hamburger span {
+    background-color: #333;
   }
 } 
