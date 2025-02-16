@@ -1,0 +1,678 @@
+.blog-post {
+  max-width: 800px;
+  margin: 80px auto;
+  padding: 2rem;
+}
+
+.blog-post article {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+}
+
+.blog-post h1 {
+  font-size: 2.5rem;
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.post-meta {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.post-date {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.post-content {
+  line-height: 1.8;
+  color: #444;
+}
+
+.post-content h2 {
+  font-size: 1.8rem;
+  color: #333;
+  margin: 2rem 0 1rem;
+}
+
+.post-content h3 {
+  font-size: 1.4rem;
+  color: #444;
+  margin: 1.5rem 0 1rem;
+}
+
+.post-content p {
+  margin-bottom: 1.5rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 1rem 0;
+  padding-left: 2rem;
+}
+
+.post-content li {
+  margin-bottom: 0.5rem;
+}
+
+.post-content a {
+  color: #007bff;
+  text-decoration: none;
+}
+
+.post-content a:hover {
+  text-decoration: underline;
+}
+
+/* Call to action section */
+.post-cta {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.post-cta h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.post-cta .cta-button {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+.post-cta .cta-button:hover {
+  background: #0056b3;
+}
+
+/* Related posts section */
+.related-posts {
+  margin-top: 3rem;
+}
+
+.related-posts h3 {
+  margin-bottom: 1.5rem;
+}
+
+.related-posts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .blog-post {
+    padding: 1rem;
+    margin: 60px auto;
+  }
+
+  .blog-post h1 {
+    font-size: 2rem;
+  }
+
+  .post-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .post-content h3 {
+    font-size: 1.2rem;
+  }
+}
+
+/* Update existing styles to work with service page */
+.blog-post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+}
+
+.post-meta {
+  display: flex;
+  gap: 1.5rem;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.post-date, .post-category {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.post-category {
+  background: #f0f0f0;
+  padding: 0.4rem 1.2rem;
+  border-radius: 20px;
+  font-weight: 500;
+}
+
+.post-content h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin: 2.5rem 0 1.5rem;
+  line-height: 1.3;
+  font-weight: 600;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 0.8rem;
+}
+
+.post-content h3 {
+  font-size: 1.5rem;
+  color: #2a2a2a;
+  margin: 2rem 0 1rem;
+  line-height: 1.4;
+  font-weight: 500;
+}
+
+.post-content p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #444;
+  margin-bottom: 1.5rem;
+}
+
+.post-content ul,
+.post-content ol {
+  margin: 1.5rem 0;
+  padding-left: 1.8rem;
+}
+
+.post-content li {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+  color: #444;
+  position: relative;
+}
+
+.post-content ul li::before {
+  content: "•";
+  color: #007bff;
+  font-weight: bold;
+  position: absolute;
+  left: -1.2rem;
+}
+
+.post-content ul ul,
+.post-content ol ol {
+  margin: 0.8rem 0 0.8rem 1rem;
+}
+
+.post-content strong {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+.post-content a {
+  color: #007bff;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.post-content a:hover {
+  color: #0056b3;
+  border-bottom-color: #0056b3;
+}
+
+/* Tax tip box styling */
+.tax-tip-box {
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border-left: 4px solid #007bff;
+  padding: 2rem;
+  margin: 2.5rem 0;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.tax-tip-box h4 {
+  color: #1a1a1a;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Call to action section */
+.post-cta {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 3rem;
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.08);
+}
+
+.post-cta h3 {
+  color: #1a1a1a;
+  margin-bottom: 1.2rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.post-cta p {
+  color: #444;
+  margin-bottom: 1.8rem;
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+.post-cta .cta-button {
+  display: inline-block;
+  padding: 1rem 2.5rem;
+  background: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 123, 255, 0.3);
+}
+
+.post-cta .cta-button:hover {
+  background: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4);
+}
+
+/* Nested lists styling */
+.blog-post-content ul ul,
+.blog-post-content ul ol,
+.blog-post-content ol ul,
+.blog-post-content ol ol {
+  margin: 0.8rem 0;
+}
+
+/* Service content padding */
+.service-content {
+  padding: 3rem 1rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .blog-post-content {
+    padding: 1.5rem;
+  }
+
+  .blog-post-content h2 {
+    font-size: 1.8rem;
+    margin: 2rem 0 1.2rem;
+  }
+
+  .blog-post-content h3 {
+    font-size: 1.3rem;
+  }
+
+  .blog-post-content p {
+    font-size: 1rem;
+  }
+
+  .post-cta {
+    padding: 2rem 1.5rem;
+    margin: 2rem auto;
+  }
+
+  .post-cta h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.service-page .post-cta {
+  max-width: 800px;
+  margin: 3rem auto;
+  text-align: center;
+}
+
+/* Add these styles */
+.social-share {
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.share-button {
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: white;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+.share-button:hover {
+  opacity: 0.9;
+}
+
+.share-linkedin {
+  background: #0077b5;
+}
+
+.share-twitter {
+  background: #1da1f2;
+}
+
+.share-facebook {
+  background: #1877f2;
+}
+
+.related-posts {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.faq-section {
+  margin-top: 3rem;
+}
+
+.faq-item {
+  margin-bottom: 1.5rem;
+}
+
+.faq-question {
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.faq-answer {
+  color: #666;
+}
+
+/* Add smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced blog post content */
+.blog-post-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 20px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Heading animations and enhancements */
+.blog-post-content h2 {
+  position: relative;
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin: 3rem 0 1.8rem;
+  line-height: 1.3;
+  font-weight: 600;
+  padding-bottom: 1rem;
+}
+
+.blog-post-content h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: #007bff;
+  transition: width 0.3s ease;
+}
+
+.blog-post-content h2:hover::after {
+  width: 100px;
+}
+
+/* Enhanced list styling */
+.blog-post-content ul li {
+  padding-left: 1.5rem;
+  margin-bottom: 1.2rem;
+  position: relative;
+  transition: transform 0.2s ease;
+}
+
+.blog-post-content ul li:hover {
+  transform: translateX(5px);
+}
+
+.blog-post-content ul li::before {
+  content: "→";
+  color: #007bff;
+  position: absolute;
+  left: -1rem;
+  transition: transform 0.2s ease;
+}
+
+.blog-post-content ul li:hover::before {
+  transform: translateX(3px);
+}
+
+/* Enhanced tax tip box */
+.tax-tip-box {
+  background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+  border-left: 4px solid #007bff;
+  padding: 2.5rem;
+  margin: 3rem 0;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transform: translateY(0);
+  transition: all 0.3s ease;
+}
+
+.tax-tip-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+.tax-tip-box h4 {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 1.3rem;
+  color: #1a1a1a;
+  margin-bottom: 1.2rem;
+}
+
+/* Enhanced CTA section */
+.post-cta {
+  max-width: 800px;
+  margin: 4rem auto;
+  padding: 3.5rem;
+  background: linear-gradient(165deg, #f8f9fa, #e9ecef);
+  border-radius: 16px;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-cta::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(to right, #007bff, #00a6ff);
+}
+
+.post-cta .cta-button {
+  display: inline-block;
+  padding: 1.2rem 3rem;
+  background: linear-gradient(145deg, #007bff, #0056b3);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.post-cta .cta-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: 0.5s;
+}
+
+.post-cta .cta-button:hover::after {
+  left: 100%;
+}
+
+.post-cta .cta-button:hover {
+  background: linear-gradient(145deg, #0056b3, #003d80);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* Social share buttons enhancement */
+.social-share {
+  margin: 3rem 0;
+  display: flex;
+  gap: 1.2rem;
+  justify-content: center;
+}
+
+.share-button {
+  padding: 0.8rem 1.5rem;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: white;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  transform: translateY(0);
+}
+
+.share-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* FAQ section enhancement */
+.faq-section {
+  margin-top: 4rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.06);
+  padding: 2rem;
+}
+
+.faq-item {
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #eee;
+  transition: transform 0.3s ease;
+}
+
+.faq-item:hover {
+  transform: translateX(5px);
+}
+
+.faq-question {
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 0.8rem;
+  font-size: 1.2rem;
+}
+
+/* Mobile responsiveness improvements */
+@media (max-width: 768px) {
+  .blog-post-content {
+    padding: 2rem;
+  }
+
+  .post-cta {
+    padding: 2.5rem 1.5rem;
+    margin: 2.5rem auto;
+  }
+
+  .social-share {
+    flex-wrap: wrap;
+  }
+
+  .share-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Back to Blog button */
+.back-to-blog {
+  position: fixed;
+  top: 100px; /* Position below navbar */
+  left: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.2rem;
+  background: white;
+  color: #333;
+  text-decoration: none;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  z-index: 100;
+  font-weight: 500;
+}
+
+.back-to-blog:hover {
+  transform: translateX(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  color: #007bff;
+}
+
+.back-to-blog svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.3s ease;
+}
+
+.back-to-blog:hover svg {
+  transform: translateX(-3px);
+}
+
+/* Mobile responsiveness for back button */
+@media (max-width: 768px) {
+  .back-to-blog {
+    position: absolute;
+    top: 80px;
+    left: 1rem;
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+} 

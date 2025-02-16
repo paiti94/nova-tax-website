@@ -103,8 +103,41 @@
   cursor: not-allowed;
 }
 
+.cpa-info {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.cpa-contact-logo {
+  width: 150px;
+  height: auto;
+  object-fit: contain;
+  margin-right: 1rem;
+}
+
+.cpa-info h3 {
+  color: #333;
+  margin-bottom: 0.3rem;
+}
+
+.cpa-info p {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 768px) {
   .contact-container {
     grid-template-columns: 1fr;
+  }
+  
+  .cpa-info {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+  }
+  
+  .cpa-contact-logo {
+    width: 120px;
   }
 } 

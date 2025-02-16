@@ -66,4 +66,44 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+.cpa-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  padding: 0.8rem 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 8px;
+  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+}
+
+.cpa-badge img {
+  width: 120px;
+  height: auto;
+  object-fit: contain;
+}
+
+.cpa-badge span {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .cpa-badge {
+    flex-direction: column;
+    padding: 1rem;
+  }
+
+  .cpa-badge img {
+    width: 100px;
+  }
+
+  .cpa-badge span {
+    font-size: 1rem;
+  }
 } 

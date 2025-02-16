@@ -1,6 +1,8 @@
 .navbar {
   position: fixed;
   top: 0;
+  left: 0;
+  right: 0;
   width: 100%;
   z-index: 1000;
   transition: all 0.3s ease;
@@ -9,6 +11,10 @@
 
 .navbar.service-page{
     background: #FFFF;
+}
+
+.navbar.blog-page {
+  background: white;
 }
 
 img {
@@ -164,5 +170,179 @@ img {
   .navbar.service-page .hamburger span,
   .navbar.scrolled .hamburger span {
     background-color: #333;
+  }
+}
+
+/* Add these styles if not already present */
+.nav-link {
+  color: #FFFF;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar.scrolled .nav-link,
+.navbar.service-page .nav-link {
+  color: #333;
+}
+
+.nav-link:hover {
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .nav-links.active .nav-link {
+    color: white;
+    padding: 1rem;
+    width: 100%;
+    text-align: left;
+  }
+
+  .navbar.service-page .nav-links.active .nav-link,
+  .navbar.scrolled .nav-links.active .nav-link {
+    color: #333;
+  }
+}
+
+/* Add these new styles */
+.navbar.blog-page .nav-links a,
+.navbar.blog-page .nav-link {
+  color: #333;
+}
+
+.navbar.blog-page .nav-links a:hover,
+.navbar.blog-page .nav-link:hover {
+  color: #000;
+}
+
+/* Update the scrolled state for blog page */
+.navbar.blog-page.scrolled {
+  background: white;
+}
+
+.navbar.blog-page.scrolled .nav-links a,
+.navbar.blog-page.scrolled .nav-link {
+  color: #333;
+}
+
+.navbar.blog-page.scrolled .nav-links a:hover,
+.navbar.blog-page.scrolled .nav-link:hover {
+  color: #000;
+}
+
+/* Mobile menu for blog page */
+@media (max-width: 768px) {
+  .navbar.blog-page .nav-links.active {
+    background: white;
+  }
+
+  .navbar.blog-page .nav-links.active a,
+  .navbar.blog-page .nav-links.active .nav-link {
+    color: #333;
+  }
+
+  .navbar.blog-page .dropdown-content {
+    background: white;
+  }
+
+  .navbar.blog-page .dropdown-content a {
+    color: #333;
+  }
+
+  /* Hamburger menu color for blog page */
+  .navbar.blog-page .hamburger span {
+    background-color: #333;
+  }
+}
+
+/* Update dropdown styles for blog page */
+.navbar .dropdown-content {
+  background: black;
+}
+
+.navbar .dropdown-content a {
+  color: white;
+}
+
+/* Override for scrolled state */
+.navbar.scrolled .dropdown-content {
+  background: white;
+}
+
+.navbar.scrolled .dropdown-content a {
+  color: #333;
+}
+
+/* Override for service page */
+.navbar.service-page .dropdown-content {
+  background: white;
+}
+
+.navbar.service-page .dropdown-content a {
+  color: #333;
+}
+
+/* Specific blog page dropdown styles when not scrolled */
+.navbar.blog-page:not(.scrolled) .dropdown-content {
+  background: black;
+}
+
+.navbar.blog-page:not(.scrolled) .dropdown-content a {
+  color: white;
+}
+
+.navbar.blog-page:not(.scrolled) .dropdown-content a:hover {
+  color: #ccc;
+}
+
+/* Blog page dropdown styles when scrolled */
+.navbar.blog-page.scrolled .dropdown-content {
+  background: white;
+}
+
+.navbar.blog-page.scrolled .dropdown-content a {
+  color: #333;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cpa-indicator {
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  padding-left: 1rem;
+  margin-left: 0.5rem;
+}
+
+.cpa-indicator span {
+  font-size: 0.85rem;
+  font-weight: 400;
+  opacity: 0.9;
+  color: #FFFF;
+}
+
+/* Update for scrolled state */
+.navbar.scrolled .cpa-indicator {
+  border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar.scrolled .cpa-indicator span {
+  color: #333;
+}
+
+/* Update for service page */
+.navbar.service-page .cpa-indicator {
+  border-left-color: rgba(0, 0, 0, 0.2);
+}
+
+.navbar.service-page .cpa-indicator span {
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .cpa-indicator {
+    display: none;
   }
 } 

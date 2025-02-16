@@ -84,18 +84,18 @@ const Contact = () => {
     <section className="contact" id="contact">
       <div className="contact-container">
         <div className="contact-info">
-          <h2>Contact Your Vancouver & Canadian Tax Experts</h2>
-          <p>Professional tax and accounting services serving Vancouver and nationwide</p>
+          <h2>Contact Your Tax Experts</h2>
+          <p>Professional tax and accounting services serving across Canada</p>
           
           <div className="info-items">
-            <div className="info-item">
+            {/* <div className="info-item">
               <i className="fas fa-map-marker-alt"></i>
               <div>
                 <h3>Find Us Near You</h3>
                 <p>Serving All Canadian Provinces</p>
                 <p className="local-service">Local Tax Services Available Nationwide</p>
               </div>
-            </div>
+            </div> */}
             
             <div className="info-item">
               <i className="fas fa-phone"></i>
@@ -111,6 +111,19 @@ const Contact = () => {
                 <h3>Email</h3>
                 <p><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></p>
               </div>
+            </div>
+            
+            <div className="info-item cpa-info">
+              <img 
+                src="/assets/cpa-logo.jpg" 
+                alt="CPA Canada Member" 
+                className="cpa-contact-logo"
+              />
+              {/* <div>
+                <h3>Licensed CPA</h3>
+                <p>Chartered Professional Accountant</p>
+                <p>Member of CPA Canada</p>
+              </div> */}
             </div>
           </div>
         </div>
