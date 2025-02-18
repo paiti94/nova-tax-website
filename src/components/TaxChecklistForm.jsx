@@ -1,6 +1,6 @@
 // src/components/TaxChecklistForm.jsx
 import React, { useState } from 'react';
-import { FormControl, FormLabel, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControlLabel, Radio, InputAdornment, IconButton } from '@mui/material';
+import { FormControl, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControlLabel, Radio, InputAdornment, IconButton } from '@mui/material';
 import { pdf, PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; 
 import '../styles/TaxChecklistForm.css'; // Import the CSS file
