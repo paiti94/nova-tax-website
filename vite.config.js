@@ -21,9 +21,8 @@ export default defineConfig({
     rollupOptions: {
         output: {
           manualChunks(id) {
-            // Split vendor libraries into their own chunks
             if (id.includes('node_modules')) {
-              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+              return 'vendor';
             }
           },
         },
