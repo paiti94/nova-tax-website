@@ -26,6 +26,9 @@ const Navbar = () => {
   // Check if we're on a blog page
   const isBlogPage = location.pathname.includes('/blog');
 
+  // Add a new check for the checklist page
+  const isChecklistPage = location.pathname.includes('/2024-checklist');
+
   // Function to handle navigation and close menu
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
@@ -88,6 +91,7 @@ const Navbar = () => {
 
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${
+      isChecklistPage ? 'checklist-page' :
       isServicePage ? 'service-page' : 
       isBlogPage ? 'blog-page' : 'page'
     }`}>
@@ -110,6 +114,7 @@ const Navbar = () => {
           >
             <img 
               src={
+                isChecklistPage ? "/assets/logo_white.png" :
                 isServicePage || (isScrolled && !isBlogPage) ? "/assets/logo.png" : 
                 isBlogPage ? "/assets/logo.png" : "/assets/logo_white.png"
               } 

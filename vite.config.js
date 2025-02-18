@@ -16,4 +16,7 @@ export default defineConfig({
   build: {
     outDir: "dist", // Make sure it's "dist" and not "build"
   },
+  optimizeDeps: {
+    include: ['@mui/x-date-pickers', 'date-fns'],
+  },
 }) 

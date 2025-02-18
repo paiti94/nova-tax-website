@@ -1,0 +1,175 @@
+/* src/components/TaxChecklistForm.css */
+.form-container {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-top: 10rem;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  label{
+    font-weight: 500  !important;
+  }
+
+  .tax-checklist-form {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .MuiInputLabel-root {
+    color: #555; /* Change label color */
+  }
+  
+  .MuiInputLabel-root.Mui-focused {
+    color: #1976d2; /* Change focused label color */
+  }
+
+  .checklist-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between the two checklists */
+  }
+  
+  .existing-checklist,
+  .new-checklist {
+    width: 48%; /* Adjust width as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    background-color: #f9f9f9; /* Optional: Add a background color */
+  }
+
+  @media (max-width: 768px) {
+    .checklist-container {
+      flex-direction: column; /* Stack items vertically */
+    }
+  
+    .existing-checklist,
+    .new-checklist {
+      width: 100%; /* Full width on smaller screens */
+      margin-bottom: 20px; /* Space between stacked items */
+    }
+  }
+  
+  label {
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input, textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  textarea {
+    resize: vertical;
+  }
+
+  h2 {
+    text-align: center; /* Center the headings */
+    margin-top: 2rem
+  }
+  
+  h3 {
+    margin-top: 20px; /* Add space above each section */
+    margin-bottom: 10px;
+    color: #555;
+    font-weight: 500;
+    margin-left: 10px;
+  }
+
+  hr{
+    margin-top: 3rem;
+    margin-bottom: 5rem;
+  }
+
+  p{
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    margin-top: 20px; /* Space above buttons */
+  }
+  
+  .submit-button {
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .submit-button:hover {
+    background-color: #0056b3;
+  }
+   /* src/components/TaxChecklistForm.css */
+.questions-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.questions-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  vertical-align: middle;
+}
+
+.questions-table input[type="radio"] {
+  margin-right: 5px;
+}
+
+.questions-table input[type="text"] {
+  width: 100%; /* Adjust as needed */
+}
+
+.checkbox-group input[type="checkbox"]{
+  margin-left: 20px;
+}
+
+.checkbox-input {
+  margin-right: 10px; /* Space between checkbox and label text */
+  margin-top: 20px;
+  transform: scale(1.2); /* Optional: Increase checkbox size for better visibility */
+}
+
+.questions-table div {
+  display: flex; /* Aligns radio buttons and labels in a row */
+  align-items: center; /* Vertically centers the items */
+  width: 6rem;
+}
+
+.radio-group {
+  display: flex;
+  flex-direction: column; /* Stack radio buttons vertically */
+}
+
+.radio-label {
+  display: flex; /* Use flexbox for label alignment */
+  justify-content: space-between; /* Space between label and radio button */
+  align-items: center; /* Vertically center the items */
+  margin-bottom: 5px; /* Space between each radio button */
+}
+
+.radio-label input[type="radio"] {
+  margin-left: auto; /* Space between label text and radio button */
+}

@@ -1,0 +1,44 @@
+/* Checklist.css */
+.checklist-page {
+    padding: 20px;
+  }
+  
+  .checklist-container {
+    display: flex; /* Use flexbox for layout */
+    justify-content: space-between; /* Space between the two checklists */
+  }
+  
+  .existing-checklist,
+  .new-checklist {
+    width: 48%; /* Adjust width as needed */
+    padding: 10px;
+    border: 1px solid #ccc; /* Optional: Add a border */
+    border-radius: 5px; /* Optional: Add rounded corners */
+    background-color: #f9f9f9; /* Optional: Add a background color */
+  }
+  
+  h2 {
+    text-align: center; /* Center the headings */
+  }
+  
+  .button-container {
+    display: flex;
+    justify-content: center; /* Center the buttons */
+    margin-top: 20px; /* Space above buttons */
+  }
+  
+  .download-button,
+  .submit-button {
+    margin: 0 10px; /* Space between buttons */
+    padding: 10px 20px; /* Button padding */
+    border: none; /* Remove default border */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #007bff; /* Button color */
+    color: white; /* Text color */
+    cursor: pointer; /* Pointer cursor on hover */
+  }
+  
+  .download-button:hover,
+  .submit-button:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+  }

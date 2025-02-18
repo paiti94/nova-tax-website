@@ -345,4 +345,36 @@ img {
   .cpa-indicator {
     display: none;
   }
+}
+
+/* Checklist page navbar styles */
+.navbar.checklist-page {
+  background: black;
+}
+
+.navbar.checklist-page .nav-links a {
+  color: white;
+}
+
+.navbar.checklist-page .nav-links a:hover {
+  color: #ccc;
+}
+
+.navbar.checklist-page .dropdown-content {
+  background: black;
+}
+
+.navbar.checklist-page .dropdown-content a {
+  color: white;
+}
+
+/* Mobile menu for checklist page */
+@media (max-width: 768px) {
+  .navbar.checklist-page .nav-links.active {
+    background: black;
+  }
+
+  .navbar.checklist-page .hamburger span {
+    background-color: white;
+  }
 } 
