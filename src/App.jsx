@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy  } from 'react';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/global.css';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -18,7 +18,9 @@ import ScrollToTopOnMount from './components/ScrollToTopOnMount';
 import VancouverTax from './pages/VancouverTax';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-import CheckListPage from './pages/2024CheckListPage';
+
+const CheckListPage = lazy(() => import('./pages/2024CheckListPage')); // Dynamic import
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -35,16 +37,18 @@ function App() {
     <Router>
       <ScrollToTopOnMount />
       <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/vancouver-tax-services" element={<VancouverTax />} />
-        <Route path="/services/tax-planning" element={<TaxPlanning />} />
-        <Route path="/services/tax-prep" element={<TaxPrep />} />
-        <Route path="/services/cfo-services" element={<CFOServices />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:slug" element={<BlogPost />} />
-        <Route path="/2024-checklist-novatax" element={<CheckListPage />} />
-      </Routes>
+      <Suspense fallback={<Loading />}> {/* Fallback while loading */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/vancouver-tax-services" element={<VancouverTax />} />
+          <Route path="/services/tax-planning" element={<TaxPlanning />} />
+          <Route path="/services/tax-prep" element={<TaxPrep />} />
+          <Route path="/services/cfo-services" element={<CFOServices />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogPost />} />
+          <Route path="/2024-checklist-novatax" element={<CheckListPage />} />
+        </Routes>
+      </Suspense>
       <Footer />
     </Router>
   );
