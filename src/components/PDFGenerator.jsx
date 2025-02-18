@@ -1,174 +1,185 @@
-import React from 'react';
-import { Document, Page, Text, View, StyleSheet, pdf } from '@react-pdf/renderer';
+import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
-// Define styles for the PDF document
-const styles = StyleSheet.create({
-    page: {
-      padding: 20,
-      fontFamily: 'Helvetica',
-      fontSize: 12,
-      color: '#333',
-    },
-
-    section: {
-      marginBottom: 10,
-    },
-    header: {
-      fontSize: 18,
-      marginBottom: 10,
-      textAlign: 'center',
-      fontWeight: 'bold',
-    },
-    subHeader: {
-      fontSize: 14,
-      marginBottom: 5,
-      fontWeight: 'bold',
-    },
-    text: {
-      marginBottom: 5,
-    },
-    bold: {
-      fontWeight: 'bold',
-      color: 'grey',
-    },
-    footer: {
-      marginTop: 40,
-      fontSize: 10,
-      textAlign: 'center',
-      color: '#777',
-    },
-    table: {
-      display: 'table',
-      width: '100%',
-      marginBottom: 10,
-    },
-    tableRow: {
-      flexDirection: 'row',
-      borderBottom: '1px solid #000', // Border between rows
-    },
-    tableCell: {
-      flex: 1, // Each cell takes equal space
-      padding: 10, // Increased padding for better spacing
-      fontSize: 12,
-      borderRight: '1px solid #000', // Right border for each cell
-    },
-    tableHeader: {
-      fontWeight: 'bold',
-      fontSize: 14,
-      padding: 10,
-      backgroundColor: '#f2f2f2', // Light gray background for header
-    },
-    alternatingRow: {
-      backgroundColor: '#f9f9f9', // Light background for alternating rows
-    },
-  });
-
-// PDF Document Component
-const PDFGenerator = ({ formData, checkedItems, isSpouseIncluded }) => (
-    <Document>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text style={styles.header}>2024 Nova Tax Checklist</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeader}>Personal Information</Text>
-        <Text style={styles.text}><Text style={styles.bold}>First Name:</Text> {formData.firstName}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Last Name:</Text> {formData.lastName}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>DOB (YYYY-MM-DD):</Text> {formData.dob}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Email:</Text> {formData.email}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Phone:</Text> {formData.phone}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>SIN:</Text> {formData.sin}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Address Line 1:</Text> {formData.address1}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Address Line 2:</Text> {formData.address2}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>City:</Text> {formData.city}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Province:</Text> {formData.province}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Postal Code:</Text> {formData.postalCode}</Text>
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeader}>Marital Status</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Marital Status:</Text> {formData.maritalStatus}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Date of Marital Status Change:</Text> {formData.maritalStatusChangeDate}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Did your marital status change in 2024?</Text> {formData.maritalStatusChange}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Will we be preparing spouse's return as well?</Text> {isSpouseIncluded ? 'Yes' : 'No'}</Text>
-      </View>
-
-      {isSpouseIncluded && (
-        <View style={styles.section}>
-          <Text style={styles.subHeader}>Spouse's Information</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's First Name:</Text> {formData.spouseFirstName}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's Last Name:</Text> {formData.spouseLastName}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's Date of Birth (YYYY-MM-DD):</Text> {formData.spouseDob}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's Email:</Text> {formData.spouseEmail}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's Phone:</Text> {formData.spousePhone}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's SIN:</Text> {formData.spouseSin}</Text>
-        </View>
-      )}
-
-      <View style={styles.section}>
-        <Text style={styles.subHeader}>Dependants</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Did you have any dependants in 2024?</Text> {formData.dependants}</Text>
-        {formData.dependants === 'Yes' && (
-          <Text style={styles.text}><Text style={styles.bold}>If yes, please include the dependant’s relevant information:</Text> {formData.dependantInfo}</Text>
-        )}
-      </View>
-
-      <View style={styles.section}>
-        <Text style={styles.subHeader}>Additional Information</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Notes:</Text> {formData.notes}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Are you a Canadian citizen?</Text> {formData.citizenship}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>If yes, should your name, address, date of birth, and citizenship information be supplied to Elections Canada?</Text> {formData.citizenshipElections}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Do you have citizenship or residence in a country other than Canada (or a US Green Card)?</Text> {formData.citizenshipCountry}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>If yes, please indicate the country:</Text> {formData.citizenshipCountryName}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Did you sell any Cryptocurrency in 2024?</Text> {formData.cryptocurrency}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Did you dispose of a property (or properties) in 2024 for which you are claiming a principal residence exemption?</Text> {formData.propertyExemption}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>In 2024, in total did you own non-Canadian property?</Text> {formData.nonCanadianProperty}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>In 2024, did you have an ownership of 1% or greater in any non-Canadian corporations?</Text> {formData.ownershipNonCanadian}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Did you or your spouse open a First Home Savings Account (“FHSA) in 2024?</Text> {formData.fhsa}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>In 2024, did you rent a property in BC?</Text> {formData.rentalProperty}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Do you have a bare trust or another trust arrangement?</Text> {formData.trustArrangement}</Text>
-        <Text style={styles.text}><Text style={styles.bold}>Are you claiming the disability tax credit for any family member?</Text> {formData.disabilityCredit}</Text>
-      </View>
-
-      {isSpouseIncluded && (
-        <View style={styles.section}>
-          <Text style={styles.subHeader}>Spouse's Additional Information</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Spouse's Canadian citizen?</Text> {formData.spouseCitizenship}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>If yes, should your spouse's name, address, date of birth, and citizenship information be supplied to Elections Canada?</Text> {formData.spouseCitizenshipElections}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Does your spouse have citizenship or residence in a country other than Canada (or a US Green Card)?</Text> {formData.spouseCitizenshipCountry}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>If yes, please indicate the country:</Text> {formData.spouseCitizenshipCountryName}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Did your spouse sell any Cryptocurrency in 2024?</Text> {formData.spouseCryptocurrency}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Did your spouse dispose of a property (or properties) in 2024 for which they are claiming a principal residence exemption?</Text> {formData.spousePropertyExemption}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse own non-Canadian property?</Text> {formData.spouseNonCanadianProperty}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse have an ownership of 1% or greater in any non-Canadian corporations?</Text> {formData.spouseOwnershipNonCanadian}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Did your spouse open a First Home Savings Account (“FHSA) in 2024?</Text> {formData.spouseFhsa}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse rent a property in BC?</Text> {formData.spouseRentalProperty}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Does your spouse have a bare trust or another trust arrangement?</Text> {formData.spouseTrustArrangement}</Text>
-          <Text style={styles.text}><Text style={styles.bold}>Is your spouse claiming the disability tax credit for any family member?</Text> {formData.spouseDisabilityCredit}</Text>
-        </View>
-      )}
-
-      {/* <Text style={styles.subHeader}>Checked Items to be included in return:</Text> */}
-      <Text style={styles.subHeader}>Checked Items</Text>
-      {Object.entries(checkedItems).map(([key, value], index) => {
-        if (value) {
-          return (
-            <Text style={styles.text}key={key}> {itemLabels[key]}</Text>
-          );
-        }
-        return null;
-      })}
-      
-      <Text style={styles.footer}>This document is generated for your records.</Text>
-    </Page>
-  </Document>
-);
-
-// Function to generate the PDF
+/**
+ * Generates a tax checklist PDF using pdf-lib.
+ * @param {Object} formData - User's input data
+ * @param {Object} checkedItems - Selected checklist items
+ * @param {boolean} isSpouseIncluded - Whether the spouse's information is included
+ * @returns {Promise<Blob>} - The generated PDF as a Blob
+ */
 export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
-  const doc = <PDFGenerator formData={formData} checkedItems={checkedItems} isSpouseIncluded={isSpouseIncluded} />;
-  return pdf(doc).toBlob(); // Convert to Blob
-};
+  const pdfDoc = await PDFDocument.create();
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+  const fontSize = 12;
 
-export default PDFGenerator;
+  const createPage = () => {
+    const newPage = pdfDoc.addPage([600, 800]); // A4 size
+    return {
+      page: newPage,
+      width: newPage.getWidth(),
+      height: newPage.getHeight(),
+      yPosition: newPage.getHeight() - 50, // Start at top
+    };
+  };
+
+  let { page, width, height, yPosition } = createPage();
+  // Utility function to write text on PDF
+  const drawText = (text, x = 50, bold = false, size = fontSize) => {
+    if (yPosition < 50) {
+        ({ page, width, height, yPosition } = createPage());
+      }
+
+    page.drawText(text, {
+      x,
+      y: yPosition,
+      size,
+      font,
+      color: rgb(0, 0, 0),
+    });
+
+    yPosition -= 20;
+
+  };
+
+  const itemLabels = {
+    employmentIncome: "T4 - Employment Income",
+    T4PS: "T4PS - Employee Profit-Sharing Plan",
+    T4AOAS: "T4A(OAS) - Old Age Security",
+    T4AP: "T4A(P) - Canada Pension Plan (CPP) Benefits",
+    T4A: "T4A, T4RSP, T4RIF - Retirement or Other Pension Income",
+    T4E: "T4E - Employment Insurance (EI) Benefits",
+    rc62: "RC62 - Universal Child Care Benefits",
+    t5007: "T5007 - Workers' Compensation or Social Assistance",
+    t5: "T5 - Interest, Dividends, or Investment Income",
+    t3: "T3 - Mutual Funds & Trust Income",
+    t5013: "T5013 - Partnership Income/Losses",
+    t5008: "T5008 - Capital Gains/Losses from Investment Sales",
+    annualInvestmentPackage: "Annual Investment Package",
+    realEstateSale: "Did you sell any real estate in 2024? (Provide purchase & sale details)",
+    realEstateChange: "Did you change the use of any real estate (personal-use to rental or vice versa) in 2024?",
+    selfEmployedIncome: "Business, Professional, Commission, or Farming Income (Provide income & expense details)",
+    rentalIncome: "Rental Income (Provide income & expense details)",
+    childSupport: "Child or Spousal Support Received (Provide separation/divorce agreement)",
+    stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
+    rrspContributions: "RRSP Contributions (Provide receipts)",
+    t4fhsa: "T4FHSA - First Home Savings Account (FHSA) Contributions",
+    unionDues: "Union or Professional Dues",
+    movingExpenses: "Moving Expenses (If moved 40km closer to work)",
+    employmentExpenses: "Employment or Commission Expenses (T2200 signed by employer is mandatory)",
+    investmentLosses: "Investment Losses & Carrying Charges (Interest, Investment Management Fees, Accounting Fees)",
+    childCareExpenses: "Child Care Expenses",
+    attendantCare: "Attendant Care Expenses (for disabilities)",
+    medicalExpenses: "Medical & Dental Expenses (Including private health insurance premiums)",
+    disabilityTaxCredit: "Disability Tax Credit (For you or a dependant)",
+    adoptionExpenses: "Adoption Expenses",
+    tuitionFees: "Tuition Fees (Provide T2202/T2202A)",
+    studentLoanInterest: "Student Loan Interest Paid",
+    firstTimeHomeBuyer: "First-Time Home Buyer's Tax Credit",
+    clergyDeduction: "Clergy Residence Deduction (Attach Form T1223)",
+    charitableDonations: "Charitable & Political Donations",
+    alimony: "Alimony/Spousal Support Paid (Provide agreement)",
+    covidRepayment: "COVID-19 Benefits Repayment",
+    homeRenovationCredit: "Multigenerational Home Renovation Credit",
+    toolCosts: "Tool Costs for Tradespersons",
+  };
+
+  drawText('2024 Nova Tax Checklist', 200, true, 18);
+  drawText('====================================', 200, true, 10);
+  drawText('');
+
+
+  // Personal Information
+  drawText('Personal Information', 50, true, 14);
+  drawText(`First Name: ${formData.firstName}`, 50, true);
+  drawText(`Last Name: ${formData.lastName}`);
+  drawText(`DOB (YYYY-MM-DD): ${formData.dob}`);
+  drawText(`Email: ${formData.email}`);
+  drawText(`Phone: ${formData.phone}`);
+  drawText(`SIN: ${formData.sin}`);
+  drawText(`Address Line 1: ${formData.address1}`);
+  drawText(`Address Line 2: ${formData.address2}`);
+  drawText(`City: ${formData.city}, Province: ${formData.province}, Postal Code: ${formData.postalCode}`);
+  drawText('');
+
+  // Marital Status
+  drawText('Marital Status', 50, true, 14);
+  drawText(`Marital Status: ${formData.maritalStatus}`, 50, true);
+  drawText(`Date of Marital Status Change: ${formData.maritalStatusChangeDate}`);
+  drawText(`Did your marital status change in 2024? ${formData.maritalStatusChange}`);
+  drawText(`Will we be preparing spouse's return as well? ${isSpouseIncluded ? 'Yes' : 'No'}`);
+  drawText('');
+
+  if (isSpouseIncluded) {
+    drawText(`Spouse's Information`, 50, true, 14);
+    drawText(`Spouse's First Name: ${formData.spouseFirstName}`, 50, true);
+    drawText(`Last Name: ${formData.spouseLastName}`);
+    drawText(`Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob}`);
+    drawText(`Email: ${formData.spouseEmail}`);
+    drawText(`Phone: ${formData.spousePhone}`);
+    drawText(`SIN: ${formData.spouseSin}`);
+    drawText('');
+  }
+
+  // Dependents Section
+  drawText('Dependants', 50, true, 14);
+  drawText(`Did you have any dependants in 2024? ${formData.dependants}`);
+  if (formData.dependants === 'Yes') {
+    drawText(`Dependant's relevant information: ${formData.dependantInfo}`);
+  }
+  drawText('');
+
+  // Additional Information
+  drawText('Additional Information', 50, true, 14);
+  drawText(`Notes: ${formData.notes}`);
+  drawText(`Are you a Canadian citizen? ${formData.citizenship}`);
+  drawText(`Should CRA provide your information to Elections Canada? ${formData.citizenshipElections}`);
+  drawText(`Do you have citizenship or residence in another country? ${formData.citizenshipCountry}`);
+  if (formData.citizenshipCountry === 'Yes') {
+    drawText(`Country: ${formData.citizenshipCountryName}`);
+  }
+  drawText(`Did you sell any Cryptocurrency in 2024? ${formData.cryptocurrency}`);
+  drawText(`Did you dispose of a property for principal residence exemption? ${formData.propertyExemption}`);
+  drawText(`Did you own non-Canadian property? ${formData.nonCanadianProperty}`);
+  drawText(`Did you own 1%+ of any non-Canadian corporations? ${formData.ownershipNonCanadian}`);
+  drawText(`Did you or your spouse open an FHSA in 2024? ${formData.fhsa}`);
+  drawText(`Did you rent a property in BC? ${formData.rentalProperty}`);
+  drawText(`Do you have a trust arrangement? ${formData.trustArrangement}`);
+  drawText(`Are you claiming the disability tax credit? ${formData.disabilityCredit}`);
+  drawText('');
+
+  // Spouse's Additional Information
+  if (isSpouseIncluded) {
+    drawText(`Spouse's Additional Information`, 50, true, 14);
+    drawText(`Spouse's Canadian Citizen? ${formData.spouseCitizenship}`);
+    drawText(`Spouse's Elections Canada Consent: ${formData.spouseCitizenshipElections}`);
+    drawText(`Spouse has citizenship in another country? ${formData.spouseCitizenshipCountry}`);
+    if (formData.spouseCitizenshipCountry === 'Yes') {
+      drawText(`Country: ${formData.spouseCitizenshipCountryName}`);
+    }
+    drawText(`Spouse sold Cryptocurrency in 2024? ${formData.spouseCryptocurrency}`);
+    drawText(`Spouse disposed of a property for exemption? ${formData.spousePropertyExemption}`);
+    drawText(`Spouse owned non-Canadian property? ${formData.spouseNonCanadianProperty}`);
+    drawText(`Spouse owned 1%+ of non-Canadian corporations? ${formData.spouseOwnershipNonCanadian}`);
+    drawText(`Spouse opened an FHSA in 2024? ${formData.spouseFhsa}`);
+    drawText(`Spouse rented property in BC? ${formData.spouseRentalProperty}`);
+    drawText(`Spouse has a trust arrangement? ${formData.spouseTrustArrangement}`);
+    drawText(`Spouse claiming disability tax credit? ${formData.spouseDisabilityCredit}`);
+    drawText('');
+  }
+  
+    drawText('Checked Items', 50, true, 14);
+
+     Object.entries(checkedItems).forEach(([key, value]) => {
+        if (value==true) {
+            const label = itemLabels[key] || key;
+            drawText(`- ${label}`);
+        }
+    });
+
+  drawText('');
+  drawText('Thank you for submitting your tax checklist!', 150);
+
+  // Convert PDF to Blob
+  const pdfBytes = await pdfDoc.save();
+  return new Blob([pdfBytes], { type: 'application/pdf' });
+};

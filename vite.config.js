@@ -20,11 +20,13 @@ export default defineConfig({
     outDir: "dist", // Make sure it's "dist" and not "build"
     rollupOptions: {
         output: {
-          manualChunks(id) {
-            if (id.includes('node_modules')) {
-              return 'vendor';
-            }
-          },
+            manualChunks(id) {
+                if (id.includes('node_modules')) {
+                  if (id.includes('@mui/material')) return 'mui';
+                  if (id.includes('@react-pdf/renderer')) return 'react-pdf';
+                  return 'vendor';
+                }
+              },
         },
       },
   },

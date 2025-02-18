@@ -11,11 +11,6 @@ import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-
-const loadPDFRenderer = async () => {
-    const pdfModule = await import('@react-pdf/renderer');
-    return pdfModule.pdf;
-  };
   
  const TaxChecklistForm =  () => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
@@ -75,7 +70,7 @@ const loadPDFRenderer = async () => {
     realEstateChange: false,
     selfEmployedIncome: false,
     rentalIncome: false,
-    otherIncome: false,
+    businessRentalAssets: false,
     childSupport: false,
     stockOptions: false,
     rrspContributions: false,
@@ -106,111 +101,11 @@ const loadPDFRenderer = async () => {
 
   const handleCheckboxChange = (event) => {
     const { name, checked } = event.target;
+
     setCheckedItems({ ...checkedItems, [name]: checked });
   };
 
-//   const MyDocument = ({ formData, isSpouseIncluded,  checkedItems }) => (
-//     <Document>
-//       <Page size="A4" style={styles.page}>
-//         <View style={styles.section}>
-//           <Text style={styles.header}>2024 Nova Tax Checklist</Text>
-//         </View>
-  
-//         <View style={styles.section}>
-//           <Text style={styles.subHeader}>Personal Information</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>First Name:</Text> {formData.firstName}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Last Name:</Text> {formData.lastName}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>DOB (YYYY-MM-DD):</Text> {formData.dob}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Email:</Text> {formData.email}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Phone:</Text> {formData.phone}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>SIN:</Text> {formData.sin}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Address Line 1:</Text> {formData.address1}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Address Line 2:</Text> {formData.address2}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>City:</Text> {formData.city}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Province:</Text> {formData.province}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Postal Code:</Text> {formData.postalCode}</Text>
-//         </View>
-  
-//         <View style={styles.section}>
-//           <Text style={styles.subHeader}>Marital Status</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Marital Status:</Text> {formData.maritalStatus}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Date of Marital Status Change:</Text> {formData.maritalStatusChangeDate}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Did your marital status change in 2024?</Text> {formData.maritalStatusChange}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Will we be preparing spouse's return as well?</Text> {isSpouseIncluded ? 'Yes' : 'No'}</Text>
-//         </View>
-  
-//         {isSpouseIncluded && (
-//           <View style={styles.section}>
-//             <Text style={styles.subHeader}>Spouse's Information</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's First Name:</Text> {formData.spouseFirstName}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's Last Name:</Text> {formData.spouseLastName}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's Date of Birth (YYYY-MM-DD):</Text> {formData.spouseDob}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's Email:</Text> {formData.spouseEmail}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's Phone:</Text> {formData.spousePhone}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's SIN:</Text> {formData.spouseSin}</Text>
-//           </View>
-//         )}
-  
-//         <View style={styles.section}>
-//           <Text style={styles.subHeader}>Dependants</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Did you have any dependants in 2024?</Text> {formData.dependants}</Text>
-//           {formData.dependants === 'Yes' && (
-//             <Text style={styles.text}><Text style={styles.bold}>If yes, please include the dependant’s relevant information:</Text> {formData.dependantInfo}</Text>
-//           )}
-//         </View>
-  
-//         <View style={styles.section}>
-//           <Text style={styles.subHeader}>Additional Information</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Notes:</Text> {formData.notes}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Are you a Canadian citizen?</Text> {formData.citizenship}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>If yes, should your name, address, date of birth, and citizenship information be supplied to Elections Canada?</Text> {formData.citizenshipElections}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Do you have citizenship or residence in a country other than Canada (or a US Green Card)?</Text> {formData.citizenshipCountry}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>If yes, please indicate the country:</Text> {formData.citizenshipCountryName}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Did you sell any Cryptocurrency in 2024?</Text> {formData.cryptocurrency}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Did you dispose of a property (or properties) in 2024 for which you are claiming a principal residence exemption?</Text> {formData.propertyExemption}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>In 2024, in total did you own non-Canadian property?</Text> {formData.nonCanadianProperty}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>In 2024, did you have an ownership of 1% or greater in any non-Canadian corporations?</Text> {formData.ownershipNonCanadian}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Did you or your spouse open a First Home Savings Account (“FHSA) in 2024?</Text> {formData.fhsa}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>In 2024, did you rent a property in BC?</Text> {formData.rentalProperty}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Do you have a bare trust or another trust arrangement?</Text> {formData.trustArrangement}</Text>
-//           <Text style={styles.text}><Text style={styles.bold}>Are you claiming the disability tax credit for any family member?</Text> {formData.disabilityCredit}</Text>
-//         </View>
-  
-//         {isSpouseIncluded && (
-//           <View style={styles.section}>
-//             <Text style={styles.subHeader}>Spouse's Additional Information</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Spouse's Canadian citizen?</Text> {formData.spouseCitizenship}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>If yes, should your spouse's name, address, date of birth, and citizenship information be supplied to Elections Canada?</Text> {formData.spouseCitizenshipElections}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Does your spouse have citizenship or residence in a country other than Canada (or a US Green Card)?</Text> {formData.spouseCitizenshipCountry}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>If yes, please indicate the country:</Text> {formData.spouseCitizenshipCountryName}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Did your spouse sell any Cryptocurrency in 2024?</Text> {formData.spouseCryptocurrency}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Did your spouse dispose of a property (or properties) in 2024 for which they are claiming a principal residence exemption?</Text> {formData.spousePropertyExemption}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse own non-Canadian property?</Text> {formData.spouseNonCanadianProperty}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse have an ownership of 1% or greater in any non-Canadian corporations?</Text> {formData.spouseOwnershipNonCanadian}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Did your spouse open a First Home Savings Account (“FHSA) in 2024?</Text> {formData.spouseFhsa}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>In 2024, did your spouse rent a property in BC?</Text> {formData.spouseRentalProperty}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Does your spouse have a bare trust or another trust arrangement?</Text> {formData.spouseTrustArrangement}</Text>
-//             <Text style={styles.text}><Text style={styles.bold}>Is your spouse claiming the disability tax credit for any family member?</Text> {formData.spouseDisabilityCredit}</Text>
-//           </View>
-//         )}
-  
-//         {/* <Text style={styles.subHeader}>Checked Items to be included in return:</Text> */}
-//         <Text style={styles.subHeader}>Checked Items</Text>
-//         {Object.entries(checkedItems).map(([key, value], index) => {
-//           if (value) {
-//             return (
-//               <Text style={styles.text}key={key}> {itemLabels[key]}</Text>
-//             );
-//           }
-//           return null;
-//         })}
-        
-//         <Text style={styles.footer}>This document is generated for your records.</Text>
-//       </Page>
-//     </Document>
-//   );
-
-const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
@@ -224,12 +119,17 @@ const handleSubmit = async (e) => {
 
         const emailData = {
           api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
-          to: ["ali@novatax.ca"],
-          sender: "support@novatax.ca",
+          to: ['ali@novatax.ca'],
+          sender: 'support@novatax.ca',
           subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
-          text_body: "Please find the attached Tax Checklist.",
-          html_body: "<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>",
-          attachments: [{ fileblob: base64data, filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.pdf` }],
+          text_body: 'Please find the attached Tax Checklist.',
+          html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+          attachments: [
+            {
+              fileblob: base64data,
+              filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.pdf`,
+            },
+          ],
         };
 
         const response = await fetch('https://api.smtp2go.com/v3/email/send', {
@@ -248,17 +148,23 @@ const handleSubmit = async (e) => {
     }
   };
 
+// Handle PDF download
 const handleDownloadPDF = async () => {
-    const { generatePDF } = await import('./PDFGenerator');
-    const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
+    try {
+      const { generatePDF } = await import('./PDFGenerator');
+      const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
 
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'TaxChecklist.pdf';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `TaxChecklist-${formData.firstName}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      alert('Error generating the PDF. Please try again.');
+    }
   };
 
   return (
@@ -571,7 +477,7 @@ const handleDownloadPDF = async () => {
             {formData.dependants === 'Yes' && (
                 <>
                 <div className="form-group">
-                  <label>If yes, please include the each dependant’s relevant information: (Name, Date of Birth (YYYY-MM-DD), SIN, Relationship to you)</label>
+                  <label>If yes, please include the each dependant's relevant information: (Name, Date of Birth (YYYY-MM-DD), SIN, Relationship to you)</label>
                   <TextField
                     name="dependantInfo"
                     onChange={handleChange}
@@ -837,7 +743,7 @@ const handleDownloadPDF = async () => {
                   )}
                 </tr>
                 <tr>
-                  <td>Did you (or your spouse) open a First Home Savings Account (“FHSA) in 2024?</td>
+                  <td>Did you (or your spouse) open a First Home Savings Account ("FHSA) in 2024?</td>
                   <td>
                     <FormControl component="fieldset">
                         <RadioGroup
@@ -1107,7 +1013,7 @@ const handleDownloadPDF = async () => {
               <input   className="checkbox-input"
                 type="checkbox"
                 name="annualInvestmentPackage"
-                checked={checkedItems.t5008}
+                checked={checkedItems.annualInvestmentPackage}
                 onChange={handleCheckboxChange}
               />
                 Annual Investment Package 
@@ -1247,8 +1153,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="employmentCommissionExpenses"
-                checked={checkedItems.employmentCommissionExpenses}
+                name="employmentExpenses"
+                checked={checkedItems.employmentExpenses}
                 onChange={handleCheckboxChange}
               />
               Employment or Commission Expenses (T2200 signed by employer is mandatory)
@@ -1293,8 +1199,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="medicalDentalExpenses"
-                checked={checkedItems.medicalDentalExpenses}
+                name="medicalExpenses"
+                checked={checkedItems.medicalExpenses}
                 onChange={handleCheckboxChange}
               />
               Medical & Dental Expenses (Including private health insurance premiums)
@@ -1354,15 +1260,15 @@ const handleDownloadPDF = async () => {
                 checked={checkedItems.firstTimeHomeBuyer}
                 onChange={handleCheckboxChange}
               />
-              First-Time Home Buyer’s Tax Credit
+              First-Time Home Buyer's Tax Credit
             </label>
           </div>
           <div className="checkbox-group">
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="clergyResidenceDeduction"
-                checked={checkedItems.clergyResidenceDeduction}
+                name="clergyDeduction"
+                checked={checkedItems.clergyDeduction}
                 onChange={handleCheckboxChange}
               />
               Clergy Residence Deduction (Attach Form T1223)
@@ -1385,8 +1291,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="alimonySupportPaid"
-                checked={checkedItems.alimonySupportPaid}
+                name="alimony"
+                checked={checkedItems.alimony}
                 onChange={handleCheckboxChange}
               />
               Alimony/Spousal Support Paid (Provide agreement)
@@ -1396,8 +1302,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="covidBenefitsRepayment"
-                checked={checkedItems.covidBenefitsRepayment}
+                name="covidRepayment"
+                checked={checkedItems.covidRepayment}
                 onChange={handleCheckboxChange}
               />
               COVID-19 Benefits Repayment
@@ -1407,8 +1313,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="multigenerationalHomeRenovation"
-                checked={checkedItems.multigenerationalHomeRenovation}
+                name="homeRenovationCredit"
+                checked={checkedItems.homeRenovationCredit}
                 onChange={handleCheckboxChange}
               />
               Multigenerational Home Renovation Credit
@@ -1418,8 +1324,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="toolCostsTradespersons"
-                checked={checkedItems.toolCostsTradespersons}
+                name="toolCosts"
+                checked={checkedItems.toolCosts}
                 onChange={handleCheckboxChange}
               />
               Tool Costs for Tradespersons
@@ -1432,10 +1338,6 @@ const handleDownloadPDF = async () => {
           <button type="button" onClick={handleDownloadPDF} className="download-button">Download PDF</button>
         </div>
       </form>
-
-      {/* <PDFDownloadLink document={ <MyDocument formData={formData} isSpouseIncluded={isSpouseIncluded} checkedItems={checkedItems} />} fileName="tax_checklist.pdf">
-        {({ blob, url, loading, error }) => (loading ? 'Loading document...' : 'Download PDF')}
-      </PDFDownloadLink> */}
        
     </div>
   );
