@@ -29,7 +29,7 @@ export default defineConfig({
         },
       },
   },
-  optimizeDeps: {
-    include: ['@mui/x-date-pickers', 'date-fns'],
-  },
+//   optimizeDeps: {
+//     include: ['@mui/x-date-pickers', 'date-fns'],
+//   },
 }) 

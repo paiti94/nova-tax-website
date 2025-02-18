@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { FormControl, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControlLabel, Radio, InputAdornment, IconButton } from '@mui/material';
 import { pdf, PDFDownloadLink, Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday'; 
 import '../styles/TaxChecklistForm.css'; // Import the CSS file
 import CountrySelect from './CountrySelect';
 
@@ -550,19 +549,10 @@ const TaxChecklistForm = () => {
                 onChange={handleChange}
                 variant="outlined"
                 fullWidth
-                InputProps={{
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton>
-                        <CalendarTodayIcon />
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                  inputProps: {
-                    min: "2024-01-01",
-                    max: "2024-12-31",
-                  },
-                }}
+                inputProps={{
+                    min: "2024-01-01", // Set the minimum date
+                    max: "2024-12-31", // Set the maximum date
+                  }}
               />
             </div>
             )}
