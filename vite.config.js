@@ -13,7 +13,8 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
+      '@': path.resolve(__dirname, './src'),
+      'pdf-lib': 'pdf-lib/es',
     }
   },
   build: {
@@ -21,11 +22,8 @@ export default defineConfig({
     rollupOptions: {
         output: {
             manualChunks(id) {
-                if (id.includes('node_modules')) {
-                  if (id.includes('@mui/material')) return 'mui';
-                  if (id.includes('@react-pdf/renderer')) return 'react-pdf';
-                  return 'vendor';
-                }
+                if (id.includes("pdf-lib")) return "pdf-lib"; // ✅ Forces separate chunk
+                return "vendor";
               },
         },
       },

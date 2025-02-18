@@ -1,5 +1,3 @@
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
-
 /**
  * Generates a tax checklist PDF using pdf-lib.
  * @param {Object} formData - User's input data
@@ -8,6 +6,8 @@ import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
  * @returns {Promise<Blob>} - The generated PDF as a Blob
  */
 export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
+  const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib'); // Lazy load
+  
   const pdfDoc = await PDFDocument.create();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontSize = 12;
@@ -59,6 +59,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     realEstateChange: "Did you change the use of any real estate (personal-use to rental or vice versa) in 2024?",
     selfEmployedIncome: "Business, Professional, Commission, or Farming Income (Provide income & expense details)",
     rentalIncome: "Rental Income (Provide income & expense details)",
+    businessRentalAssets: "Business Rental Assets (Provide income & expense details)",
     childSupport: "Child or Spousal Support Received (Provide separation/divorce agreement)",
     stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
     rrspContributions: "RRSP Contributions (Provide receipts)",
