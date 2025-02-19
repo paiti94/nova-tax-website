@@ -218,7 +218,7 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        alert('Email sent successfully! Please download the checklist for your records.');
+        // alert('Email sent successfully! Please download the checklist for your records.');
         setShowAlert(true);
       };
     } catch (error) {
