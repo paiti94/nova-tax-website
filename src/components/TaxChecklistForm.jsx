@@ -210,15 +210,15 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
           ],
         };
 
-        // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(emailData),
-        // });
+        const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailData),
+        });
 
-        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        // alert('Email sent successfully! Please download the checklist for your records.');
+        alert('Email sent successfully! Please download the checklist for your records.');
         setShowAlert(true);
       };
     } catch (error) {
@@ -231,16 +231,16 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
 const handleDownloadPDF = async () => {
     if (pdfBlob) {
         const url = URL.createObjectURL(pdfBlob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `TaxChecklist-${formData.firstName}.pdf`; // Adjust filename as needed
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url); // Clean up the URL object
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `TaxChecklist-${formData.firstName}.pdf`; 
+        link.click();
+        // document.body.removeChild(link);
+        URL.revokeObjectURL(url).then(() => {
+            setShowAlert(false);
+            window.location.href = '/';
+          });
     }
-    setShowAlert(false);
-    window.location.href = '/';
   };
 
   const handleCloseAlert = () => {
