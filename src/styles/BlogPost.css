@@ -41,7 +41,7 @@
 
 .post-content h3 {
   font-size: 1.4rem;
-  color: #444;
+  color: #333;
   margin: 1.5rem 0 1rem;
 }
 
@@ -198,15 +198,15 @@
   margin-bottom: 1rem;
   line-height: 1.6;
   color: #444;
-  position: relative;
+  /* position: relative; */
 }
 
 .post-content ul li::before {
-  content: "•";
-  color: #007bff;
+  /* content: "•"; */
+  /* color: #007bff;
   font-weight: bold;
   position: absolute;
-  left: -1.2rem;
+  left: -1.2rem; */
 }
 
 .post-content ul ul,
@@ -444,12 +444,19 @@ html {
   width: 100px;
 }
 
+.blog-post-content h3 {
+
+  color: #1a1a1a !important;
+
+}
+
 /* Enhanced list styling */
 .blog-post-content ul li {
-  padding-left: 1.5rem;
+  padding-left: 2rem;
   margin-bottom: 1.2rem;
   position: relative;
   transition: transform 0.2s ease;
+  list-style-type: none;
 }
 
 .blog-post-content ul li:hover {
@@ -457,7 +464,7 @@ html {
 }
 
 .blog-post-content ul li::before {
-  content: "→";
+  /* content: "→"; */
   color: #007bff;
   position: absolute;
   left: -1rem;

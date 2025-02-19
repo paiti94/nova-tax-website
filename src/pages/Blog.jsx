@@ -10,59 +10,59 @@ const Blog = () => {
   const blogPosts = [
     {
       id: 1,
-      title: "Vancouver Tax Return Services: Complete 2024 Guide | Professional CPA Firm",
-      slug: "vancouver-tax-return-guide-2024",
-      excerpt: "Expert guide to filing tax returns in Vancouver. Learn about local tax benefits, deadlines, and how our Vancouver CPA firm can maximize your returns. Professional tax services near you.",
-      date: "March 21, 2024",
+      title: "The Best Tax Deductions and Credits for Canadians",
+      slug: "Best-tax-Deductions-guide",
+      excerpt: "Tax season can be overwhelming, but taking advantage of the right deductions and credits can help you reduce your tax bill and maximize your refund. Here are some of the top tax-saving opportunities available to Canadians.",
+      date: "February 18, 2025",
       category: "Tax Returns",
-      image: "/assets/blog/vancouver-skyline.png",
-      tags: ["vancouver tax services", "tax return vancouver", "cpa firm vancouver", "professional tax services", "local tax accountant"],
-      metaDescription: "Comprehensive guide to Vancouver tax returns in 2024. Expert tax preparation services from licensed CPAs. Find professional tax help near you in Vancouver, BC."
+      image: "/assets/blog/tax-deduction.png",
+      tags: ["canada tax services", "tax return vancouver", "cpa firm vancouver", "cpa firm Toronto","cpa firm Canada", "professional tax services", "local tax accountant"],
+      metaDescription: "Comprehensive guide to Canada 2024's tax returns. Expert tax preparation services from licensed CPAs. Find professional tax help near you all across Canada."
     },
     {
       id: 2,
-      title: "Tax Planning Strategies for Canadian Businesses | Corporate Tax Services",
+      title: "Tax Planning for High-Income Earners: Smart Strategies to Reduce Tax",
       slug: "canadian-business-tax-planning",
-      excerpt: "Discover effective tax planning strategies for Canadian businesses. Our expert CPAs provide comprehensive corporate tax services to minimize tax liability and maximize savings.",
-      date: "March 19, 2024",
+      excerpt: "For high-income earners in Canada, effective tax planning is essential to minimize tax liabilities while staying compliant with CRA regulations. With marginal tax rates reaching over 50% in some provinces, strategic planning can significantly impact wealth accumulation and cash flow. Here are some smart tax-saving strategies to consider.",
+      date: "January 25, 2025",
       category: "Tax Planning",
-      image: "/assets/blog/corporate-meeting.png",
+      image: "/assets/blog/tax-planning.png",
       tags: ["tax planning canada", "corporate tax services", "business tax planning", "canadian tax accountant", "tax strategy"],
       metaDescription: "Expert tax planning strategies for Canadian businesses. Professional corporate tax services to optimize your business tax position and maximize savings."
     },
     {
       id: 3,
-      title: "GST/HST Guide for Canadian Small Businesses | Tax Accountant Services",
-      slug: "canada-gst-hst-guide",
-      excerpt: "Complete GST/HST guide for Canadian businesses. Expert tax accounting services to help with registration, filing, and compliance. Professional CPA assistance available.",
-      date: "March 15, 2024",
-      category: "Business Tax",
-      image: "/assets/blog/small-business.png",
-      tags: ["gst/hst filing", "canadian tax services", "small business tax", "tax accountant", "business tax help"],
-      metaDescription: "Expert GST/HST guidance for Canadian businesses. Professional tax accounting services for registration, filing, and compliance. Licensed CPA assistance."
+      title: "Tax Implications of Leaving Canada: Understanding Departure Tax | Tax Accountant Services",
+      slug: "canada-departure-tax-guide",
+      excerpt: "If you're planning to leave Canada permanently, there are significant tax implications you need to consider. The Canada Revenue Agency (CRA) treats individuals who leave as non-residents, and this often triggers departure tax, which is essentially a capital gains tax on unrealized assets.",
+      date: "January 18, 2025",
+      category: "Tax Returns",
+      image: "/assets/blog/departure-tax.png",
+      tags: ["departure tax", "tax strategy", "canadian tax services", "tax accountant", "business tax help"],
+      metaDescription: "Expert departure tax guide for Canadians. Professional tax accounting services for departure tax implications and compliance. Licensed CPA assistance."
     },
     {
       id: 4,
-      title: "Vancouver Remote Worker Tax Benefits 2024 | Professional Tax Services",
-      slug: "vancouver-remote-worker-tax-guide",
-      excerpt: "Maximize your tax benefits as a remote worker in Vancouver. Expert guidance on home office deductions, expenses, and tax savings from professional CPAs.",
-      date: "March 10, 2024",
-      category: "Tax Returns",
-      image: "/assets/blog/remote-work.png",
-      tags: ["remote work tax deductions", "vancouver tax services", "work from home tax benefits", "professional tax help", "vancouver cpa"],
-      metaDescription: "Expert tax advice for remote workers in Vancouver. Learn about home office deductions, eligible expenses, and how to maximize your tax returns."
-    },
-    {
-      id: 5,
-      title: "Canadian Investment Tax Planning Guide | Tax Planning Services",
-      slug: "canadian-investment-tax-planning",
-      excerpt: "Expert investment tax planning strategies for Canadians. Professional guidance on TFSA, RRSP, and investment tax optimization from experienced CPAs.",
-      date: "March 5, 2024",
+      title: "How a Family Trust Can Help Business Owners Save Taxes | Professional Tax Services",
+      slug: "family-trust-tax-savings",
+      excerpt: "A family trust is a powerful tool that helps business owners protect assets, distribute income tax-efficiently, and plan for a tax-free business sale. When properly structured within a corporate group, it allows for multiplying the Lifetime Capital Gains Exemption (LCGE) and using a corporate beneficiary to defer taxes and purify the business for sale.",
+      date: "December 10, 2024",
       category: "Tax Planning",
-      image: "/assets/blog/investment-planning.png",
-      tags: ["investment tax planning", "canadian tax services", "rrsp tax planning", "tfsa optimization", "tax strategy"],
-      metaDescription: "Professional investment tax planning services in Canada. Expert CPA guidance for TFSA, RRSP, and investment tax optimization."
-    }
+      image: "/assets/blog/family-trust.png",
+      tags: ["family trust", "tax strategy","tax planning", "canadian tax services", "tax accountant", "business tax help"],
+      metaDescription: "Expert family trust guide for business owners. Professional tax accounting services for tax-efficient asset protection and business sale planning."
+    },
+    // {
+    //   id: 5,
+    //   title: "Canadian Investment Tax Planning Guide | Tax Planning Services",
+    //   slug: "canadian-investment-tax-planning",
+    //   excerpt: "Expert investment tax planning strategies for Canadians. Professional guidance on TFSA, RRSP, and investment tax optimization from experienced CPAs.",
+    //   date: "March 5, 2024",
+    //   category: "Tax Planning",
+    //   image: "/assets/blog/investment-planning.png",
+    //   tags: ["investment tax planning", "canadian tax services", "rrsp tax planning", "tfsa optimization", "tax strategy"],
+    //   metaDescription: "Professional investment tax planning services in Canada. Expert CPA guidance for TFSA, RRSP, and investment tax optimization."
+    // }
   ];
 
   const categories = ['all', ...new Set(blogPosts.map(post => post.category))];
@@ -111,7 +111,8 @@ const Blog = () => {
 
         <div className="blog-grid">
           {filteredPosts.map(post => (
-            <article key={post.id} className="blog-card">
+            <Link to={`/blog/${post.slug}`}>
+                <article key={post.id} className="blog-card">
               {post.image && (
                 <div className="blog-image">
                   <img src={post.image} alt={post.title} />
@@ -134,6 +135,7 @@ const Blog = () => {
                 </div>
               </div>
             </article>
+            </Link>
           ))}
         </div>
       </div>
