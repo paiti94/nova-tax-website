@@ -18,8 +18,7 @@ import ScrollToTopOnMount from './components/ScrollToTopOnMount';
 import VancouverTax from './pages/VancouverTax';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
-
-const CheckListPage = lazy(() => import('./pages/2024CheckListPage')); // Dynamic import
+import CheckListPage from './pages/2024CheckListPage';
 
 function App() {
   const [isLoading, setIsLoading] = useState(true);
@@ -46,7 +45,7 @@ function App() {
           <Route path="/services/cfo-services" element={<CFOServices />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/2024-checklist-novatax" element={<CheckListPage />} />
+          <Route path="/2024-checklist" element={<CheckListPage />} />
         </Routes>
       </Suspense>
       <Footer />
