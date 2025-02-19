@@ -94,9 +94,9 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText(`First Name: ${formData.firstName}`, 50, true);
   drawText(`Last Name: ${formData.lastName}`);
   drawText(`DOB (YYYY-MM-DD): ${formData.dob}`);
+  drawText(`SIN: ${formData.sin}`);
   drawText(`Email: ${formData.email}`);
   drawText(`Phone: ${formData.phone}`);
-  drawText(`SIN: ${formData.sin}`);
   drawText(`Address Line 1: ${formData.address1}`);
   drawText(`Address Line 2: ${formData.address2}`);
   drawText(`City: ${formData.city}, Province: ${formData.province}, Postal Code: ${formData.postalCode}`);
@@ -105,19 +105,19 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   // Marital Status
   drawText('Marital Status', 50, true, 14);
   drawText(`Marital Status: ${formData.maritalStatus}`, 50, true);
-  drawText(`Date of Marital Status Change: ${formData.maritalStatusChangeDate}`);
   drawText(`Did your marital status change in 2024? ${formData.maritalStatusChange}`);
+  drawText(`Date of Marital Status Change: ${formData.maritalStatusChangeDate}`);
   drawText(`Will we be preparing spouse's return as well? ${isSpouseIncluded ? 'Yes' : 'No'}`);
   drawText('');
 
   if (isSpouseIncluded) {
     drawText(`Spouse's Information`, 50, true, 14);
     drawText(`Spouse's First Name: ${formData.spouseFirstName}`, 50, true);
-    drawText(`Last Name: ${formData.spouseLastName}`);
+    drawText(`Spouse's Last Name: ${formData.spouseLastName}`);
     drawText(`Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob}`);
+    drawText(`SIN: ${formData.spouseSin}`);
     drawText(`Email: ${formData.spouseEmail}`);
     drawText(`Phone: ${formData.spousePhone}`);
-    drawText(`SIN: ${formData.spouseSin}`);
     drawText('');
   }
 

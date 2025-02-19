@@ -10,6 +10,8 @@ import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
+import InputMask from 'react-input-mask';
+
 const CustomAlert = ({ message, onClose, onDownload }) => {
     return (
         <div className="custom-alert">
@@ -59,6 +61,18 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     ownershipNonCanadian: '',
     fhsa: '',
     rentalProperty: '',
+    spouseCitizenship: '',
+    spouseCitizenshipElections: '',
+    spouseCitizenshipCountry: '',
+    spouseCitizenshipCountryName: '',
+    spouseCryptocurrency: '',
+    spousePropertyExemption: '',
+    spouseNonCanadianProperty: '',
+    spouseOwnershipNonCanadian: '',
+    spouseDisabilityCredit: '',
+    spouseTrustArrangement: '',
+    spouseRentalProperty: '',
+    spouseFhsa: '',
   });
 
   const [checkedItems, setCheckedItems] = useState({
@@ -102,7 +116,6 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     homeRenovationCredit: false,
     toolCosts: false,
     t4fhsa: false,
-    attendantCareExpenses: false,
   });
 
   const handleChange = (e) => {
@@ -117,6 +130,61 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const requiredFields = formData.spouseReturn === 'Yes' ? [
+        'maritalStatus',
+        'maritalStatusChange',
+        'dependants',
+        'citizenship',
+        'citizenshipElections',
+        'citizenshipCountry',
+        'cryptocurrency',
+        'propertyExemption',
+        'nonCanadianProperty',
+        'ownershipNonCanadian',
+        'fhsa',
+        'trustArrangement',
+        'disabilityCredit',
+        'spouseCitizenship',
+        'spouseCitizenshipElections',
+        'spouseCitizenshipCountry',
+        'spouseCryptocurrency',
+        'spousePropertyExemption',
+        'spouseNonCanadianProperty',
+        'spouseOwnershipNonCanadian',
+        'spouseFhsa',
+        'spouseTrustArrangement',
+        'spouseDisabilityCredit',
+    ] : [
+        'citizenship',
+        'citizenshipElections',
+        'citizenshipCountry',
+        'cryptocurrency',
+        'propertyExemption',
+        'nonCanadianProperty',
+        'ownershipNonCanadian',
+        'fhsa',
+        'trustArrangement',
+        'disabilityCredit',
+    ];
+
+    if (formData.province === 'BC') {
+        requiredFields.push('rentalProperty', 'spouseRentalProperty');
+    }
+
+    if(formData.maritalStatusChange === 'Yes') {
+        requiredFields.push('maritalStatusChangeDate');
+    }
+
+    if(formData.dependants === 'Yes') {
+        requiredFields.push('dependantInfo');
+    }
+
+    const allFieldsFilled = requiredFields.every(field => formData[field] !== '');
+
+    if (!allFieldsFilled) {
+        alert('Please answer all required questions before submitting.');
+        return; // Prevent form submission
+    }
 
     try {
       const { generatePDF } = await import('./PDFGenerator');
@@ -142,13 +210,13 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
           ],
         };
 
-        const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailData),
-        });
+        // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(emailData),
+        // });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         // alert('Email sent successfully! Please download the checklist for your records.');
         setShowAlert(true);
@@ -171,6 +239,8 @@ const handleDownloadPDF = async () => {
             document.body.removeChild(a);
             URL.revokeObjectURL(url); // Clean up the URL object
     }
+    setShowAlert(false);
+    window.location.href = '/';
   };
 
   const handleCloseAlert = () => {
@@ -209,12 +279,18 @@ const handleDownloadPDF = async () => {
             <div className="form-group">
               <label>Date of Birth (YYYY-MM-DD):</label>
               <TextField
-                type="date"
                 name="dob"
                 onChange={handleChange}
                 required
                 variant="outlined"
                 fullWidth
+                InputProps={{
+                    inputComponent: InputMask,
+                    inputProps: {
+                      mask: "9999-99-99", // Enforces YYYY-MM-DD format
+                      maskChar: "_", // Shows _ for missing values
+                    },
+                  }}
               />
             </div>
             <div className="form-group">
@@ -427,13 +503,19 @@ const handleDownloadPDF = async () => {
                 </div>
                 
                 <div className="form-group">
-                  <label>Spouse's DOB (YYYY-MM-DD):</label>
+                  <label>Spouse's Date of Birth (YYYY-MM-DD):</label>
                   <TextField
-                    type="date"
                     name="spouseDob"
                     onChange={handleChange}
                     variant="outlined"
                     fullWidth
+                    InputProps={{
+                        inputComponent: InputMask,
+                        inputProps: {
+                          mask: "9999-99-99", // Enforces YYYY-MM-DD format
+                          maskChar: "_", // Shows _ for missing values
+                        },
+                      }}
                   />
                 </div>
                 <div className="form-group">
@@ -528,6 +610,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -542,6 +625,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -559,6 +643,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -573,6 +658,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -590,6 +676,7 @@ const handleDownloadPDF = async () => {
                       onChange={handleChange}
                       defaultValue=""
                       row
+                      required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -604,6 +691,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -615,12 +703,14 @@ const handleDownloadPDF = async () => {
                 <tr>
                   <td>If yes, please indicate the country:</td>
                   <td>
+                    {formData.citizenshipCountry === 'Yes' && (
                   <CountrySelect
                       name="citizenshipCountryName"
                       onChange={handleChange}
                     />
+                    )}
                   </td>
-                  {isSpouseIncluded && (
+                  {isSpouseIncluded && formData.spouseCitizenshipCountry === 'Yes' && (
                     <td>
                        <CountrySelect
                         name="spouseCitizenshipCountryName"
@@ -638,6 +728,7 @@ const handleDownloadPDF = async () => {
                       onChange={handleChange}
                       defaultValue=""
                       row
+                      required
                     >
                       <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                       <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -652,6 +743,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -669,6 +761,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -683,6 +776,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -700,6 +794,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -714,6 +809,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -731,6 +827,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -745,6 +842,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -762,6 +860,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -776,6 +875,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                             <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -784,6 +884,7 @@ const handleDownloadPDF = async () => {
                     </td>
                   )}
                 </tr>
+                {formData.province === 'BC' && (
                 <tr>
                   <td>In 2024, did you rent a property (which you resided in) in BC under a tenancy agreement, licence, sublease agreement?</td>
                   <td>
@@ -793,6 +894,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -807,6 +909,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -815,6 +918,7 @@ const handleDownloadPDF = async () => {
                     </td>
                   )}
                 </tr>
+                )}
                 <tr>
                   <td>Do you have a bare trust or another trust arrangement?</td>
                   <td>
@@ -824,6 +928,7 @@ const handleDownloadPDF = async () => {
                              onChange={handleChange}
                             defaultValue=""
                               row
+                              required
                         >
                             <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                             <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -838,6 +943,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -855,6 +961,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -869,6 +976,7 @@ const handleDownloadPDF = async () => {
                           onChange={handleChange}
                           defaultValue=""
                           row
+                          required
                         >
                           <FormControlLabel value="Yes" control={<Radio />} label="Yes" />
                           <FormControlLabel value="No" control={<Radio />} label="No" />
@@ -1199,8 +1307,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="attendantCareExpenses"
-                checked={checkedItems.attendantCareExpenses}
+                name="attendantCare"
+                checked={checkedItems.attendantCare}
                 onChange={handleCheckboxChange}
               />
               Attendant Care Expenses (for disabilities)
