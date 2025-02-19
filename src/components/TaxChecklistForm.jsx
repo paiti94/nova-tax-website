@@ -1,6 +1,5 @@
 // src/components/TaxChecklistForm.jsx
 import React, { useState } from 'react';
-// import { FormControl, InputLabel, Select, MenuItem, TextField, RadioGroup, FormControlLabel, Radio } from '@mui/material';
 import '../styles/TaxChecklistForm.css'; // Import the CSS file
 import CountrySelect from './CountrySelect';
 import FormControl from '@mui/material/FormControl';
@@ -11,10 +10,20 @@ import TextField from '@mui/material/TextField';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
-  
+const CustomAlert = ({ message, onClose, onDownload }) => {
+    return (
+        <div className="custom-alert">
+            <button onClick={onClose} className="close-button">X</button> {/* X icon */}
+            <p>{message}</p>
+            <button onClick={onDownload} className="download-button">Download PDF</button>
+        </div>
+    );
+};
  const TaxChecklistForm =  () => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
-  
+  const [showAlert, setShowAlert] = useState(false);
+  const [pdfBlob, setPdfBlob] = useState(null); // State to hold the PDF blob
+
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -74,7 +83,6 @@ import Radio from '@mui/material/Radio';
     childSupport: false,
     stockOptions: false,
     rrspContributions: false,
-    t4fhsa: false,
     unionDues: false,
     movingExpenses: false,
     employmentExpenses: false,
@@ -93,6 +101,8 @@ import Radio from '@mui/material/Radio';
     covidRepayment: false,
     homeRenovationCredit: false,
     toolCosts: false,
+    t4fhsa: false,
+    attendantCareExpenses: false,
   });
 
   const handleChange = (e) => {
@@ -111,7 +121,7 @@ import Radio from '@mui/material/Radio';
     try {
       const { generatePDF } = await import('./PDFGenerator');
       const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
-
+      setPdfBlob(blob);
       const reader = new FileReader();
       reader.readAsDataURL(blob);
       reader.onloadend = async () => {
@@ -140,7 +150,8 @@ import Radio from '@mui/material/Radio';
 
         if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-        alert('Email sent successfully! Please download the checklist for your records.');
+        // alert('Email sent successfully! Please download the checklist for your records.');
+        setShowAlert(true);
       };
     } catch (error) {
       console.error('Error generating or sending the PDF:', error);
@@ -150,22 +161,22 @@ import Radio from '@mui/material/Radio';
 
 // Handle PDF download
 const handleDownloadPDF = async () => {
-    try {
-      const { generatePDF } = await import('./PDFGenerator');
-      const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
-
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `TaxChecklist-${formData.firstName}.pdf`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    } catch (error) {
-      console.error('Error downloading PDF:', error);
-      alert('Error generating the PDF. Please try again.');
+    if (pdfBlob) {
+        const url = URL.createObjectURL(pdfBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `TaxChecklist-${formData.firstName}.pdf`; // Adjust filename as needed
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url); // Clean up the URL object
     }
   };
+
+  const handleCloseAlert = () => {
+    setShowAlert(false);
+    window.location.reload(); 
+};
 
   return (
     <div className="form-container">
@@ -1118,8 +1129,8 @@ const handleDownloadPDF = async () => {
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="t4fhSA"
-                checked={checkedItems.t4fhSA}
+                name="t4fhsa"
+                checked={checkedItems.t4fhsa}
                 onChange={handleCheckboxChange}
               />
               T4FHSA - First Home Savings Account (FHSA) Contributions
@@ -1335,10 +1346,15 @@ const handleDownloadPDF = async () => {
         </div>
         <div className="button-container">
           <button type="submit" className="submit-button">Submit</button>
-          <button type="button" onClick={handleDownloadPDF} className="download-button">Download PDF</button>
         </div>
       </form>
-       
+      {showAlert && (
+                <CustomAlert
+                    message="Email sent successfully! Please download the checklist for your records."
+                    onClose={handleCloseAlert}
+                    onDownload={handleDownloadPDF}
+                />
+            )}
     </div>
   );
 };
