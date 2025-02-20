@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import path from 'path'
+
 import { visualizer } from 'rollup-plugin-visualizer';
 
 export default defineConfig({
@@ -22,12 +23,8 @@ export default defineConfig({
     rollupOptions: {
         output: {
             manualChunks(id) {
-                if (id.includes('node_modules')) {
-                    if (id.includes('react')) return 'react-vendor';
-                    if (id.includes('mui')) return 'mui-vendor';
-                    if (id.includes('pdf-lib')) return 'pdf-lib-vendor';
-                    return 'vendor'; // Other node_modules
-                  }
+                if (id.includes("pdf-lib")) return "pdf-lib"; // ✅ Forces separate chunk
+                return "vendor";
               },
         },
       },
