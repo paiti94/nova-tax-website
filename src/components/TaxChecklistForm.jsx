@@ -130,61 +130,61 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requiredFields = formData.spouseReturn === 'Yes' ? [
-        'maritalStatus',
-        'maritalStatusChange',
-        'dependants',
-        'citizenship',
-        'citizenshipElections',
-        'citizenshipCountry',
-        'cryptocurrency',
-        'propertyExemption',
-        'nonCanadianProperty',
-        'ownershipNonCanadian',
-        'fhsa',
-        'trustArrangement',
-        'disabilityCredit',
-        'spouseCitizenship',
-        'spouseCitizenshipElections',
-        'spouseCitizenshipCountry',
-        'spouseCryptocurrency',
-        'spousePropertyExemption',
-        'spouseNonCanadianProperty',
-        'spouseOwnershipNonCanadian',
-        'spouseFhsa',
-        'spouseTrustArrangement',
-        'spouseDisabilityCredit',
-    ] : [
-        'citizenship',
-        'citizenshipElections',
-        'citizenshipCountry',
-        'cryptocurrency',
-        'propertyExemption',
-        'nonCanadianProperty',
-        'ownershipNonCanadian',
-        'fhsa',
-        'trustArrangement',
-        'disabilityCredit',
-    ];
+    // const requiredFields = formData.spouseReturn === 'Yes' ? [
+    //     'maritalStatus',
+    //     'maritalStatusChange',
+    //     'dependants',
+    //     'citizenship',
+    //     'citizenshipElections',
+    //     'citizenshipCountry',
+    //     'cryptocurrency',
+    //     'propertyExemption',
+    //     'nonCanadianProperty',
+    //     'ownershipNonCanadian',
+    //     'fhsa',
+    //     'trustArrangement',
+    //     'disabilityCredit',
+    //     'spouseCitizenship',
+    //     'spouseCitizenshipElections',
+    //     'spouseCitizenshipCountry',
+    //     'spouseCryptocurrency',
+    //     'spousePropertyExemption',
+    //     'spouseNonCanadianProperty',
+    //     'spouseOwnershipNonCanadian',
+    //     'spouseFhsa',
+    //     'spouseTrustArrangement',
+    //     'spouseDisabilityCredit',
+    // ] : [
+    //     'citizenship',
+    //     'citizenshipElections',
+    //     'citizenshipCountry',
+    //     'cryptocurrency',
+    //     'propertyExemption',
+    //     'nonCanadianProperty',
+    //     'ownershipNonCanadian',
+    //     'fhsa',
+    //     'trustArrangement',
+    //     'disabilityCredit',
+    // ];
 
-    if (formData.province === 'BC') {
-        requiredFields.push('rentalProperty', 'spouseRentalProperty');
-    }
+    // if (formData.province === 'BC') {
+    //     requiredFields.push('rentalProperty', 'spouseRentalProperty');
+    // }
 
-    if(formData.maritalStatusChange === 'Yes') {
-        requiredFields.push('maritalStatusChangeDate');
-    }
+    // if(formData.maritalStatusChange === 'Yes') {
+    //     requiredFields.push('maritalStatusChangeDate');
+    // }
 
-    if(formData.dependants === 'Yes') {
-        requiredFields.push('dependantInfo');
-    }
+    // if(formData.dependants === 'Yes') {
+    //     requiredFields.push('dependantInfo');
+    // }
 
-    const allFieldsFilled = requiredFields.every(field => formData[field] !== '');
+    // const allFieldsFilled = requiredFields.every(field => formData[field] !== '');
 
-    if (!allFieldsFilled) {
-        alert('Please answer all required questions before submitting.');
-        return; // Prevent form submission
-    }
+    // if (!allFieldsFilled) {
+    //     alert('Please answer all required questions before submitting.');
+    //     return; // Prevent form submission
+    // }
 
     try {
       const { generatePDF } = await import('./PDFGenerator');
