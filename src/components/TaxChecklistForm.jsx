@@ -251,7 +251,12 @@ const handleDownloadPDF = async () => {
   return (
     <div className="form-container">
       <h1>2024 Tax Checklist</h1>
-      <form onSubmit={handleSubmit} className="tax-checklist-form">
+      <form onSubmit={handleSubmit} className="tax-checklist-form"  
+      onKeyPress={(e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault(); 
+        }
+      }}>
         <div className="checklist-container">
           <div className="existing-checklist">
             <div className="form-group">

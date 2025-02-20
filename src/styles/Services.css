@@ -235,7 +235,7 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .modal-content {
     width: 95%;
     padding: 1.25rem;

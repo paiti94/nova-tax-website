@@ -173,7 +173,7 @@ a:-webkit-any-link {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .service-page .service-header {
     min-height: 30vh;
     padding: 5rem 1rem 3rem;

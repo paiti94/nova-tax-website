@@ -90,7 +90,7 @@
   line-height: 1.4;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .about-container {
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -125,6 +125,11 @@
 
   .cpa-logo {
     width: 180px;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    text-align: center;
   }
 }
 

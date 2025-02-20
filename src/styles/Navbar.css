@@ -108,7 +108,7 @@ img {
   display: block;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .nav-links {
     display: none;
   }
@@ -190,7 +190,7 @@ img {
   color: #333;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .nav-links.active .nav-link {
     color: white;
     padding: 1rem;
@@ -231,7 +231,7 @@ img {
 }
 
 /* Mobile menu for blog page */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .navbar.blog-page .nav-links.active {
     background: white;
   }
@@ -341,7 +341,7 @@ img {
   color: #333;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .cpa-indicator {
     display: none;
   }
@@ -369,7 +369,7 @@ img {
 }
 
 /* Mobile menu for checklist page */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .navbar.checklist-page .nav-links.active {
     background: black;
   }

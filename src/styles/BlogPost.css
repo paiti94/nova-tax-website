@@ -112,7 +112,7 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .blog-post {
     padding: 1rem;
     margin: 60px auto;
@@ -308,7 +308,7 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .blog-post-content {
     padding: 1.5rem;
   }
@@ -618,7 +618,7 @@ html {
 }
 
 /* Mobile responsiveness improvements */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .blog-post-content {
     padding: 2rem;
   }
@@ -674,7 +674,7 @@ html {
 }
 
 /* Mobile responsiveness for back button */
-@media (max-width: 768px) {
+@media (max-width: 1024px) { 
   .back-to-blog {
     position: absolute;
     top: 80px;
