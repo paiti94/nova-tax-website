@@ -79,7 +79,7 @@ const BlogPost = () => {
         <h3>First-Time Home Buyer’s Credit & Home Buyers' Plan</h3>
         <ul>
           <li>✅ Provides a $1,500 non-refundable tax credit to help with home purchase costs.</li>
-          <li>✅ You may also withdraw up to $35,000 tax-free from your RRSP under the Home Buyers’ Plan (HBP).</li>
+          <li>✅ You may also withdraw up to $60,000 tax-free from your RRSP under the Home Buyers’ Plan (HBP).</li>
           <li>📌 Tip: Both spouses can withdraw up to $60,000 from their RRSPs under the HBP and the FHSA can also be utilized.</li>
         </ul>
 
