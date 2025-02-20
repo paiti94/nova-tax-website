@@ -245,7 +245,7 @@ const handleDownloadPDF = async () => {
 
   const handleCloseAlert = () => {
     setShowAlert(false);
-    window.location.reload(); 
+    window.location.href = '/';
 };
 
   return (
