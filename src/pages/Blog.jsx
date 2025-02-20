@@ -76,6 +76,12 @@ const Blog = () => {
       return matchesSearch && matchesCategory;
     });
 
+    const handleLinkClick = (slug) => {
+        // Scroll to top before navigating
+        window.scrollTo(0, 0);
+        navigate(`/blog/${slug}`); // Navigate to the blog post
+      };
+      
   return (
     <section className="service-page">
       <div className="service-header">
@@ -111,7 +117,7 @@ const Blog = () => {
 
         <div className="blog-grid">
           {filteredPosts.map(post => (
-            <Link to={`/blog/${post.slug}`}>
+            <Link to={`/blog/${post.slug}`} onClick={() => handleLinkClick(post.slug)}>
                 <article key={post.id} className="blog-card">
               {post.image && (
                 <div className="blog-image">
@@ -129,7 +135,7 @@ const Blog = () => {
                 </div>
                 <div className="blog-footer">
                   <span className="blog-date">{post.date}</span>
-                  <Link to={`/blog/${post.slug}`} className="read-more">
+                  <Link to={`/blog/${post.slug}`} className="read-more" onClick={() => handleLinkClick(post.slug)}>
                     Read More →
                   </Link>
                 </div>

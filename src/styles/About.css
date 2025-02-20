@@ -1,5 +1,5 @@
 .about {
-  padding: 10rem 2rem;
+  padding: 8rem 2rem;
   background: #f8f9fa;
 }
 
@@ -148,6 +148,7 @@
 
   .subtitle {
     font-size: 1.1rem;
+    text-align: center;
   }
 
   .stats-container {

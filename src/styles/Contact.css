@@ -1,5 +1,5 @@
 .contact {
-  padding: 10rem 2rem;
+  padding: 8rem 2rem;
   background: #fff;
 }
 
@@ -8,7 +8,7 @@
   margin: 0 auto;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 4rem;
+  gap: 2rem;
 }
 
 .contact-info h2 {

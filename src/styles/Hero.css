@@ -106,4 +106,8 @@
   .cpa-badge span {
     font-size: 1rem;
   }
+
+  .cta-button{
+    margin-top: 1rem;
+  }
 } 

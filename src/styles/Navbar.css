@@ -377,4 +377,10 @@ img {
   .navbar.checklist-page .hamburger span {
     background-color: white;
   }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    padding-top: 10px;
+   }
 } 

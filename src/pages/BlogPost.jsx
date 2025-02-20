@@ -1,15 +1,14 @@
 import React from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { FaArrowLeft } from 'react-icons/fa';
 import '../styles/ServicePage.css';
 import '../styles/BlogPost.css';
 
 const BlogPost = () => {
+    const navigate = useNavigate();
     const handleNavClick = (e, sectionId) => {
         e.preventDefault();
-        
-        if (!isHomePage) {
           // If not on homepage, navigate first then scroll
           navigate('/');
           setTimeout(() => {
@@ -18,13 +17,7 @@ const BlogPost = () => {
               element.scrollIntoView({ behavior: 'smooth' });
             }
           }, 100);
-        } else {
-          // If on homepage, just scroll
-          const element = document.querySelector(sectionId);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
+        
       };
     
   const { slug } = useParams();
@@ -483,7 +476,7 @@ const BlogPost = () => {
           <div className="post-cta">
             <h3>Need Professional Tax Assistance?</h3>
             <p>Contact Nova Tax today for expert tax services tailored to your needs.</p>
-            <a href="/#contact" className="cta-button">Contact Us</a>
+            <a href="#contact" onClick={(e) => handleNavClick(e, '#contact')} className="cta-button">Contact Us</a>
           </div>
         </div>
       </section>

@@ -11,7 +11,6 @@ const Footer = () => {
     e.preventDefault();
     
     if (!isHomePage) {
-      // If not on homepage, navigate first then scroll
       navigate('/');
       setTimeout(() => {
         const element = document.querySelector(sectionId);
@@ -20,7 +19,6 @@ const Footer = () => {
         }
       }, 100);
     } else {
-      // If on homepage, just scroll
       const element = document.querySelector(sectionId);
       if (element) {
         element.scrollIntoView({ behavior: 'smooth' });
@@ -31,17 +29,17 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-container">
-        <div className="footer-section">
+      <div className="footer-section desktop-only">
           <h3>Nova Tax</h3>
           <p>Professional tax and accounting services you can trust.</p>
           <div className="social-links">
             <a href="https://www.linkedin.com/in/alibou-hamya/" target='_blank'><i className="fab fa-linkedin"></i></a>
             <a href="https://www.instagram.com/novataxllp/" target='_blank'><i className="fab fa-instagram"></i></a>
-            {/* <a href="#"><i className="fab fa-facebook"></i></a> */}
           </div>
         </div>
 
-        <div className="footer-section">
+
+        <div className="footer-section desktop-only">
           <h3>Quick Links</h3>
           <ul>
             <li><a href="#home" onClick={(e) => handleNavClick(e, '#home')}>Home</a></li>
@@ -51,7 +49,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-section">
+        <div className="footer-section desktop-only">
           <h3>Services</h3>
           <ul>
             <li><Link to="/services/tax-planning">Tax Planning</Link></li>
@@ -60,7 +58,7 @@ const Footer = () => {
           </ul>
         </div>
 
-        <div className="footer-section">
+        <div className="footer-section desktop-only">
           <h3>Contact Info</h3>
           <ul className="contact-info">
             {/* <li><i className="fas fa-map-marker-alt"></i> 123 Business Avenue, Toronto</li> */}
@@ -68,8 +66,16 @@ const Footer = () => {
             <li><i className="fas fa-envelope"></i><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></li>
           </ul>
         </div>
+
+        <div className="footer-section mobile-only">
+        <h3>Nova Tax</h3>
+        <p>Professional tax and accounting services you can trust.</p>
+            <div className="social-links">
+                <a href="https://www.linkedin.com/in/alibou-hamya/" target='_blank'><i className="fab fa-linkedin"></i></a>
+                <a href="https://www.instagram.com/novataxllp/" target='_blank'><i className="fab fa-instagram"></i></a>
+            </div>
+        </div>
       </div>
-      
       <div className="footer-bottom">
         <p>&copy; 2025 Nova Tax LLP. All rights reserved. Site by Jinny K</p>
       </div>
