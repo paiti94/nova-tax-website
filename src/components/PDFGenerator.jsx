@@ -134,10 +134,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText(`Notes: ${formData.notes}`);
   drawText(`Are you a Canadian citizen? ${formData.citizenship}`);
   drawText(`Should CRA provide your information to Elections Canada? ${formData.citizenshipElections}`);
-  drawText(`Do you have citizenship or residence in another country? ${formData.citizenshipCountry}`);
-  if (formData.citizenshipCountry === 'Yes') {
-    drawText(`Country: ${formData.citizenshipCountryName}`);
-  }
+  drawText(`Do you have US citizenship or US Green Card? ${formData.Uscitizenship}`);
   drawText(`Did you sell any Cryptocurrency in 2024? ${formData.cryptocurrency}`);
   drawText(`Did you dispose of a property for principal residence exemption? ${formData.propertyExemption}`);
   drawText(`Did you own non-Canadian property? ${formData.nonCanadianProperty}`);
@@ -153,10 +150,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     drawText(`Spouse's Additional Information`, 50, true, 14);
     drawText(`Spouse's Canadian Citizen? ${formData.spouseCitizenship}`);
     drawText(`Spouse's Elections Canada Consent: ${formData.spouseCitizenshipElections}`);
-    drawText(`Spouse has citizenship in another country? ${formData.spouseCitizenshipCountry}`);
-    if (formData.spouseCitizenshipCountry === 'Yes') {
-      drawText(`Country: ${formData.spouseCitizenshipCountryName}`);
-    }
+    drawText(`Spouse has US citizenship or US Green Card? ${formData.spouseUscitizenship}`);
     drawText(`Spouse sold Cryptocurrency in 2024? ${formData.spouseCryptocurrency}`);
     drawText(`Spouse disposed of a property for exemption? ${formData.spousePropertyExemption}`);
     drawText(`Spouse owned non-Canadian property? ${formData.spouseNonCanadianProperty}`);

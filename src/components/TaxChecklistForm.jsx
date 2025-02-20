@@ -1,7 +1,6 @@
 // src/components/TaxChecklistForm.jsx
 import React, { useState } from 'react';
 import '../styles/TaxChecklistForm.css'; // Import the CSS file
-import CountrySelect from './CountrySelect';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
@@ -54,7 +53,7 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     notes: '',
     citizenship: '',
     citizenshipElections: '',
-    citizenshipCountry: '',
+    Uscitizenship: '',
     cryptocurrency: '',
     propertyExemption: '',
     nonCanadianProperty: '',
@@ -63,8 +62,8 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     rentalProperty: '',
     spouseCitizenship: '',
     spouseCitizenshipElections: '',
-    spouseCitizenshipCountry: '',
-    spouseCitizenshipCountryName: '',
+    spouseUscitizenship: '',
+    spouseUscitizenshipName: '',
     spouseCryptocurrency: '',
     spousePropertyExemption: '',
     spouseNonCanadianProperty: '',
@@ -136,7 +135,7 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     //     'dependants',
     //     'citizenship',
     //     'citizenshipElections',
-    //     'citizenshipCountry',
+    //     'Uscitizenship',
     //     'cryptocurrency',
     //     'propertyExemption',
     //     'nonCanadianProperty',
@@ -146,7 +145,7 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     //     'disabilityCredit',
     //     'spouseCitizenship',
     //     'spouseCitizenshipElections',
-    //     'spouseCitizenshipCountry',
+    //     'spouseUscitizenship',
     //     'spouseCryptocurrency',
     //     'spousePropertyExemption',
     //     'spouseNonCanadianProperty',
@@ -157,7 +156,7 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
     // ] : [
     //     'citizenship',
     //     'citizenshipElections',
-    //     'citizenshipCountry',
+    //     'Uscitizenship',
     //     'cryptocurrency',
     //     'propertyExemption',
     //     'nonCanadianProperty',
@@ -673,11 +672,11 @@ const handleDownloadPDF = async () => {
                   )}
                 </tr>
                 <tr>
-                  <td>Do you have citizenship or residence in a country other than Canada (or a US Green Card)?</td>
+                  <td>Are you a US Citizen (or a US Green Card holder)?</td>
                   <td>
                   <FormControl component="fieldset">
                     <RadioGroup
-                      name="citizenshipCountry"
+                      name="Uscitizenship"
                       onChange={handleChange}
                       defaultValue=""
                       row
@@ -692,7 +691,7 @@ const handleDownloadPDF = async () => {
                     <td>
                       <FormControl component="fieldset">
                         <RadioGroup
-                          name="spouseCitizenshipCountry"
+                          name="spouseUscitizenship"
                           onChange={handleChange}
                           defaultValue=""
                           row
@@ -702,25 +701,6 @@ const handleDownloadPDF = async () => {
                           <FormControlLabel value="No" control={<Radio />} label="No" />
                         </RadioGroup>
                       </FormControl>
-                    </td>
-                  )}
-                </tr>
-                <tr>
-                  <td>If yes, please indicate the country:</td>
-                  <td>
-                    {formData.citizenshipCountry === 'Yes' && (
-                  <CountrySelect
-                      name="citizenshipCountryName"
-                      onChange={handleChange}
-                    />
-                    )}
-                  </td>
-                  {isSpouseIncluded && formData.spouseCitizenshipCountry === 'Yes' && (
-                    <td>
-                       <CountrySelect
-                        name="spouseCitizenshipCountryName"
-                        onChange={handleChange}
-                      />
                     </td>
                   )}
                 </tr>
