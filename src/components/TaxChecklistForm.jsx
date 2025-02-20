@@ -235,11 +235,11 @@ const handleDownloadPDF = async () => {
         link.href = url;
         link.download = `TaxChecklist-${formData.firstName}.pdf`; 
         link.click();
-        // document.body.removeChild(link);
-        URL.revokeObjectURL(url).then(() => {
-            setShowAlert(false);
-            window.location.href = '/';
-          });
+        document.body.removeChild(link);
+        // URL.revokeObjectURL(url).then(() => {
+        //     setShowAlert(false);
+        //     window.location.href = '/';
+        //   });
     }
   };
 
