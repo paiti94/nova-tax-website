@@ -80,7 +80,7 @@ const BlogPost = () => {
         <ul>
           <li>✅ Provides a $1,500 non-refundable tax credit to help with home purchase costs.</li>
           <li>✅ You may also withdraw up to $35,000 tax-free from your RRSP under the Home Buyers’ Plan (HBP).</li>
-          <li>📌 Tip: Both spouses can withdraw up to $35,000 from their RRSPs under the HBP and the FHSA can also be utilized.</li>
+          <li>📌 Tip: Both spouses can withdraw up to $60,000 from their RRSPs under the HBP and the FHSA can also be utilized.</li>
         </ul>
 
         <h3>Interest on Student Loans – Tax Credit</h3>
@@ -203,10 +203,10 @@ const BlogPost = () => {
 
 <h3>4. Strategies to Reduce Departure Tax</h3>
 <ul>
-  <li>✔ Sell Certain Assets Before Leaving – Selling investments with capital losses can offset taxable capital gains and reduce departure tax.</li>
-  <li>✔ Use the Principal Residence Exemption – Selling your Canadian home before leaving can avoid potential capital gains tax as a non-resident.</li>
-  <li>✔ Contribute to RRSPs Before Leaving – Maximizing RRSP contributions lowers taxable income and departure tax liability.</li>
-  <li>✔ Consider Tax Treaties – Moving to a tax treaty country (e.g., the U.S.) may provide relief for departure tax or allow capital gains to be deferred.</li>
+  <li>✅ Sell Certain Assets Before Leaving – Selling investments with capital losses can offset taxable capital gains and reduce departure tax.</li>
+  <li>✅ Use the Principal Residence Exemption – Selling your Canadian home before leaving can avoid potential capital gains tax as a non-resident.</li>
+  <li>✅ Contribute to RRSPs Before Leaving – Maximizing RRSP contributions lowers taxable income and departure tax liability.</li>
+  <li>✅ Consider Tax Treaties – Moving to a tax treaty country (e.g., the U.S.) may provide relief for departure tax or allow capital gains to be deferred.</li>
 </ul>
 
 <h3>5. Non-Resident Tax Considerations</h3>
@@ -351,15 +351,15 @@ const BlogPost = () => {
 
 <h4>Key Benefits of a Corporate Beneficiary:</h4>
 <ul>
-  <li>✔ <strong>Tax-Free Dividend Flow</strong> – The family trust can distribute dividends tax-free to the corporate beneficiary under the inter-corporate dividend rules. This keeps cash inside the corporate group without triggering immediate personal tax.</li>
-  <li>✔ <strong>Deferring Personal Taxes</strong> – If dividends are paid to individuals, they are taxed immediately. However, by allocating them to a corporate beneficiary, the money can be held in the company and:
+  <li>✅ <strong>Tax-Free Dividend Flow</strong> – The family trust can distribute dividends tax-free to the corporate beneficiary under the inter-corporate dividend rules. This keeps cash inside the corporate group without triggering immediate personal tax.</li>
+  <li>✅ <strong>Deferring Personal Taxes</strong> – If dividends are paid to individuals, they are taxed immediately. However, by allocating them to a corporate beneficiary, the money can be held in the company and:
     <ul>
       <li>Reinvested in the business</li>
       <li>Used for future investments</li>
       <li>Withdrawn later when tax rates may be lower</li>
     </ul>
     This strategy delays personal tax payments, allowing wealth to grow more efficiently.</li>
-  <li>✔ <strong>Keeping the Business “Clean” for LCGE</strong> – To qualify for the LCGE, a company must have at least 90% of its assets used in active business operations. If too much cash or passive investments accumulate in the company, it may lose LCGE eligibility.</li>
+  <li>✅ <strong>Keeping the Business “Clean” for LCGE</strong> – To qualify for the LCGE, a company must have at least 90% of its assets used in active business operations. If too much cash or passive investments accumulate in the company, it may lose LCGE eligibility.</li>
 </ul>
 
 <h4>📌 Solution:</h4>
