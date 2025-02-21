@@ -209,13 +209,13 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
           ],
         };
 
-        // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-        //   method: 'POST',
-        //   headers: { 'Content-Type': 'application/json' },
-        //   body: JSON.stringify(emailData),
-        // });
+        const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailData),
+        });
 
-        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         // alert('Email sent successfully! Please download the checklist for your records.');
         setShowAlert(true);
