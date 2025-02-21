@@ -128,6 +128,7 @@
     font-size: 16px;
     transition: background-color 0.3s ease; /* Smooth transition for hover effect */
   }
+
   
   .submit-button:hover {
     background-color: #0056b3;
@@ -206,7 +207,7 @@
 
 .custom-alert p {
   margin-bottom: 10px;
-  margin-top: 30px; /* Add some space above the message */
+  /* margin-top: 30px; Add some space above the message */
   /* flex-grow: 1; */
   text-align: center;
 }
@@ -235,9 +236,45 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease; /* Smooth transition for hover effect */
-  margin-top: 10px;
+  /* margin-top: 10px; */
+}
+
+
+.upload-button{
+  padding: 10px 20px; /* Increased padding for a larger button */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13.3333px;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  /* margin-top: 10px; */
+}
+
+.upload-button:hover {
+  background-color: #0056b3;
 }
 
 .download-button:hover {
   background-color: #218838; /* Darker green on hover */
+}
+
+.button-container-submit{
+  display: flex; /* Use flexbox for layout */
+  justify-content: space-between; /* Space between buttons */
+  margin-top: 10px;
+}
+.download-button + .upload-button {
+  margin-left: 10px; /* Optional: Add some space between the buttons */
+}
+
+.overlay {
+  position: fixed; /* Position it fixed to cover the entire viewport */
+  top: 0; /* Align to the top */
+  left: 0; /* Align to the left */
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  z-index: 999; /* Ensure it appears above other content */
 }

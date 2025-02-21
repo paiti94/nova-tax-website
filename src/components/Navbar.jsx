@@ -197,6 +197,7 @@ const Navbar = () => {
           </Link>
           {/* <a href="/#contact" onClick={handleContactClick}>Contact Us</a> */}
           <a href="/#contact" onClick={(e) => handleNavClick(e, '#contact')}>Contact Us</a>
+          {/* <a href="https://use.clienthub.app/#/login" target="_blank" rel="noopener noreferrer">Client Portal</a> */}
         </div>
         
         <div className="hamburger" onClick={() => setIsMenuOpen(!isMenuOpen)}>

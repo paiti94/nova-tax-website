@@ -11,12 +11,15 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
 
-const CustomAlert = ({ message, onClose, onDownload }) => {
+const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     return (
         <div className="custom-alert">
             <button onClick={onClose} className="close-button">X</button> {/* X icon */}
             <p>{message}</p>
-            <button onClick={onDownload} className="download-button">Download PDF</button>
+            <div className="button-container-submit">
+                <button onClick={onDownload} className="download-button">Download PDF</button>
+                <button onClick={onUpload} className="upload-button">Access Client Portal</button>
+            </div>
         </div>
     );
 };
@@ -246,6 +249,10 @@ const handleDownloadPDF = async () => {
     setShowAlert(false);
     window.location.href = '/';
 };
+
+const openClientPortal = () =>{
+    window.open('https://use.clienthub.app/#/login', '_blank');
+}
 
   return (
     <div className="form-container">
@@ -1443,12 +1450,16 @@ const handleDownloadPDF = async () => {
         </div>
       </form>
       {showAlert && (
-                <CustomAlert
-                    message="Email sent successfully! Please download the checklist for your records."
-                    onClose={handleCloseAlert}
-                    onDownload={handleDownloadPDF}
-                />
-            )}
+        <>
+        <div className="overlay" onClick={handleCloseAlert}></div>
+        <CustomAlert
+            message="Checklist submitted successfully! Please download the checklist for your records."
+            onClose={handleCloseAlert}
+            onDownload={handleDownloadPDF}
+            upload={openClientPortal}
+        />
+        </>
+    )}
     </div>
   );
 };
