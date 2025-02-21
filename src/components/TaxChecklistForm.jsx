@@ -209,13 +209,13 @@ const CustomAlert = ({ message, onClose, onDownload }) => {
           ],
         };
 
-        const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailData),
-        });
+        // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(emailData),
+        // });
 
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
         // alert('Email sent successfully! Please download the checklist for your records.');
         setShowAlert(true);
@@ -450,8 +450,9 @@ const handleDownloadPDF = async () => {
                 variant="outlined"
                 fullWidth
                 inputProps={{
-                    min: "2024-01-01", // Set the minimum date
-                    max: "2024-12-31", // Set the maximum date
+                    pattern: "\\d{4}-\\d{2}-\\d{2}", // Regex pattern for date format
+                    min: "2024-01-01",
+                    max: "2024-12-31",
                   }}
               />
             </div>

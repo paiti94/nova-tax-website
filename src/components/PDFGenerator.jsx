@@ -23,23 +23,75 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   };
 
   let { page, width, height, yPosition } = createPage();
-  // Utility function to write text on PDF
-  const drawText = (text, x = 50, bold = false, size = fontSize) => {
-    if (yPosition < 50) {
+
+//   const drawText = (text, x = 50, bold = false, size = fontSize) => {
+//     if (yPosition < 50) {
+//         ({ page, width, height, yPosition } = createPage());
+//       }
+//     page.drawText(text, {
+//       x,
+//       y: yPosition,
+//       size,
+//       font,
+//       color: rgb(0, 0, 0),
+//       maxWidth: width - x - 50,
+//       wordBreaks: [" ", ","],
+//     });
+//     yPosition -= 20;
+//   };
+
+const drawText = (text, x = 50, bold = false, size = fontSize) => {
+    const maxWidth = width - x - 50; // Ensure text fits within the page width
+    const lineHeight = 20;
+  
+    // Function to split text into properly wrapped lines
+    const splitTextIntoLines = (text, maxWidth, font, size) => {
+      const words = text.split(/(\s+|,|\.)/); // Split by space, comma, or period while keeping them
+      let lines = [];
+      let currentLine = '';
+  
+      for (const word of words) {
+        let testLine = currentLine + word;
+        let textWidth = font.widthOfTextAtSize(testLine, size);
+  
+        if (textWidth < maxWidth) {
+          currentLine = testLine; // Add word to current line
+        } else {
+          lines.push(currentLine.trim()); // Push the current line
+          currentLine = word.trim(); // Start a new line
+        }
+      }
+  
+      if (currentLine) {
+        lines.push(currentLine.trim());
+      }
+  
+      return lines;
+    };
+  
+    // Split the text into properly wrapped lines
+    const wrappedLines = splitTextIntoLines(text, maxWidth, font, size);
+  
+    // Draw each line separately
+    wrappedLines.forEach((line) => {
+      if (yPosition < 50) {
         ({ page, width, height, yPosition } = createPage());
       }
-
-    page.drawText(text, {
-      x,
-      y: yPosition,
-      size,
-      font,
-      color: rgb(0, 0, 0),
+  
+      page.drawText(line, {
+        x,
+        y: yPosition,
+        size,
+        font,
+        color: rgb(0, 0, 0),
+      });
+  
+      yPosition -= lineHeight; // Move down for the next line
     });
-
-    yPosition -= 20;
-
+    yPosition -= 5; 
   };
+  
+
 
   const itemLabels = {
     employmentIncome: "T4 - Employment Income",
@@ -90,7 +142,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
 
 
   // Personal Information
-  drawText('Personal Information', 50, true, 14);
+  drawText('Personal Information', 50, true, 16);
   drawText(`First Name: ${formData.firstName}`, 50, true);
   drawText(`Last Name: ${formData.lastName}`);
   drawText(`DOB (YYYY-MM-DD): ${formData.dob}`);
@@ -103,7 +155,8 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText('');
 
   // Marital Status
-  drawText('Marital Status', 50, true, 14);
+  drawText('');
+  drawText('Marital Status', 50, true, 16);
   drawText(`Marital Status: ${formData.maritalStatus}`, 50, true);
   drawText(`Did your marital status change in 2024? ${formData.maritalStatusChange}`);
   drawText(`Date of Marital Status Change: ${formData.maritalStatusChangeDate}`);
@@ -111,7 +164,8 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText('');
 
   if (isSpouseIncluded) {
-    drawText(`Spouse's Information`, 50, true, 14);
+    drawText('');
+    drawText(`Spouse's Information`, 50, true, 16);
     drawText(`Spouse's First Name: ${formData.spouseFirstName}`, 50, true);
     drawText(`Spouse's Last Name: ${formData.spouseLastName}`);
     drawText(`Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob}`);
@@ -122,7 +176,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   }
 
   // Dependents Section
-  drawText('Dependants', 50, true, 14);
+  drawText('Dependants', 50, true, 16);
   drawText(`Did you have any dependants in 2024? ${formData.dependants}`);
   if (formData.dependants === 'Yes') {
     drawText(`Dependant's relevant information: ${formData.dependantInfo}`);
@@ -130,7 +184,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText('');
 
   // Additional Information
-  drawText('Additional Information', 50, true, 14);
+  drawText('Additional Information', 50, true, 16);
   drawText(`Notes: ${formData.notes}`);
   drawText(`Are you a Canadian citizen? ${formData.citizenship}`);
   drawText(`Should CRA provide your information to Elections Canada? ${formData.citizenshipElections}`);
@@ -147,7 +201,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
 
   // Spouse's Additional Information
   if (isSpouseIncluded) {
-    drawText(`Spouse's Additional Information`, 50, true, 14);
+    drawText(`Spouse's Additional Information`, 50, true, 16);
     drawText(`Spouse's Canadian Citizen? ${formData.spouseCitizenship}`);
     drawText(`Spouse's Elections Canada Consent: ${formData.spouseCitizenshipElections}`);
     drawText(`Spouse has US citizenship or US Green Card? ${formData.spouseUscitizenship}`);
@@ -162,7 +216,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     drawText('');
   }
   
-    drawText('Checked Items', 50, true, 14);
+    drawText('Checked Items', 50, true, 16);
 
      Object.entries(checkedItems).forEach(([key, value]) => {
         if (value==true) {
