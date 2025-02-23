@@ -787,7 +787,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>In 2024, in total did you own non-Canadian property (cash, shares, loans, trusts, real property held personally or through a Canadian securities dealer or Canadian trust company) with an aggregate cost in excess of CAD$100,000?</td>
+                  <td>In 2024, did you own non-Canadian property (cash, shares, loans, trusts, real property, cryptocurrency, etc.) with an aggregate cost in excess of $100,000?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
