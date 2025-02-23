@@ -236,8 +236,16 @@ const handleDownloadPDF = async () => {
         const link = document.createElement('a');
         link.href = url;
         link.download = `TaxChecklist-${formData.firstName}.pdf`; 
-        link.click();
-        document.body.removeChild(link);
+        document.body.appendChild(link); 
+
+        // Trigger the download
+        link.click(); 
+
+        // Remove the link after download
+        document.body.removeChild(link); 
+
+        // Clean up the URL object
+        URL.revokeObjectURL(url); 
         // URL.revokeObjectURL(url).then(() => {
         //     setShowAlert(false);
         //     window.location.href = '/';
@@ -1456,7 +1464,7 @@ const openClientPortal = () =>{
             message="Checklist submitted successfully! Please download the checklist for your records."
             onClose={handleCloseAlert}
             onDownload={handleDownloadPDF}
-            upload={openClientPortal}
+            onUpload={openClientPortal}
         />
         </>
     )}
