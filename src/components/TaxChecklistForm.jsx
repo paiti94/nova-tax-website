@@ -144,7 +144,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
       reader.onloadend = async () => {
         const base64data = reader.result.split(',')[1];
 
-        const encryptionPassword = 'Booboobaps!';
+        const encryptionPassword = import.meta.env.DECRYPTION_PW;
         const encryptedPDF = CryptoJS.AES.encrypt(base64data, encryptionPassword).toString();
 
         // 🗜️ Create a ZIP file
