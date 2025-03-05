@@ -10,6 +10,8 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
+import JSZip from 'jszip';
+import CryptoJS from 'crypto-js';
 
 const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     return (
@@ -132,61 +134,6 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const requiredFields = formData.spouseReturn === 'Yes' ? [
-    //     'maritalStatus',
-    //     'maritalStatusChange',
-    //     'dependants',
-    //     'citizenship',
-    //     'citizenshipElections',
-    //     'Uscitizenship',
-    //     'cryptocurrency',
-    //     'propertyExemption',
-    //     'nonCanadianProperty',
-    //     'ownershipNonCanadian',
-    //     'fhsa',
-    //     'trustArrangement',
-    //     'disabilityCredit',
-    //     'spouseCitizenship',
-    //     'spouseCitizenshipElections',
-    //     'spouseUscitizenship',
-    //     'spouseCryptocurrency',
-    //     'spousePropertyExemption',
-    //     'spouseNonCanadianProperty',
-    //     'spouseOwnershipNonCanadian',
-    //     'spouseFhsa',
-    //     'spouseTrustArrangement',
-    //     'spouseDisabilityCredit',
-    // ] : [
-    //     'citizenship',
-    //     'citizenshipElections',
-    //     'Uscitizenship',
-    //     'cryptocurrency',
-    //     'propertyExemption',
-    //     'nonCanadianProperty',
-    //     'ownershipNonCanadian',
-    //     'fhsa',
-    //     'trustArrangement',
-    //     'disabilityCredit',
-    // ];
-
-    // if (formData.province === 'BC') {
-    //     requiredFields.push('rentalProperty', 'spouseRentalProperty');
-    // }
-
-    // if(formData.maritalStatusChange === 'Yes') {
-    //     requiredFields.push('maritalStatusChangeDate');
-    // }
-
-    // if(formData.dependants === 'Yes') {
-    //     requiredFields.push('dependantInfo');
-    // }
-
-    // const allFieldsFilled = requiredFields.every(field => formData[field] !== '');
-
-    // if (!allFieldsFilled) {
-    //     alert('Please answer all required questions before submitting.');
-    //     return; // Prevent form submission
-    // }
 
     try {
       const { generatePDF } = await import('./PDFGenerator');
@@ -197,31 +144,75 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
       reader.onloadend = async () => {
         const base64data = reader.result.split(',')[1];
 
-        const emailData = {
-          api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
-          to: ['ali@novatax.ca'],
-          sender: 'support@novatax.ca',
-          subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
-          text_body: 'Please find the attached Tax Checklist.',
-          html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
-          attachments: [
-            {
-              fileblob: base64data,
-              filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.pdf`,
-            },
-          ],
+        const encryptionPassword = 'Booboobaps!';
+        const encryptedPDF = CryptoJS.AES.encrypt(base64data, encryptionPassword).toString();
+
+        // 🗜️ Create a ZIP file
+        const zip = new JSZip();
+        zip.file(`TaxChecklist-${formData.firstName}.enc`, encryptedPDF);
+
+        // 📂 Generate ZIP Blob
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+
+        // const emailData = {
+        //   api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
+        //   to: ['ali@novatax.ca'],
+        //   sender: 'support@novatax.ca',
+        //   subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
+        //   text_body: 'Please find the attached Tax Checklist.',
+        //   html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+        //   attachments: [
+        //     {
+        //       fileblob: zipBlob,
+        //       filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
+        //     },
+        //   ],
+        // };
+
+        // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+        //   method: 'POST',
+        //   headers: { 'Content-Type': 'application/json' },
+        //   body: JSON.stringify(emailData),
+        // });
+
+        // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+        // // alert('Email sent successfully! Please download the checklist for your records.');
+        // setShowAlert(true);
+        const zipReader = new FileReader();
+        zipReader.readAsDataURL(zipBlob);
+        zipReader.onloadend = async () => {
+            const zipBase64 = zipReader.result.split(',')[1];
+
+            const emailData = {
+                api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
+                to: ['ali@novatax.ca'],
+                sender: 'support@novatax.ca',
+                subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
+                text_body: 'Please find the attached Tax Checklist.',
+                html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+                attachments: [
+                    {
+                        fileblob: zipBase64, // Use Base64 string here
+                        filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
+                    },
+                ],
+            };
+
+            const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(emailData),
+            });
+
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+
+            setShowAlert(true);
         };
-
-        const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailData),
-        });
-
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-        // alert('Email sent successfully! Please download the checklist for your records.');
-        setShowAlert(true);
+        zipReader.onerror = (error) => {
+            console.error('Error reading ZIP Blob:', error);
+            alert('Error generating ZIP file! Please try again later.');
+        };
       };
     } catch (error) {
       console.error('Error generating or sending the PDF:', error);

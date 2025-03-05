@@ -29,6 +29,8 @@ const Navbar = () => {
   // Add a new check for the checklist page
   const isChecklistPage = location.pathname.includes('/2024-checklist');
 
+  const isDecryptPage = location.pathname.includes('/decrypt');
+
   // Function to handle navigation and close menu
   const handleNavClick = (e, sectionId) => {
     e.preventDefault();
@@ -92,6 +94,7 @@ const Navbar = () => {
   return (
     <nav className={`navbar ${isScrolled ? 'scrolled' : ''} ${
       isChecklistPage ? 'checklist-page' :
+      isDecryptPage ? 'decrypt-page' :
       isServicePage ? 'service-page' : 
       isBlogPage ? 'blog-page' : 'page'
     }`}>

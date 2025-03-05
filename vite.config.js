@@ -8,6 +8,9 @@ export default defineConfig({
   plugins: [react(), 
     visualizer({ open: true }),
   ],
+  define: {
+    global: {},
+  },
   server: {
     port: 5174,
     host: true
@@ -27,6 +30,7 @@ export default defineConfig({
                 return "vendor";
               },
         },
+        external: ['pdfkit'],
       },
   },
 //   optimizeDeps: {

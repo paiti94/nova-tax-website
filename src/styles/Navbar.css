@@ -352,6 +352,10 @@ img {
   background: black;
 }
 
+.navbar.decrypt-page {
+  background: black;
+}
+
 .navbar.checklist-page .nav-links a {
   color: white;
 }

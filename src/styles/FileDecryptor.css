@@ -1,0 +1,75 @@
+/* src/components/TaxChecklistForm.css */
+/* .form-container {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    margin-top: 10rem;
+    margin-bottom: 10rem;
+  } */
+  
+  h1 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+    margin-top: 10rem;
+    margin-bottom: 3rem;
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+.file-input,
+.password-input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.file-input:focus,
+.password-input:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.decrypt-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.decrypt-button:hover {
+    background-color: #0056b3;
+}
+
+.error-message {
+    color: red;
+    text-align: center;
+}
+
+.success-message {
+    color: green;
+    text-align: center;
+}
