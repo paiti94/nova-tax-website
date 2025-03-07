@@ -30,7 +30,7 @@ const FileDecryptor = () => {
     };
 
     return (
-        <div className="form-container">
+        <div className="form-container-decrypt">
             <h1>Decrypt and Open PDF</h1>
             <input
                 type="file"
