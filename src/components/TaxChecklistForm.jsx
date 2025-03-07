@@ -29,7 +29,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [pdfBlob, setPdfBlob] = useState(null); // State to hold the PDF blob
-
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -132,9 +132,20 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     setCheckedItems({ ...checkedItems, [name]: checked });
   };
 
+  const fetchSecrets = async () => {
+    try {
+      const response = await fetch("/api/get-secrets");
+      const data = await response.json();
+      return data.encryptionPassword;
+    } catch (error) {
+      console.error("Error fetching secrets:", error);
+      return null;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const { generatePDF } = await import('./PDFGenerator');
       const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
@@ -144,7 +155,12 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
       reader.onloadend = async () => {
         const base64data = reader.result.split(',')[1];
 
-        const encryptionPassword = import.meta.env.VITE_ENCRYPTION_PASSWORD;
+        // const encryptionPassword = import.meta.env.VITE_ENCRYPTION_PASSWORD;
+        const encryptionPassword = await fetchSecrets();
+        if (!encryptionPassword) {
+          alert("Error: Missing encryption key.");
+          return;
+        }
         const encryptedPDF = CryptoJS.AES.encrypt(base64data, encryptionPassword).toString();
 
         // 🗜️ Create a ZIP file
@@ -184,30 +200,57 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
         zipReader.onloadend = async () => {
             const zipBase64 = zipReader.result.split(',')[1];
 
-            const emailData = {
-                api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
-                to: ['ali@novatax.ca'],
-                sender: 'support@novatax.ca',
+            // const emailData = {
+            //     api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
+            //     to: ['ali@novatax.ca'],
+            //     sender: 'support@novatax.ca',
+            //     subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
+            //     text_body: 'Please find the attached Tax Checklist.',
+            //     html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+            //     attachments: [
+            //         {
+            //             fileblob: zipBase64, // Use Base64 string here
+            //             filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
+            //         },
+            //     ],
+            // };
+
+            // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+            //     method: 'POST',
+            //     headers: { 'Content-Type': 'application/json' },
+            //     body: JSON.stringify(emailData),
+            // });
+
+            const response = await fetch("/api/send-email", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                to: ["ali@novatax.ca"],
+                sender: "support@novatax.ca",
                 subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
-                text_body: 'Please find the attached Tax Checklist.',
-                html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+                text_body: "Please find the attached Tax Checklist.",
+                html_body: "<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>",
                 attachments: [
-                    {
-                        fileblob: zipBase64, // Use Base64 string here
-                        filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
-                    },
+                  {
+                    fileblob: zipBase64,
+                    filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
+                  },
                 ],
-            };
-
-            const response = await fetch('https://api.smtp2go.com/v3/email/send', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(emailData),
+              }),
             });
+            // if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
 
-            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const result = await response.json();
+            if (result.message) {
+              // alert("Email sent successfully!");
+              setShowAlert(true);
+            } else {
+              alert("Failed to send email: " + result.error + " , please reach out to ali@novatax.ca");
+            }
 
-            setShowAlert(true);
+          
         };
         zipReader.onerror = (error) => {
             console.error('Error reading ZIP Blob:', error);
@@ -217,6 +260,8 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     } catch (error) {
       console.error('Error generating or sending the PDF:', error);
       alert('Error sending email! Please try again later.');
+    } finally {
+      setLoading(false); // Stop loading after completion
     }
   };
 
@@ -1445,9 +1490,13 @@ const openClientPortal = () =>{
           </div>
         </div>
         <div className="button-container">
-          <button type="submit" className="submit-button">Submit</button>
-        </div>
+          <button type="submit" className="submit-button" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
+      </div>
       </form>
+      {/* Show loading spinner when submitting */}
+      {loading && <div className="spinner"></div>}
       {showAlert && (
         <>
         <div className="overlay" onClick={handleCloseAlert}></div>
