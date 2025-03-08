@@ -46,7 +46,6 @@ function App() {
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
           <Route path="/2024-checklist" element={<CheckListPage />} />
-          <Route path="/decrypt" element={<FileDecryptor />} />
         </Routes>
       </Suspense>
       <Footer />
