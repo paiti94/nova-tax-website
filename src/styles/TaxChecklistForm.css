@@ -206,26 +206,9 @@
 }
 
 .custom-alert p {
-  margin-bottom: 10px;
-  /* margin-top: 30px; Add some space above the message */
-  /* flex-grow: 1; */
+  margin-bottom: 15px;
   text-align: center;
-}
-
-.close-button {
-  position: absolute; /* Position it absolutely */
-  top: 10px; /* Distance from the top */
-  right: 10px; /* Distance from the right */
-  background-color: transparent; /* Transparent background */
-  color: black; /* Red color for the close icon */
-  border: none; /* No border */
-  font-size: 15px; /* Size of the icon */
-  cursor: pointer; /* Pointer cursor on hover */
-}
-
-.close-button:hover {
-  /* color: #d32f2f; Darker red on hover */
-  font-weight: 600;
+  margin-left: 0px;
 }
 
 .download-button {
@@ -278,3 +261,23 @@
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   z-index: 999; /* Ensure it appears above other content */
 }
+
+.close-button {
+  border: none; 
+  cursor: pointer;
+  padding: 2px;
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  /* background-color: transparent; */
+  color: grey;
+  border: none;
+  /* font-size: 15px; */
+  cursor: pointer;
+  border-radius: 20px;
+}
+
+.close-button:hover {
+  color: #007bff; /* Change color on hover */
+}
+
