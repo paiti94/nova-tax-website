@@ -19,7 +19,6 @@ import VancouverTax from './pages/VancouverTax';
 import Blog from './pages/Blog';
 import BlogPost from './pages/BlogPost';
 import CheckListPage from './pages/2024CheckListPage';
-import FileDecryptor from './components/FileDecryptor';
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 

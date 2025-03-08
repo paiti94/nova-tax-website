@@ -156,19 +156,19 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
         const base64data = reader.result.split(',')[1];
 
         // const encryptionPassword = import.meta.env.VITE_ENCRYPTION_PASSWORD;
-        const encryptionPassword = await fetchSecrets();
-        if (!encryptionPassword) {
-          alert("Error: Missing encryption key.");
-          return;
-        }
-        const encryptedPDF = CryptoJS.AES.encrypt(base64data, encryptionPassword).toString();
+        // const encryptionPassword = await fetchSecrets();
+        // if (!encryptionPassword) {
+        //   alert("Error: Missing encryption key.");
+        //   return;
+        // }
+        // const encryptedPDF = CryptoJS.AES.encrypt(base64data, encryptionPassword).toString();
 
         // 🗜️ Create a ZIP file
-        const zip = new JSZip();
-        zip.file(`TaxChecklist-${formData.firstName}.enc`, encryptedPDF);
+        // const zip = new JSZip();
+        // zip.file(`TaxChecklist-${formData.firstName}.enc`, encryptedPDF);
 
         // 📂 Generate ZIP Blob
-        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        // const zipBlob = await zip.generateAsync({ type: 'blob' });
 
         // const emailData = {
         //   api_key: import.meta.env.VITE_SMTP2GO_API_KEY,
