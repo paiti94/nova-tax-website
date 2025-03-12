@@ -112,6 +112,7 @@ const drawText = (text, x = 50, bold = false, size = fontSize) => {
     selfEmployedIncome: "Business, Professional, Commission, or Farming Income (Provide income & expense details)",
     rentalIncome: "Rental Income (Provide income & expense details)",
     businessRentalAssets: "Business Rental Assets (Provide income & expense details)",
+    gstHstRegistrant: "GST/HST Registrant",
     childSupport: "Child or Spousal Support Received (Provide separation/divorce agreement)",
     stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
     rrspContributions: "RRSP Contributions (Provide receipts)",
@@ -133,7 +134,6 @@ const drawText = (text, x = 50, bold = false, size = fontSize) => {
     alimony: "Alimony/Spousal Support Paid (Provide agreement)",
     covidRepayment: "COVID-19 Benefits Repayment",
     homeRenovationCredit: "Multigenerational Home Renovation Credit",
-    toolCosts: "Tool Costs for Tradespersons",
   };
 
   drawText('2024 Nova Tax Checklist', 200, true, 18);

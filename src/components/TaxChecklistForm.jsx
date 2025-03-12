@@ -100,6 +100,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     selfEmployedIncome: false,
     rentalIncome: false,
     businessRentalAssets: false,
+    gstHstRegistrant: false,
     childSupport: false,
     stockOptions: false,
     rrspContributions: false,
@@ -581,7 +582,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>If yes, Do you authorize CRA to provide your name, address, date of birth, and citizenship information to Elections Canada?</td>
+                  <td>If yes, do you authorize CRA to provide your name, address, date of birth, and citizenship information to Elections Canada?</td>
                   <td>
                       <FormControl component="fieldset">
                         <RadioGroup
@@ -1097,7 +1098,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.selfEmployedIncome}
                 onChange={handleCheckboxChange}
               />
-              Business, Professional, Commission, or Farming Income (Provide income & expense details)
+              Business, Professional, Commission, or Farming Income (📍Please download and fill out 2024 Business Schedule located in the Resources section of the Client Portal)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1108,7 +1109,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.rentalIncome}
                 onChange={handleCheckboxChange}
               />
-              Rental Income (Provide income & expense details)
+              Rental or AirBnB Income (📍Please download and fill out 2024 Rental Schedule located in the Resources section of the Client Portal)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1120,6 +1121,17 @@ const openClientPortal = () =>{
                 onChange={handleCheckboxChange}
               />
               If business or rental assets were purchased, attach supporting documents
+            </label>
+          </div>
+          <div className="checkbox-group">
+            <label>
+              <input   className="checkbox-input"
+                type="checkbox"
+                name="gstHstRegistrant"
+                checked={checkedItems.gstHstRegistrant}
+                onChange={handleCheckboxChange}
+              />
+              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number on the 2024 Business Schedule.
             </label>
           </div>
           <h3>✅ Other Income</h3>
@@ -1366,22 +1378,11 @@ const openClientPortal = () =>{
               Multigenerational Home Renovation Credit
             </label>
           </div>
-          <div className="checkbox-group">
-            <label>
-              <input   className="checkbox-input"
-                type="checkbox"
-                name="toolCosts"
-                checked={checkedItems.toolCosts}
-                onChange={handleCheckboxChange}
-              />
-              Tool Costs for Tradespersons
-            </label>
-          </div>
           </div>
         </div>
         <div className="button-container">
           <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? "Submitting..." : "Submit"}
+            {loading ? "Downloading..." : "Download"}
           </button>
       </div>
       </form>
