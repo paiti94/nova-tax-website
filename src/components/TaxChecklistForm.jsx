@@ -99,7 +99,6 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     realEstateChange: false,
     selfEmployedIncome: false,
     rentalIncome: false,
-    businessRentalAssets: false,
     gstHstRegistrant: false,
     childSupport: false,
     stockOptions: false,
@@ -1110,17 +1109,6 @@ const openClientPortal = () =>{
                 onChange={handleCheckboxChange}
               />
               Rental or AirBnB Income (📍Please download and fill out 2024 Rental Schedule located in the Resources section of the Client Portal)
-            </label>
-          </div>
-          <div className="checkbox-group">
-            <label>
-              <input   className="checkbox-input"
-                type="checkbox"
-                name="businessRentalAssets"
-                checked={checkedItems.businessRentalAssets}
-                onChange={handleCheckboxChange}
-              />
-              If business or rental assets were purchased, attach supporting documents
             </label>
           </div>
           <div className="checkbox-group">

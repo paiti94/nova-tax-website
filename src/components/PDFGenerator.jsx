@@ -111,7 +111,6 @@ const drawText = (text, x = 50, bold = false, size = fontSize) => {
     realEstateChange: "Did you change the use of any real estate (personal-use to rental or vice versa) in 2024?",
     selfEmployedIncome: "Business, Professional, Commission, or Farming Income (Provide income & expense details)",
     rentalIncome: "Rental Income (Provide income & expense details)",
-    businessRentalAssets: "Business Rental Assets (Provide income & expense details)",
     gstHstRegistrant: "GST/HST Registrant",
     childSupport: "Child or Spousal Support Received (Provide separation/divorce agreement)",
     stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
