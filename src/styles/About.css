@@ -124,6 +124,11 @@
     padding-top: 0px;
   }
 
+  .about-content h2 {
+    font-size: 2rem;
+    text-align: center;
+  }
+
   .stats-container {
     justify-content: center;
     gap: 1.5rem;
