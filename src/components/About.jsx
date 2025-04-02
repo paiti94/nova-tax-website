@@ -44,7 +44,7 @@ const About = () => {
             onMouseEnter={handleMouseEnter} 
             onMouseLeave={handleMouseLeave} 
           />
-          <p>Ali Bou-Hamya, CPA, MAcc | Tax Partner</p>
+          <p>Ali Bou-Hamya, CPA, MAcc | Tax Partner | Founder</p>
         </div>
       </div>
     </section>
