@@ -1,7 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import '../styles/About.css';
 
 const About = () => {
+  const [imageSrc, setImageSrc] = useState('assets/profile.jpg'); // Default image
+
+  const handleMouseEnter = () => {
+    setImageSrc('assets/profile-hover.jpg'); // Image on hover
+  };
+
+  const handleMouseLeave = () => {
+    setImageSrc('assets/profile.jpg'); // Default image
+  };
   return (
     <section className="about" id="about">
       <div className="about-container">
@@ -28,7 +37,14 @@ const About = () => {
           </div>
         </div>
         <div className="about-image">
-          <img src="/assets/pexels-nicole.jpg" alt="Professional tax services" />
+          {/* <img src="/assets/profile.jpg" alt="Professional tax services" /> */}
+          <img 
+            src={imageSrc} 
+            alt="Professional tax services" 
+            onMouseEnter={handleMouseEnter} 
+            onMouseLeave={handleMouseLeave} 
+          />
+          <p>Ali Bou-Hamya, CPA, MAcc | Tax Partner</p>
         </div>
       </div>
     </section>
