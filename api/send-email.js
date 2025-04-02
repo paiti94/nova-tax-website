@@ -46,10 +46,10 @@ export default async function handler(req, res) {
       const data = await smtpResponse.json();
   
       if (data && data.data && data.data.succeeded) {
-        return res.status(200).json({ message: 'Message sent successfully' });
+        return res.status(200).json({ success: true });
       } else {
-        console.error('SMTP2GO failed:', data);
-        return res.status(500).json({ message: 'SMTP2GO failed to send email' });
+        console.error('SMTP2GO response:', data);
+        return res.status(500).json({ success: false, error: 'Failed to send' });
       }
   
     } catch (err) {
