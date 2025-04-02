@@ -11,43 +11,52 @@ const Contact = () => {
 
   const [status, setStatus] = useState('');
 
-  const API_KEY = import.meta.env.VITE_SMTP2GO_API_KEY;
+  // const API_KEY = import.meta.env.VITE_SMTP2GO_API_KEY;
+  // const API_KEY = process.env.SMTP2GO_API_KEY;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('sending');
 
     try {
-      const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+      // const response = await fetch('https://api.smtp2go.com/v3/email/send', {
+      //   method: 'POST',
+      //   headers: {
+      //     'Content-Type': 'application/json'
+      //   },
+      //   body: JSON.stringify({
+      //     api_key: API_KEY,
+      //     to: ["ali@novatax.ca"], // Send to your business email
+      //     sender: "contact@novatax.ca",
+      //     subject: `New Contact Form Submission from ${formData.name}`,
+      //     text_body: `
+      //       Name: ${formData.name}
+      //       Email: ${formData.email}
+      //       Phone: ${formData.phone}
+      //       Message: ${formData.message}
+      //     `,
+      //     html_body: `
+      //       <h2>New Contact Form Submission</h2>
+      //       <p><strong>Name:</strong> ${formData.name}</p>
+      //       <p><strong>Email:</strong> ${formData.email}</p>
+      //       <p><strong>Phone:</strong> ${formData.phone}</p>
+      //       <p><strong>Message:</strong> ${formData.message}</p>
+      //     `,
+      //     custom_headers: [
+      //       {
+      //         header: "Reply-To",
+      //         value: formData.email
+      //       }
+      //     ]
+      //   })
+      // });
+
+      const response = await fetch('/api/send-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({
-          api_key: API_KEY,
-          to: ["ali@novatax.ca"], // Send to your business email
-          sender: "contact@novatax.ca",
-          subject: `New Contact Form Submission from ${formData.name}`,
-          text_body: `
-            Name: ${formData.name}
-            Email: ${formData.email}
-            Phone: ${formData.phone}
-            Message: ${formData.message}
-          `,
-          html_body: `
-            <h2>New Contact Form Submission</h2>
-            <p><strong>Name:</strong> ${formData.name}</p>
-            <p><strong>Email:</strong> ${formData.email}</p>
-            <p><strong>Phone:</strong> ${formData.phone}</p>
-            <p><strong>Message:</strong> ${formData.message}</p>
-          `,
-          custom_headers: [
-            {
-              header: "Reply-To",
-              value: formData.email
-            }
-          ]
-        })
+        body: JSON.stringify(formData)
       });
 
       if (!response.ok) {
