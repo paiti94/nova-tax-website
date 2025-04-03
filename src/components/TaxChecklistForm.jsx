@@ -10,6 +10,23 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
+import { ZipWriter, BlobWriter, Uint8ArrayReader } from '@zip.js/zip.js';
+
+const createEncryptedZip = async (pdfBlob, filename, password) => {
+  const zipWriter = new ZipWriter(
+    new BlobWriter('application/zip'),
+    {
+      password,
+      encryptionStrength: 3, // Strong AES encryption
+    }
+  );
+
+  const arrayBuffer = await pdfBlob.arrayBuffer();
+  await zipWriter.add(`${filename}.pdf`, new Uint8ArrayReader(new Uint8Array(arrayBuffer)));
+
+  const zipBlob = await zipWriter.close();
+  return zipBlob;
+};
 
 const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     return (
@@ -138,55 +155,26 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
       const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
       setPdfBlob(blob);
 
-      const arrayBuffer = await blob.arrayBuffer();
-      const pdfBase64 = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-      const zipRes = await fetch('/api/encrypt-zip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          pdfBase64,
-          filename: `TaxChecklist-${formData.firstName}-${formData.lastName}`,
-          // 🔒 password is not needed anymore in the request
-        }),
+      const passwordResponse = await fetch('/api/encrypt-zip', {
+        method: 'GET',
       });
 
-      if (!zipRes.ok) {
-        throw new Error('Failed to encrypt PDF zip.');
+      if (!passwordResponse.ok) {
+          throw new Error(`Failed to retrieve encryption password! status: ${passwordResponse.status}`);
       }
-  
-      const { zipBase64 } = await zipRes.json();
-  
-  
-      // const reader = new FileReader();
-      // reader.readAsArrayBuffer(blob); // Read as ArrayBuffer for ZIP creation
-      // reader.onloadend = async () => {
-      //   const pdfArrayBuffer = reader.result;
 
-      //   // Create a ZIP file
-      //   const zip = new JSZip();
-      //   zip.file(`TaxChecklist-${formData.firstName}_${formData.lastName}.pdf`,new Uint8Array(pdfArrayBuffer));
+      const { encryptionPassword } = await passwordResponse.json();
 
-      //    // Generate the ZIP file
-      //   const zipBlob = await zip.generateAsync({ type: 'blob' });
-      //   const zipReader = new FileReader();
-      //   zipReader.readAsDataURL(zipBlob);
-      //   zipReader.onloadend = async () => {
-      //     const zipBase64 = zipReader.result.split(',')[1];
-
-      //     const passwordResponse = await fetch('/api/encrypt-zip', {
-      //       method: 'GET',
-      //   });
-
-      //   if (!passwordResponse.ok) {
-      //       throw new Error(`Failed to retrieve encryption password! status: ${passwordResponse.status}`);
-      //   }
-
-      //   const { encryptionPassword } = await passwordResponse.json();
-
-      //   // Step 4: Encrypt the ZIP file using the retrieved password
-      //   const encryptedZip = CryptoJS.AES.encrypt(zipBase64, encryptionPassword).toString();
-
+       // 3. Create the encrypted ZIP in the browser
+      const zipBlob = await createEncryptedZip(
+        pdfBlob,
+        `TaxChecklist-${formData.firstName}-${formData.lastName}`,
+        encryptionPassword
+      );
+    
+      // 4. Convert ZIP to base64
+      const zipBuffer = await zipBlob.arrayBuffer();
+      const zipBase64 = btoa(String.fromCharCode(...new Uint8Array(zipBuffer)));
 
           const emailData = {
             to: ['ali@novatax.ca','paiti94@gmail.com'],

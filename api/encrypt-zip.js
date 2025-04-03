@@ -1,29 +1,18 @@
-import { Zip } from 'zip-lib';
-
+// api/encrypt-zip.js
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Only POST allowed' });
-  }
-
-  try {
-    const { pdfBase64, filename } = req.body;
-    const password = process.env.ENCRYPTION_PASSWORD;
-
-    if (!pdfBase64 || !filename || !password) {
-      return res.status(400).json({ error: 'Missing required fields or env password' });
+    // Allow only GET requests
+    if (req.method !== 'GET') {
+      return res.status(405).json({ message: 'Method Not Allowed' });
     }
-
-    const buffer = Buffer.from(pdfBase64, 'base64');
-
-    const zip = new Zip();
-    await zip.addBuffer(buffer, `${filename}.pdf`, { password });
-
-    const zipBuffer = await zip.archiveBuffer();
-    const zipBase64 = zipBuffer.toString('base64');
-
-    return res.status(200).json({ zipBase64 });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: 'ZIP encryption failed' });
+  
+    // Retrieve the encryption password from environment variables
+    const encryptionPassword = process.env.ENCRYPTION_PASSWORD;
+  
+    // Check if the password is set
+    if (!encryptionPassword) {
+      return res.status(500).json({ message: 'Encryption password not set' });
+    }
+  
+    // Respond with the encryption password
+    return res.status(200).json({ encryptionPassword });
   }
-}
