@@ -146,7 +146,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
 
         // Create a ZIP file
         const zip = new JSZip();
-        zip.file(`TaxChecklist-${formData.firstName} ${formData.lastName}.pdf`, pdfArrayBuffer);
+        zip.file(`TaxChecklist-${formData.firstName} ${formData.lastName}.pdf`,new Uint8Array(pdfArrayBuffer));
 
          // Generate the ZIP file
         const zipBlob = await zip.generateAsync({ type: 'blob' });
