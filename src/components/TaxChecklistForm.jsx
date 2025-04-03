@@ -140,54 +140,66 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
       const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
       setPdfBlob(blob);
       const reader = new FileReader();
-      reader.readAsDataURL(blob);
+      reader.readAsArrayBuffer(blob); // Read as ArrayBuffer for ZIP creation
       reader.onloadend = async () => {
-        const base64data = reader.result.split(',')[1];
-       // Encrypt the ZIP file
-       const encryptionResponse = await fetch('/api/encrypt-zip', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zipBase64: base64data }),
-      });
+        const pdfArrayBuffer = reader.result;
 
-      if (!encryptionResponse.ok) {
-        throw new Error(`Encryption error! status: ${encryptionResponse.status}`);
-      }
+        // Create a ZIP file
+        const zip = new JSZip();
+        zip.file(`TaxChecklist-${formData.firstName} ${formData.lastName}.pdf`, pdfArrayBuffer);
 
-      const { encryptedZip } = await encryptionResponse.json();
+         // Generate the ZIP file
+        const zipBlob = await zip.generateAsync({ type: 'blob' });
+        const zipReader = new FileReader();
+        zipReader.readAsDataURL(zipBlob);
+        zipReader.onloadend = async () => {
+          const zipBase64 = zipReader.result.split(',')[1];
+         // Encrypt the ZIP file
+          const encryptionResponse = await fetch('/api/encrypt-zip', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ zipBase64: zipBase64 }),
+          });
+
+          if (!encryptionResponse.ok) {
+            throw new Error(`Encryption error! status: ${encryptionResponse.status}`);
+          }
+
+          const { encryptedZip } = await encryptionResponse.json();
 
 
-        const emailData = {
-          to: ['ali@novatax.ca'],
-          sender: 'support@novatax.ca',
-          subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
-          text_body: 'Please find the attached Tax Checklist.',
-          html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
-          attachments: [
+          const emailData = {
+            to: ['ali@novatax.ca'],
+            sender: 'support@novatax.ca',
+            subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
+            text_body: 'Please find the attached Tax Checklist.',
+            html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+            attachments: [
             {
               fileblob: encryptedZip,
               filename: `TaxChecklist-${formData.firstName} ${formData.lastName}.zip`,
-            },
-          ],
+              },
+            ],
+          };
+
+          const emailResponse = await fetch('/api/send-email-attachment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(emailData),
+          });
+
+          if (!emailResponse.ok) {
+            throw new Error(`Email error! status: ${emailResponse.status}`);
+          }
+          // alert('Email sent successfully! Please download the checklist for your records.');
+          const result = await emailResponse.json();
+          if (result.success) {
+            setShowAlert(true);
+          } else {
+            alert("Failed to send email: " + result.error + " , please reach out to ali@novatax.ca");
+          }
         };
-
-        const emailResponse = await fetch('/api/send-email-attachment', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(emailData),
-        });
-
-        if (!emailResponse.ok) {
-          throw new Error(`Email error! status: ${emailResponse.status}`);
-        }
-        // alert('Email sent successfully! Please download the checklist for your records.');
-        const result = await emailResponse.json();
-        if (result.success) {
-          setShowAlert(true);
-        } else {
-          alert("Failed to send email: " + result.error + " , please reach out to ali@novatax.ca");
-        }
-      };
+      }
     } catch (error) {
       console.error('Error generating or sending the PDF:', error);
       alert('Error sending email! Please try again later.');
