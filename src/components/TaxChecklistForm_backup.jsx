@@ -10,19 +10,32 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
-import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
+import { ZipWriter, BlobWriter, Uint8ArrayReader } from '@zip.js/zip.js';
 
+const createEncryptedZip = async (pdfBlob, filename, password) => {
+  const zipWriter = new ZipWriter(
+    new BlobWriter('application/zip'),
+    {
+      password,
+      encryptionStrength: 3, // Strong AES encryption
+    }
+  );
+
+  const arrayBuffer = await pdfBlob.arrayBuffer();
+  await zipWriter.add(`${filename}.pdf`, new Uint8ArrayReader(new Uint8Array(arrayBuffer)));
+
+  const zipBlob = await zipWriter.close();
+  return zipBlob;
+};
 
 const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     return (
         <div className="custom-alert">
-          <button onClick={onClose} className="close-button">
-                <CloseIcon /> {/* Use the Close icon here */}
-            </button> {/* X icon */}
+            <button onClick={onClose} className="close-button">X</button> {/* X icon */}
             <p>{message}</p>
             <div className="button-container-submit">
-               
-                <button onClick={onUpload} className="upload-button">Upload to Client Portal</button>
+                <button onClick={onDownload} className="download-button">Download PDF</button>
+                <button onClick={onUpload} className="upload-button">Access Client Portal</button>
             </div>
         </div>
     );
@@ -99,7 +112,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     realEstateChange: false,
     selfEmployedIncome: false,
     rentalIncome: false,
-    gstHstRegistrant: false,
+    businessRentalAssets: false,
     childSupport: false,
     stockOptions: false,
     rrspContributions: false,
@@ -134,29 +147,67 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     setCheckedItems({ ...checkedItems, [name]: checked });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
       const { generatePDF } = await import('./PDFGenerator');
       const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
-        setPdfBlob(blob);
-        if (blob) { // Use the blob variable directly
-          const url = URL.createObjectURL(blob); // Create a Blob URL
-          const link = document.createElement('a'); // Create an anchor element
-          link.href = url; // Set the href to the Blob URL
-          link.download = `TaxChecklist-${formData.firstName}.pdf`; // Set the download filename
-          document.body.appendChild(link); // Append the link to the document
+      setPdfBlob(blob);
 
-          link.click(); // Programmatically click the link to trigger the download
+      const passwordResponse = await fetch('/api/encrypt-zip', {
+        method: 'GET',
+      });
 
-          document.body.removeChild(link); // Remove the link after download
-          URL.revokeObjectURL(url); // Clean up the URL object
-      } else {
-          alert("No PDF available for download."); // Alert if no PDF blob is available
+      if (!passwordResponse.ok) {
+          throw new Error(`Failed to retrieve encryption password! status: ${passwordResponse.status}`);
       }
-        setShowAlert(true);   
+
+      const { encryptionPassword } = await passwordResponse.json();
+
+       // 3. Create the encrypted ZIP in the browser
+      const zipBlob = await createEncryptedZip(
+        pdfBlob,
+        `TaxChecklist-${formData.firstName}-${formData.lastName}`,
+        encryptionPassword
+      );
+    
+      // 4. Convert ZIP to base64
+      const zipBuffer = await zipBlob.arrayBuffer();
+      const zipBase64 = btoa(String.fromCharCode(...new Uint8Array(zipBuffer)));
+
+          const emailData = {
+            to: ['ali@novatax.ca','paiti94@gmail.com'],
+            sender: 'support@novatax.ca',
+            subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
+            text_body: 'Please find the attached Tax Checklist.',
+            html_body: '<h2>New Tax Checklist Submission</h2><p>Please find the attached Tax Checklist.</p>',
+            attachments: [
+            {
+              fileblob: zipBase64,
+              filename: `TaxChecklist-${formData.firstName}_${formData.lastName}.zip`,
+              },
+            ],
+          };
+
+          const emailResponse = await fetch('/api/send-email-attachment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(emailData),
+          });
+
+          if (!emailResponse.ok) {
+            throw new Error(`Email error! status: ${emailResponse.status}`);
+          }
+          // alert('Email sent successfully! Please download the checklist for your records.');
+          const result = await emailResponse.json();
+          if (result.success) {
+            setShowAlert(true);
+          } else {
+            alert("Failed to send email: " + result.error + " , please reach out to ali@novatax.ca");
+          }
+        // }
+      // }
     } catch (error) {
       console.error('Error generating or sending the PDF:', error);
       alert('Error sending email! Please try again later.');
@@ -173,9 +224,19 @@ const handleDownloadPDF = async () => {
         link.href = url;
         link.download = `TaxChecklist-${formData.firstName}.pdf`; 
         document.body.appendChild(link); 
+
+        // Trigger the download
         link.click(); 
+
+        // Remove the link after download
         document.body.removeChild(link); 
+
+        // Clean up the URL object
         URL.revokeObjectURL(url); 
+        // URL.revokeObjectURL(url).then(() => {
+        //     setShowAlert(false);
+        //     window.location.href = '/';
+        //   });
     }
   };
 
@@ -581,7 +642,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>If yes, do you authorize CRA to provide your name, address, date of birth, and citizenship information to Elections Canada?</td>
+                  <td>If yes, Do you authorize CRA to provide your name, address, date of birth, and citizenship information to Elections Canada?</td>
                   <td>
                       <FormControl component="fieldset">
                         <RadioGroup
@@ -1097,7 +1158,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.selfEmployedIncome}
                 onChange={handleCheckboxChange}
               />
-              Business, Professional, Commission, or Farming Income (📍Please download and fill out 2024 Business Schedule located in the Resources section of the Client Portal)
+              Business, Professional, Commission, or Farming Income (Provide income & expense details)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1108,18 +1169,18 @@ const openClientPortal = () =>{
                 checked={checkedItems.rentalIncome}
                 onChange={handleCheckboxChange}
               />
-              Rental or AirBnB Income (📍Please download and fill out 2024 Rental Schedule located in the Resources section of the Client Portal)
+              Rental Income (Provide income & expense details)
             </label>
           </div>
           <div className="checkbox-group">
             <label>
               <input   className="checkbox-input"
                 type="checkbox"
-                name="gstHstRegistrant"
-                checked={checkedItems.gstHstRegistrant}
+                name="businessRentalAssets"
+                checked={checkedItems.businessRentalAssets}
                 onChange={handleCheckboxChange}
               />
-              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number on the 2024 Business Schedule.
+              If business or rental assets were purchased, attach supporting documents
             </label>
           </div>
           <h3>✅ Other Income</h3>
@@ -1366,11 +1427,22 @@ const openClientPortal = () =>{
               Multigenerational Home Renovation Credit
             </label>
           </div>
+          <div className="checkbox-group">
+            <label>
+              <input   className="checkbox-input"
+                type="checkbox"
+                name="toolCosts"
+                checked={checkedItems.toolCosts}
+                onChange={handleCheckboxChange}
+              />
+              Tool Costs for Tradespersons
+            </label>
+          </div>
           </div>
         </div>
         <div className="button-container">
           <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? "Downloading..." : "Download"}
+            {loading ? "Submitting..." : "Submit"}
           </button>
       </div>
       </form>
@@ -1380,7 +1452,7 @@ const openClientPortal = () =>{
         <>
         <div className="overlay" onClick={handleCloseAlert}></div>
         <CustomAlert
-            message="Please Upload the Checklist to your Client Shared Folder on the Client Portal."
+            message="Checklist submitted successfully! Please download the checklist for your records."
             onClose={handleCloseAlert}
             onDownload={handleDownloadPDF}
             onUpload={openClientPortal}
