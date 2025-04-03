@@ -37,7 +37,6 @@ const About = () => {
           </div>
         </div>
         <div className="about-image">
-          {/* <img src="/assets/profile.jpg" alt="Professional tax services" /> */}
           <img 
             src={imageSrc} 
             alt="Professional tax services" 
