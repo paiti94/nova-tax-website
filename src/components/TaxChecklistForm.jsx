@@ -154,22 +154,24 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
         zipReader.readAsDataURL(zipBlob);
         zipReader.onloadend = async () => {
           const zipBase64 = zipReader.result.split(',')[1];
-         // Encrypt the ZIP file
-          const encryptionResponse = await fetch('/api/encrypt-zip', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ zipBase64: zipBase64 }),
-          });
+          console.log('ZIP Base64 Data:', zipBase64); // Log the ZIP base64 data for debugging
 
-          if (!encryptionResponse.ok) {
-            throw new Error(`Encryption error! status: ${encryptionResponse.status}`);
-          }
+          const passwordResponse = await fetch('/api/encrypt-zip', {
+            method: 'GET',
+        });
 
-          const { encryptedZip } = await encryptionResponse.json();
+        if (!passwordResponse.ok) {
+            throw new Error(`Failed to retrieve encryption password! status: ${passwordResponse.status}`);
+        }
+
+        const { encryptionPassword } = await passwordResponse.json();
+
+        // Step 4: Encrypt the ZIP file using the retrieved password
+        const encryptedZip = CryptoJS.AES.encrypt(zipBase64, encryptionPassword).toString();
 
 
           const emailData = {
-            to: ['ali@novatax.ca'],
+            to: ['ali@novatax.ca','paiti94@gmail.com'],
             sender: 'support@novatax.ca',
             subject: `New Tax Checklist Submission - ${formData.firstName} ${formData.lastName}`,
             text_body: 'Please find the attached Tax Checklist.',
