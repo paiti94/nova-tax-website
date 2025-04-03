@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   
     const { to, sender, subject, text_body, html_body, attachments } = req.body;
     const apiKey = process.env.SMTP2GO_API_KEY;
-    if (!api_key || !to || !sender || !subject || !attachments) {
+    if (!apiKey || !to || !sender || !subject || !attachments) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
   
@@ -15,7 +15,7 @@ export default async function handler(req, res) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          api_key,
+          api_key: apiKey,
           to,
           sender,
           subject,
