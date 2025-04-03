@@ -132,17 +132,6 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     setCheckedItems({ ...checkedItems, [name]: checked });
   };
 
-  const fetchSecrets = async () => {
-    try {
-      const response = await fetch("/api/get-secrets");
-      const data = await response.json();
-      return data.encryptionPassword;
-    } catch (error) {
-      console.error("Error fetching secrets:", error);
-      return null;
-    }
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -158,7 +147,7 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
        const encryptionResponse = await fetch('/api/encrypt-zip', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zipBase64: base64data, encryptionPassword }),
+        body: JSON.stringify({ zipBase64: base64data }),
       });
 
       if (!encryptionResponse.ok) {
