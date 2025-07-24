@@ -79,7 +79,7 @@ const Contact = () => {
 
             <div className="info-item">
               <i className="fab fa-linkedin"></i>
-              <h3><a href="https://www.linkedin.com/in/alibou-hamya/" target="_blank" rel="noopener noreferrer">Connect with me on LinkedIn</a></h3>
+              <h3><a href="https://www.linkedin.com/in/alibou-hamya/" target="_blank" rel="noopener noreferrer">Connect with me!</a></h3>
             </div>
             
             <div className="info-item cpa-info">
