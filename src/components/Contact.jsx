@@ -63,20 +63,23 @@ const Contact = () => {
           <p>Professional tax and accounting services serving across Canada</p>
           
           <div className="info-items">
-            <div className="info-item">
+            {/* <div className="info-item">
               <i className="fas fa-phone"></i>
               <div>
                 <h3>Contact</h3>
                 <p><a href="sms:+16137995909">+1 (613) 799-5909</a></p>
               </div>
-            </div>
+            </div> */}
             
             <div className="info-item">
               <i className="fas fa-envelope"></i>
-              <div>
-                <h3>Email</h3>
-                <p><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></p>
-              </div>
+              <h3><a href="mailto:ali@novatax.ca">ali@novatax.ca</a></h3>
+              
+            </div>
+
+            <div className="info-item">
+              <i className="fab fa-linkedin"></i>
+              <h3><a href="https://www.linkedin.com/in/alibou-hamya/" target="_blank" rel="noopener noreferrer">Connect with me on LinkedIn</a></h3>
             </div>
             
             <div className="info-item cpa-info">

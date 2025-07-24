@@ -17,6 +17,10 @@
   color: #333;
 }
 
+.contact-info p{
+  text-align: center;
+}
+
 .info-items {
   margin-top: 3rem;
 }
@@ -31,7 +35,7 @@
   font-size: 1.5rem;
   color: #007bff;
   margin-right: 1rem;
-  margin-top: 0.5rem;
+  /* margin-top: 0.5rem; */
 }
 
 .info-item h3 {
@@ -141,3 +145,30 @@
     width: 120px;
   }
 } 
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* Adjust spacing between elements */
+  margin-bottom: 15px; /* Space between each info item */
+}
+
+.info-item i {
+  /* font-size: 18px;  */
+  width: 20px; /* Fixed width for consistent alignment */
+  text-align: center;
+}
+
+.info-item h3 {
+  margin: 0; /* Remove default margin */
+  font-size: 16px; /* Adjust as needed */
+}
+
+.info-item a {
+  margin: 0; /* Remove default margin */
+  text-decoration: none;
+}
+
+.info-item a:hover {
+  text-decoration: underline;
+}
