@@ -190,7 +190,7 @@ const openClientPortal = () =>{
 
   return (
     <div className="form-container">
-      <h1>2024 Tax Checklist</h1>
+      <h1>2025 Tax Checklist</h1>
       <form onSubmit={handleSubmit} className="tax-checklist-form"  
       onKeyPress={(e) => {
         if (e.key === 'Enter') {
@@ -367,13 +367,13 @@ const openClientPortal = () =>{
             </div>
             <div className="form-group">
               <FormControl fullWidth variant="outlined">
-                <InputLabel id="marital-status-change-label">Did your marital status change in 2024?</InputLabel>
+                <InputLabel id="marital-status-change-label">Did your marital status change in 2025?</InputLabel>
                 <Select
                   labelId="marital-status-change-label"
                   name="maritalStatusChange"
                   onChange={handleChange}
                   defaultValue=""
-                  label="Did your marital status change in 2024?"
+                  label="Did your marital status change in 2025?"
                 >
                   <MenuItem value=""><em>Select</em></MenuItem>
                   <MenuItem value="Yes">Yes</MenuItem>
@@ -392,8 +392,8 @@ const openClientPortal = () =>{
                 fullWidth
                 inputProps={{
                     pattern: "\\d{4}-\\d{2}-\\d{2}", // Regex pattern for date format
-                    min: "2024-01-01",
-                    max: "2024-12-31",
+                    min: "2025-01-01",
+                    max: "2025-12-31",
                   }}
               />
             </div>
@@ -499,13 +499,13 @@ const openClientPortal = () =>{
             )}
             <div className="form-group">
               <FormControl fullWidth variant="outlined">
-                <InputLabel id="dependants-label">Did you have any dependants in 2024?</InputLabel>
+                <InputLabel id="dependants-label">Did you have any dependants in 2025?</InputLabel>
                 <Select
                   labelId="dependants-label"
                   name="dependants"
                   onChange={handleChange}
                   defaultValue=""
-                  label="Did you have any dependants in 2024?"
+                  label="Did you have any dependants in 2025?"
                 >
                   <MenuItem value=""><em>Select</em></MenuItem>
                   <MenuItem value="Yes">Yes</MenuItem>
@@ -647,7 +647,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>Did you sell/trade any Cryptocurrency in 2024?</td>
+                  <td>Did you sell/trade any Cryptocurrency in 2025?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
@@ -680,7 +680,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>Did you dispose of a property (or properties) in 2024 for which you are claiming a principal residence exemption?</td>
+                  <td>Did you dispose of a property (or properties) in 2025 for which you are claiming a principal residence exemption?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
@@ -713,7 +713,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>In 2024, did you own non-Canadian property (cash, shares, loans, trusts, real property, cryptocurrency, etc.) with an aggregate cost in excess of $100,000?</td>
+                  <td>In 2025, did you own non-Canadian property (cash, shares, loans, trusts, real property, cryptocurrency, etc.) with an aggregate cost in excess of $100,000?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
@@ -746,7 +746,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>In 2024, did you have an ownership of 1% or greater in any non-Canadian corporations?</td>
+                  <td>In 2025, did you have an ownership of 1% or greater in any non-Canadian corporations?</td>
                   <td>
                     <FormControl component="fieldset">
                         <RadioGroup
@@ -779,7 +779,7 @@ const openClientPortal = () =>{
                   )}
                 </tr>
                 <tr>
-                  <td>Did you (or your spouse) open a First Home Savings Account ("FHSA) in 2024?</td>
+                  <td>Did you (or your spouse) open a First Home Savings Account ("FHSA) in 2025?</td>
                   <td>
                     <FormControl component="fieldset">
                         <RadioGroup
@@ -813,7 +813,7 @@ const openClientPortal = () =>{
                 </tr>
                 {formData.province === 'BC' && (
                 <tr>
-                  <td>In 2024, did you rent a property (which you resided in) in BC under a tenancy agreement, licence, sublease agreement?</td>
+                  <td>In 2025, did you rent a property (which you resided in) in BC under a tenancy agreement, licence, sublease agreement?</td>
                   <td>
                     <FormControl component="fieldset">
                         <RadioGroup
@@ -1074,7 +1074,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.realEstateSale}
                 onChange={handleCheckboxChange}
               />
-              Did you sell any real estate in 2024? (Provide purchase & sale details)
+              Did you sell any real estate in 2025? (Provide purchase & sale details)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1085,7 +1085,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.realEstateChange}
                 onChange={handleCheckboxChange}
               />
-              Did you change the use of any real estate (personal-use to rental or vice versa) in 2024?
+              Did you change the use of any real estate (personal-use to rental or vice versa) in 2025?
             </label>
           </div>
           <h3>✅ Self-Employed & Rental Income</h3>
@@ -1097,7 +1097,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.selfEmployedIncome}
                 onChange={handleCheckboxChange}
               />
-              Business, Professional, Commission, or Farming Income (📍Please download and fill out 2024 Business Schedule located in the Resources section of the Client Portal)
+              Business, Professional, Commission, or Farming Income (📍Please download and fill out 2025 Business Schedule located in the Resources section of the Client Portal)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1108,7 +1108,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.rentalIncome}
                 onChange={handleCheckboxChange}
               />
-              Rental or AirBnB Income (📍Please download and fill out 2024 Rental Schedule located in the Resources section of the Client Portal)
+              Rental or AirBnB Income (📍Please download and fill out 2025 Rental Schedule located in the Resources section of the Client Portal)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1119,7 +1119,7 @@ const openClientPortal = () =>{
                 checked={checkedItems.gstHstRegistrant}
                 onChange={handleCheckboxChange}
               />
-              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number on the 2024 Business Schedule.
+              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number on the 2025 Business Schedule.
             </label>
           </div>
           <h3>✅ Other Income</h3>

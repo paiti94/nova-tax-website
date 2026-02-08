@@ -44,7 +44,7 @@ function App() {
           <Route path="/services/cfo-services" element={<CFOServices />} />
           <Route path="/blog" element={<Blog />} />
           <Route path="/blog/:slug" element={<BlogPost />} />
-          <Route path="/2024-checklist" element={<CheckListPage />} />
+          <Route path="/2025-checklist" element={<CheckListPage />} />
         </Routes>
       </Suspense>
       <Footer />
