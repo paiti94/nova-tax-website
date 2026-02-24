@@ -28,67 +28,6 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     );
 };
 
-const handleUploadToSharePoint = async () => {
-  try {
-    setLoading(true);
-
-    const payload = {
-      meta: {
-        taxYear: "2025",
-        serviceType: "T1",
-        submittedAtISO: new Date().toISOString(),
-        formVersion: 1,
-        isSpouseIncluded,
-      },
-      client: {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        dob: formData.dob,
-        sin: formData.sin, // you asked to include ALL fields
-        address1: formData.address1,
-        address2: formData.address2,
-        city: formData.city,
-        province: formData.province,
-        postalCode: formData.postalCode,
-      },
-      spouse: isSpouseIncluded
-        ? {
-            firstName: formData.spouseFirstName,
-            lastName: formData.spouseLastName,
-            email: formData.spouseEmail,
-            phone: formData.spousePhone,
-            dob: formData.spouseDob,
-            sin: formData.spouseSin,
-          }
-        : null,
-
-      // Include the rest of your long formData fields as-is:
-      formData,        // includes everything you defined in state
-      checkedItems,    // includes every checkbox boolean
-    };
-
-    const res = await fetch("/api/submit-checklist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(text || `Submit failed: ${res.status}`);
-    }
-
-    alert("Submitted! We’ll email your secure upload folder link shortly.");
-  } catch (err) {
-    console.error(err);
-    alert("Submission failed. Please try again or email us.");
-  } finally {
-    setLoading(false);
-  }
-};
-
  const TaxChecklistForm =  () => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -185,6 +124,68 @@ const handleUploadToSharePoint = async () => {
     toolCosts: false,
     t4fhsa: false,
   });
+
+
+const handleUploadToSharePoint = async () => {
+  try {
+    setLoading(true);
+
+    const payload = {
+      meta: {
+        taxYear: "2025",
+        serviceType: "T1",
+        submittedAtISO: new Date().toISOString(),
+        formVersion: 1,
+        isSpouseIncluded,
+      },
+      client: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        dob: formData.dob,
+        sin: formData.sin, // you asked to include ALL fields
+        address1: formData.address1,
+        address2: formData.address2,
+        city: formData.city,
+        province: formData.province,
+        postalCode: formData.postalCode,
+      },
+      spouse: isSpouseIncluded
+        ? {
+            firstName: formData.spouseFirstName,
+            lastName: formData.spouseLastName,
+            email: formData.spouseEmail,
+            phone: formData.spousePhone,
+            dob: formData.spouseDob,
+            sin: formData.spouseSin,
+          }
+        : null,
+
+      // Include the rest of your long formData fields as-is:
+      formData,        // includes everything you defined in state
+      checkedItems,    // includes every checkbox boolean
+    };
+
+    const res = await fetch("/api/submit-checklist", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(text || `Submit failed: ${res.status}`);
+    }
+
+    alert("Submitted! We’ll email your secure upload folder link shortly.");
+  } catch (err) {
+    console.error(err);
+    alert("Submission failed. Please try again or email us.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
