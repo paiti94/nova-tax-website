@@ -27,6 +27,74 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
         </div>
     );
 };
+
+const handleUploadToSharePoint = async () => {
+  try {
+    setLoading(true);
+
+    // Build the JSON payload you’ll store in SharePoint
+    const payload = {
+      meta: {
+        taxYear: "2025",
+        serviceType: "T1",
+        submittedAtISO: new Date().toISOString(),
+        formVersion: 1,
+        isSpouseIncluded,
+      },
+      client: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+      },
+      spouse: isSpouseIncluded
+        ? {
+            firstName: formData.spouseFirstName,
+            lastName: formData.spouseLastName,
+            email: formData.spouseEmail,
+            phone: formData.spousePhone,
+          }
+        : null,
+
+      // IMPORTANT: You are currently collecting SINs.
+      // I strongly recommend NOT sending SIN through this automation on day 1.
+      // Keep SIN only in the PDF (client uploads) or strip it here.
+      // If you insist on including SIN, do it knowingly.
+      checklist: {
+        formData: {
+          ...formData,
+          sin: undefined,
+          spouseSin: undefined,
+        },
+        checkedItems,
+      },
+    };
+
+    const res = await fetch("/api/provision-upload-folder", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const text = await res.text().catch(() => "");
+      throw new Error(`Provision failed (${res.status}): ${text}`);
+    }
+
+    const { uploadLink } = await res.json();
+
+    // UX: open the folder immediately, plus the client gets it by email
+    window.open(uploadLink, "_blank");
+
+    alert("We created your secure upload folder and emailed you the link. It should open in a new tab.");
+  } catch (err) {
+    console.error(err);
+    alert("We couldn’t create your upload folder right now. Please try again or email us.");
+  } finally {
+    setLoading(false);
+  }
+};
+
  const TaxChecklistForm =  () => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
@@ -1379,11 +1447,17 @@ const openClientPortal = () =>{
       {showAlert && (
         <>
         <div className="overlay" onClick={handleCloseAlert}></div>
-        <CustomAlert
+        {/* <CustomAlert
             message="Please Upload the Checklist to your Client Shared Folder on the Client Portal."
             onClose={handleCloseAlert}
             onDownload={handleDownloadPDF}
             onUpload={openClientPortal}
+        /> */}
+        <CustomAlert
+          message="Please upload your checklist and documents securely."
+          onClose={handleCloseAlert}
+          onDownload={handleDownloadPDF}
+          onUpload={handleUploadToSharePoint}
         />
         </>
     )}
