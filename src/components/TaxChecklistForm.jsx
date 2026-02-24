@@ -32,7 +32,6 @@ const handleUploadToSharePoint = async () => {
   try {
     setLoading(true);
 
-    // Build the JSON payload you’ll store in SharePoint
     const payload = {
       meta: {
         taxYear: "2025",
@@ -46,6 +45,13 @@ const handleUploadToSharePoint = async () => {
         lastName: formData.lastName,
         email: formData.email,
         phone: formData.phone,
+        dob: formData.dob,
+        sin: formData.sin, // you asked to include ALL fields
+        address1: formData.address1,
+        address2: formData.address2,
+        city: formData.city,
+        province: formData.province,
+        postalCode: formData.postalCode,
       },
       spouse: isSpouseIncluded
         ? {
@@ -53,24 +59,17 @@ const handleUploadToSharePoint = async () => {
             lastName: formData.spouseLastName,
             email: formData.spouseEmail,
             phone: formData.spousePhone,
+            dob: formData.spouseDob,
+            sin: formData.spouseSin,
           }
         : null,
 
-      // IMPORTANT: You are currently collecting SINs.
-      // I strongly recommend NOT sending SIN through this automation on day 1.
-      // Keep SIN only in the PDF (client uploads) or strip it here.
-      // If you insist on including SIN, do it knowingly.
-      checklist: {
-        formData: {
-          ...formData,
-          sin: undefined,
-          spouseSin: undefined,
-        },
-        checkedItems,
-      },
+      // Include the rest of your long formData fields as-is:
+      formData,        // includes everything you defined in state
+      checkedItems,    // includes every checkbox boolean
     };
 
-    const res = await fetch("/api/provision-upload-folder", {
+    const res = await fetch("/api/submit-checklist", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -78,18 +77,13 @@ const handleUploadToSharePoint = async () => {
 
     if (!res.ok) {
       const text = await res.text().catch(() => "");
-      throw new Error(`Provision failed (${res.status}): ${text}`);
+      throw new Error(text || `Submit failed: ${res.status}`);
     }
 
-    const { uploadLink } = await res.json();
-
-    // UX: open the folder immediately, plus the client gets it by email
-    window.open(uploadLink, "_blank");
-
-    alert("We created your secure upload folder and emailed you the link. It should open in a new tab.");
+    alert("Submitted! We’ll email your secure upload folder link shortly.");
   } catch (err) {
     console.error(err);
-    alert("We couldn’t create your upload folder right now. Please try again or email us.");
+    alert("Submission failed. Please try again or email us.");
   } finally {
     setLoading(false);
   }
@@ -1453,8 +1447,8 @@ const openClientPortal = () =>{
             onDownload={handleDownloadPDF}
             onUpload={openClientPortal}
         /> */}
-        <CustomAlert
-          message="Please upload your checklist and documents securely."
+       <CustomAlert
+          message="Please upload your documents securely."
           onClose={handleCloseAlert}
           onDownload={handleDownloadPDF}
           onUpload={handleUploadToSharePoint}
