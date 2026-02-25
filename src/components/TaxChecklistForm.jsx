@@ -102,7 +102,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
           `Spouse's First Name: ${formData.spouseFirstName || ""}`,
           `Spouse's Last Name: ${formData.spouseLastName || ""}`,
           `Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob || ""}`,
-          `Spouse SIN: ${maskSin(formData.spouseSin)}`,
+          `Spouse SIN: ${formData.spouseSin || ""}`,
           `Spouse Email: ${formData.spouseEmail || ""}`,
           `Spouse Phone: ${formData.spousePhone || ""}`,
           "",
