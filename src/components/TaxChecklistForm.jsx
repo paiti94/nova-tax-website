@@ -12,6 +12,47 @@ import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
 import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
 
+const ITEM_LABELS = {
+  employmentIncome: "T4 - Employment Income",
+  T4PS: "T4PS - Employee Profit-Sharing Plan",
+  T4AOAS: "T4A(OAS) - Old Age Security",
+  T4AP: "T4A(P) - Canada Pension Plan (CPP) Benefits",
+  T4A: "T4A, T4RSP, T4RIF - Retirement or Other Pension Income",
+  T4E: "T4E - Employment Insurance (EI) Benefits",
+  rc62: "RC62 - Universal Child Care Benefits",
+  t5007: "T5007 - Workers' Compensation or Social Assistance",
+  t5: "T5 - Interest, Dividends, or Investment Income",
+  t3: "T3 - Mutual Funds & Trust Income",
+  t5013: "T5013 - Partnership Income/Losses",
+  t5008: "T5008 - Capital Gains/Losses from Investment Sales",
+  annualInvestmentPackage: "Annual Investment Package",
+  realEstateSale: "Did you sell any real estate in 2025? (Provide purchase & sale details)",
+  realEstateChange: "Did you change the use of any real estate (personal-use to rental or vice versa) in 2025?",
+  selfEmployedIncome: "Business, Professional, Commission, or Farming Income",
+  rentalIncome: "Rental Income",
+  gstHstRegistrant: "GST/HST Registrant",
+  childSupport: "Child or Spousal Support Received",
+  stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
+  rrspContributions: "RRSP Contributions",
+  t4fhsa: "T4FHSA - FHSA Contributions",
+  unionDues: "Union or Professional Dues",
+  movingExpenses: "Moving Expenses",
+  employmentExpenses: "Employment or Commission Expenses (T2200 required)",
+  investmentLosses: "Investment Losses & Carrying Charges",
+  childCareExpenses: "Child Care Expenses",
+  attendantCare: "Attendant Care Expenses",
+  medicalExpenses: "Medical & Dental Expenses",
+  disabilityTaxCredit: "Disability Tax Credit",
+  adoptionExpenses: "Adoption Expenses",
+  tuitionFees: "Tuition Fees",
+  studentLoanInterest: "Student Loan Interest Paid",
+  firstTimeHomeBuyer: "First-Time Home Buyer's Tax Credit",
+  clergyDeduction: "Clergy Residence Deduction (T1223)",
+  charitableDonations: "Charitable & Political Donations",
+  alimony: "Alimony/Spousal Support Paid",
+  covidRepayment: "COVID-19 Benefits Repayment",
+  homeRenovationCredit: "Multigenerational Home Renovation Credit",
+};
 
 const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     return (
@@ -26,6 +67,51 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
             </div>
         </div>
     );
+};
+
+const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
+  const checkedList = Object.entries(checkedItems || {})
+    .filter(([, v]) => v === true)
+    .map(([k]) => `- ${ITEM_LABELS[k] || k}`)
+    .join("\n");
+
+  return [
+    "2025 Nova Tax Checklist",
+    "====================================",
+    "",
+    "Personal Information",
+    `First Name: ${formData.firstName || ""}`,
+    `Last Name: ${formData.lastName || ""}`,
+    `DOB (YYYY-MM-DD): ${formData.dob || ""}`,
+    `SIN: ${formData.sin || ""}`, // ✅ mask for admin summary
+    `Email: ${formData.email || ""}`,
+    `Phone: ${formData.phone || ""}`,
+    `Address Line 1: ${formData.address1 || ""}`,
+    `Address Line 2: ${formData.address2 || ""}`,
+    `City: ${formData.city || ""}, Province: ${formData.province || ""}, Postal Code: ${formData.postalCode || ""}`,
+    "",
+    "Marital Status",
+    `Marital Status: ${formData.maritalStatus || ""}`,
+    `Did your marital status change in 2025? ${formData.maritalStatusChange || ""}`,
+    `Date of Marital Status Change: ${formData.maritalStatusChangeDate || ""}`,
+    `Will we be preparing spouse's return as well? ${isSpouseIncluded ? "Yes" : "No"}`,
+    "",
+    ...(isSpouseIncluded
+      ? [
+          "Spouse's Information",
+          `Spouse's First Name: ${formData.spouseFirstName || ""}`,
+          `Spouse's Last Name: ${formData.spouseLastName || ""}`,
+          `Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob || ""}`,
+          `Spouse SIN: ${maskSin(formData.spouseSin)}`,
+          `Spouse Email: ${formData.spouseEmail || ""}`,
+          `Spouse Phone: ${formData.spousePhone || ""}`,
+          "",
+        ]
+      : []),
+    "Checked Items",
+    checkedList || "- (none)",
+    "",
+  ].join("\n");
 };
 
  const TaxChecklistForm =  () => {
@@ -130,6 +216,7 @@ const handleUploadToSharePoint = async () => {
   try {
     setLoading(true);
 
+    const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
     const payload = {
       meta: {
         taxYear: "2025",
@@ -165,6 +252,7 @@ const handleUploadToSharePoint = async () => {
       // Include the rest of your long formData fields as-is:
       formData,        // includes everything you defined in state
       checkedItems,    // includes every checkbox boolean
+      summaryText,
     };
 
     const res = await fetch("/api/submit-checklist", {
