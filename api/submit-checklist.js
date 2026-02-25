@@ -63,6 +63,7 @@ export default async function handler(req, res) {
             ClientFirstName: firstName,
             ClientLastName: lastName,
             PayloadJson: JSON.stringify(payload),
+            SummaryText: payload.summaryText,
             Status: "Pending",
           },
         }),
