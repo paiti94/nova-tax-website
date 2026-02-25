@@ -220,7 +220,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
 
   // ---- Final output ----
   return [
-    "🧾 2025 T1 Intake Summary (Nova Tax)",
+    "2025 T1 Intake Summary (Nova Tax)",
     "-----------------------------------",
     "",
     "Client",
