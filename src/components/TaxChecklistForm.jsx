@@ -11,6 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
 import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
+import { generateIntakeSummaryPDF } from "./SummaryPDFGenerator";
 
 const ITEM_LABELS = {
   employmentIncome: "T4 - Employment Income",
@@ -174,7 +175,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
 
   const clientLines = [
     line("Name", [formData.firstName, formData.lastName].filter(Boolean).join(" ")),
-    line("Date of Birth", formData.dob),
+    line("Date of Birth(YYYY-MM-DD)", formData.dob),
     line("SIN", formData.sin),       // masked
     line("Email", formData.email),
     line("Phone", fmtPhone(formData.phone)),
@@ -336,12 +337,33 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     t4fhsa: false,
   });
 
+const blobToBase64 = (blob) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result; // "data:application/pdf;base64,...."
+      const base64 = String(dataUrl).split(",")[1] || "";
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 
 const handleUploadToSharePoint = async () => {
   try {
     setLoading(true);
 
-    const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
+    // const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
+   // ✅ Create staff summary PDF (clean + readable)
+    const summaryPdfBlob = await generateIntakeSummaryPDF({
+      formData,
+      checkedItems,
+      isSpouseIncluded,
+      taxYear: "2025",
+    });
+
+    const summaryPdfBase64 = await blobToBase64(summaryPdfBlob);
+
     const payload = {
       meta: {
         taxYear: "2025",
@@ -377,7 +399,12 @@ const handleUploadToSharePoint = async () => {
       // Include the rest of your long formData fields as-is:
       formData,        // includes everything you defined in state
       checkedItems,    // includes every checkbox boolean
-      summaryText,
+      // summaryText,
+       summaryPdf: {
+        fileName: `T1_Intake_Summary_${formData.lastName || "Client"}_${formData.firstName || ""}_2025.pdf`,
+        contentType: "application/pdf",
+        base64: summaryPdfBase64,
+      },
     };
 
     const res = await fetch("/api/submit-checklist", {
