@@ -26,8 +26,8 @@ const ITEM_LABELS = {
   t5013: "T5013 - Partnership Income/Losses",
   t5008: "T5008 - Capital Gains/Losses from Investment Sales",
   annualInvestmentPackage: "Annual Investment Package",
-  realEstateSale: "Did you sell any real estate in 2025? (Provide purchase & sale details)",
-  realEstateChange: "Did you change the use of any real estate (personal-use to rental or vice versa) in 2025?",
+  realEstateSale: "Sold real estate in 2025 (Provide purchase & sale details)",
+  realEstateChange: "Changed the use of any real estate (personal-use to rental or vice versa) in 2025",
   selfEmployedIncome: "Business, Professional, Commission, or Farming Income",
   rentalIncome: "Rental Income",
   gstHstRegistrant: "GST/HST Registrant",
@@ -69,49 +69,174 @@ const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
     );
 };
 
-const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
-  const checkedList = Object.entries(checkedItems || {})
-    .filter(([, v]) => v === true)
-    .map(([k]) => `- ${ITEM_LABELS[k] || k}`)
-    .join("\n");
+const fmtPhone = (phone) => {
+  const p = String(phone || "").replace(/\D/g, "");
+  if (p.length === 10) return `${p.slice(0, 3)}-${p.slice(3, 6)}-${p.slice(6)}`;
+  return phone || "";
+};
 
-  return [
-    "2025 Nova Tax Checklist",
-    "====================================",
-    "",
-    "Personal Information",
-    `First Name: ${formData.firstName || ""}`,
-    `Last Name: ${formData.lastName || ""}`,
-    `DOB (YYYY-MM-DD): ${formData.dob || ""}`,
-    `SIN: ${formData.sin || ""}`, // ✅ mask for admin summary
-    `Email: ${formData.email || ""}`,
-    `Phone: ${formData.phone || ""}`,
-    `Address Line 1: ${formData.address1 || ""}`,
-    `Address Line 2: ${formData.address2 || ""}`,
-    `City: ${formData.city || ""}, Province: ${formData.province || ""}, Postal Code: ${formData.postalCode || ""}`,
-    "",
-    "Marital Status",
-    `Marital Status: ${formData.maritalStatus || ""}`,
-    `Did your marital status change in 2025? ${formData.maritalStatusChange || ""}`,
-    `Date of Marital Status Change: ${formData.maritalStatusChangeDate || ""}`,
-    `Will we be preparing spouse's return as well? ${isSpouseIncluded ? "Yes" : "No"}`,
-    "",
-    ...(isSpouseIncluded
+const line = (label, value) => (value ? `${label}: ${value}` : null);
+
+const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
+  // ---- Categorize checked items (using your keys) ----
+  const CATEGORIES = [
+    {
+      title: "Income Documents (Slips & Statements)",
+      keys: [
+        "employmentIncome",
+        "T4PS",
+        "T4AOAS",
+        "T4AP",
+        "T4A",
+        "T4E",
+        "rc62",
+        "t5007",
+        "t5",
+        "t3",
+        "t5013",
+        "t5008",
+        "annualInvestmentPackage",
+        "realEstateSale",
+        "realEstateChange",
+        "selfEmployedIncome",
+        "rentalIncome",
+        "gstHstRegistrant",
+        "childSupport",
+        "stockOptions",
+      ],
+    },
+    {
+      title: "Deductions & Credits (Receipts / Forms)",
+      keys: [
+        "rrspContributions",
+        "t4fhsa",
+        "unionDues",
+        "movingExpenses",
+        "employmentExpenses",
+        "investmentLosses",
+        "childCareExpenses",
+        "attendantCare",
+        "medicalExpenses",
+        "disabilityTaxCredit",
+        "adoptionExpenses",
+        "tuitionFees",
+        "studentLoanInterest",
+        "firstTimeHomeBuyer",
+        "clergyDeduction",
+        "charitableDonations",
+        "alimony",
+        "covidRepayment",
+        "homeRenovationCredit",
+      ],
+    },
+  ];
+
+  const getCheckedLabels = (keys) =>
+    keys
+      .filter((k) => checkedItems?.[k] === true)
+      .map((k) => ITEM_LABELS[k] || k);
+
+  const sections = CATEGORIES.map((cat) => {
+    const labels = getCheckedLabels(cat.keys);
+    if (labels.length === 0) return null;
+
+    return [
+      `${cat.title}`,
+      ...labels.map((t) => `  • ${t}`),
+      "",
+    ].join("\n");
+  }).filter(Boolean);
+
+  // fallback: if you ever add new keys and forget categorizing them
+  const categorizedKeys = new Set(CATEGORIES.flatMap((c) => c.keys));
+  const uncategorized = Object.entries(checkedItems || {})
+    .filter(([k, v]) => v === true && !categorizedKeys.has(k))
+    .map(([k]) => ITEM_LABELS[k] || k);
+
+  if (uncategorized.length) {
+    sections.push(
+      [
+        "Other Selected Items",
+        ...uncategorized.map((t) => `  • ${t}`),
+        "",
+      ].join("\n")
+    );
+  }
+
+  // ---- Build summary blocks ----
+  const addressBlock = [
+    formData.address1,
+    formData.address2,
+    [formData.city, formData.province, formData.postalCode].filter(Boolean).join(" "),
+  ]
+    .filter(Boolean)
+    .join("\n  ");
+
+  const clientLines = [
+    line("Name", [formData.firstName, formData.lastName].filter(Boolean).join(" ")),
+    line("Date of Birth", formData.dob),
+    line("SIN", formData.sin),       // masked
+    line("Email", formData.email),
+    line("Phone", fmtPhone(formData.phone)),
+    addressBlock ? `Address:\n  ${addressBlock}` : null,
+  ].filter(Boolean);
+
+  const spouseLines = isSpouseIncluded
+    ? [
+        line("Name", [formData.spouseFirstName, formData.spouseLastName].filter(Boolean).join(" ")),
+        line("Date of Birth", formData.spouseDob),
+        line("SIN", formData.spouseSin), // masked
+        line("Email", formData.spouseEmail),
+        line("Phone", fmtPhone(formData.spousePhone)),
+      ].filter(Boolean)
+    : [];
+
+  const householdLines = [
+    line("Marital Status", formData.maritalStatus),
+    line("Status changed in 2025", formData.maritalStatusChange),
+    line("Change date", formData.maritalStatusChangeDate),
+    `Spouse return included: ${isSpouseIncluded ? "Yes" : "No"}`,
+  ].filter(Boolean);
+
+  // dependants (if present)
+  const dependantBlock =
+    formData.dependants === "Yes"
       ? [
-          "Spouse's Information",
-          `Spouse's First Name: ${formData.spouseFirstName || ""}`,
-          `Spouse's Last Name: ${formData.spouseLastName || ""}`,
-          `Spouse's DOB (YYYY-MM-DD): ${formData.spouseDob || ""}`,
-          `Spouse SIN: ${formData.spouseSin || ""}`,
-          `Spouse Email: ${formData.spouseEmail || ""}`,
-          `Spouse Phone: ${formData.spousePhone || ""}`,
+          "Dependants",
+          "  • Yes",
+          formData.dependantInfo ? `  • Details: ${formData.dependantInfo}` : null,
           "",
         ]
-      : []),
-    "Checked Items",
-    checkedList || "- (none)",
+          .filter(Boolean)
+          .join("\n")
+      : formData.dependants
+      ? ["Dependants", `  • ${formData.dependants}`, ""].join("\n")
+      : null;
+
+  const notesBlock = formData.notes
+    ? ["Notes / Extra Info", `  ${formData.notes}`, ""].join("\n")
+    : null;
+
+  // ---- Final output ----
+  return [
+    "🧾 2025 T1 Intake Summary (Nova Tax)",
+    "-----------------------------------",
     "",
-  ].join("\n");
+    "Client",
+    ...clientLines.map((l) => `  ${l}`),
+    "",
+    "Household",
+    ...householdLines.map((l) => `  ${l}`),
+    "",
+    ...(isSpouseIncluded
+      ? ["Spouse", ...spouseLines.map((l) => `  ${l}`), ""]
+      : []),
+    dependantBlock,
+    ...(sections.length ? ["Selected Checklist Items", "", ...sections] : ["Selected Checklist Items", "  • (none)", ""]),
+    notesBlock,
+  ]
+    .filter(Boolean)
+    .join("\n");
 };
 
  const TaxChecklistForm =  () => {
