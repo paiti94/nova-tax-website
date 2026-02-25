@@ -11,7 +11,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Radio from '@mui/material/Radio';
 import InputMask from 'react-input-mask';
 import CloseIcon from '@mui/icons-material/Close'; // Import the Close icon
-// import { generateIntakeSummaryPDF } from "./SummaryPDFGenerator";
+import { generateIntakeSummaryPDF } from "./SummaryPDFGenerator";
 
 const ITEM_LABELS = {
   employmentIncome: "T4 - Employment Income",
@@ -219,7 +219,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     : null;
 
   // ---- Final output ----
-  const summaryLines = [
+  const summaryLines =[
     "2025 T1 Intake Summary (Nova Tax)",
     "-----------------------------------",
     "",
@@ -235,7 +235,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     dependantBlock,
     ...(sections.length ? ["Selected Checklist Items", "", ...sections] : ["Selected Checklist Items", "  • (none)", ""]),
     notesBlock,
-  ].filter((line) => line !== null && line !== undefined);
+   ].filter((line) => line !== null && line !== undefined);
 
   const spacedLines = summaryLines.reduce((acc, line) => {
     if (line === '' && acc[acc.length - 1] === '') {
@@ -345,17 +345,17 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     t4fhsa: false,
   });
 
-// const blobToBase64 = (blob) =>
-//   new Promise((resolve, reject) => {
-//     const reader = new FileReader();
-//     reader.onload = () => {
-//       const dataUrl = reader.result; // "data:application/pdf;base64,...."
-//       const base64 = String(dataUrl).split(",")[1] || "";
-//       resolve(base64);
-//     };
-//     reader.onerror = reject;
-//     reader.readAsDataURL(blob);
-//   });
+const blobToBase64 = (blob) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      const dataUrl = reader.result; // "data:application/pdf;base64,...."
+      const base64 = String(dataUrl).split(",")[1] || "";
+      resolve(base64);
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
 
 const handleUploadToSharePoint = async () => {
   try {
@@ -363,14 +363,14 @@ const handleUploadToSharePoint = async () => {
 
     const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
    // ✅ Create staff summary PDF (clean + readable)
-    // const summaryPdfBlob = await generateIntakeSummaryPDF({
-    //   formData,
-    //   checkedItems,
-    //   isSpouseIncluded,
-    //   taxYear: "2025",
-    // });
+    const summaryPdfBlob = await generateIntakeSummaryPDF({
+      formData,
+      checkedItems,
+      isSpouseIncluded,
+      taxYear: "2025",
+    });
 
-    // const summaryPdfBase64 = await blobToBase64(summaryPdfBlob);
+    const summaryPdfBase64 = await blobToBase64(summaryPdfBlob);
 
     const payload = {
       meta: {
@@ -408,11 +408,11 @@ const handleUploadToSharePoint = async () => {
       formData,        // includes everything you defined in state
       checkedItems,    // includes every checkbox boolean
       summaryText,
-      //  summaryPdf: {
-      //   fileName: `T1_Intake_Summary_${formData.lastName || "Client"}_${formData.firstName || ""}_2025.pdf`,
-      //   contentType: "application/pdf",
-      //   base64: summaryPdfBase64,
-      // },
+       summaryPdf: {
+        fileName: `T1_Intake_Summary_${formData.lastName || "Client"}_${formData.firstName || ""}_2025.pdf`,
+        contentType: "application/pdf",
+        base64: summaryPdfBase64,
+      },
     };
 
     const res = await fetch("/api/submit-checklist", {
