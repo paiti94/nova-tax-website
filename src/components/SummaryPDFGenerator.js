@@ -213,7 +213,7 @@ export async function generateIntakeSummaryPDF({
   };
 
   // ===== Header =====
-  drawText(`🧾 ${taxYear} T1 Intake Summary (Nova Tax)`, { bold: true, size: 16 });
+  drawText(`${taxYear} T1 Intake Summary (Nova Tax)`, { bold: true, size: 16 });
   drawText(`Generated: ${new Date().toLocaleString()}`, { size: 10 });
   y -= 6;
   drawHr();
