@@ -199,6 +199,85 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     `Spouse return included: ${isSpouseIncluded ? "Yes" : "No"}`,
   ].filter(Boolean);
 
+  const formatAnswer = (value) => (value ? value : "Not answered");
+
+  const questionnaireDefinitions = [
+    {
+      key: "citizenship",
+      spouseKey: "spouseCitizenship",
+      label: "Canadian citizen?",
+    },
+    {
+      key: "citizenshipElections",
+      spouseKey: "spouseCitizenshipElections",
+      label: "Authorize CRA to share info with Elections Canada?",
+    },
+    {
+      key: "Uscitizenship",
+      spouseKey: "spouseUscitizenship",
+      label: "US citizen or green card holder?",
+    },
+    {
+      key: "cryptocurrency",
+      spouseKey: "spouseCryptocurrency",
+      label: "Sold or traded cryptocurrency in 2025?",
+    },
+    {
+      key: "propertyExemption",
+      spouseKey: "spousePropertyExemption",
+      label: "Disposed property and claiming principal residence exemption in 2025?",
+    },
+    {
+      key: "nonCanadianProperty",
+      spouseKey: "spouseNonCanadianProperty",
+      label: "Owned non-Canadian property > $100k in 2025?",
+    },
+    {
+      key: "ownershipNonCanadian",
+      spouseKey: "spouseOwnershipNonCanadian",
+      label: "Owned ≥1% of a non-Canadian corporation?",
+    },
+    {
+      key: "fhsa",
+      spouseKey: "spouseFhsa",
+      label: "Opened a First Home Savings Account (FHSA) in 2025?",
+    },
+    {
+      key: "rentalProperty",
+      spouseKey: "spouseRentalProperty",
+      label: "Rented a BC property you lived in during 2025?",
+      showWhen: (data) => data.province === "BC",
+    },
+    {
+      key: "trustArrangement",
+      spouseKey: "spouseTrustArrangement",
+      label: "Bare trust or other trust arrangement?",
+    },
+    {
+      key: "disabilityCredit",
+      spouseKey: "spouseDisabilityCredit",
+      label: "Claiming the disability tax credit for any family member?",
+    },
+  ];
+
+  const questionnaireLines = questionnaireDefinitions
+    .filter((q) => (typeof q.showWhen === "function" ? q.showWhen(formData) : true))
+    .map((q) => {
+      const selfAnswer = formatAnswer(formData[q.key]);
+      const spouseAnswer =
+        isSpouseIncluded && q.spouseKey ? formatAnswer(formData[q.spouseKey]) : null;
+
+      if (spouseAnswer !== null) {
+        return `  • ${q.label}\n    Yourself: ${selfAnswer}\n    Spouse: ${spouseAnswer}`;
+      }
+
+      return `  • ${q.label}: ${selfAnswer}`;
+    });
+
+  const questionnaireBlock = questionnaireLines.length
+    ? ["Questionnaire Responses", ...questionnaireLines, ""].join("\n")
+    : null;
+
   // dependants (if present)
   const dependantBlock =
     formData.dependants === "Yes"
@@ -233,6 +312,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
       ? ["Spouse", ...spouseLines.map((l) => `  ${l}`), ""]
       : []),
     dependantBlock,
+    questionnaireBlock,
     ...(sections.length ? ["Selected Checklist Items", "", ...sections] : ["Selected Checklist Items", "  • (none)", ""]),
     notesBlock,
    ].filter((line) => line !== null && line !== undefined);
