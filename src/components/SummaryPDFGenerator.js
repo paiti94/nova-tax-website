@@ -70,7 +70,7 @@ const ITEM_LABELS = {
   t5008: "T5008 - Capital Gains/Losses from Investment Sales",
   annualInvestmentPackage: "Annual Investment Package",
   realEstateSale: "Sold real estate in 2025 (Provide purchase & sale details)",
-  realEstateChange: "Changed use of real estate (personal ↔ rental) in 2025",
+  realEstateChange: "Changed use of real estate (personal torental) in 2025",
   selfEmployedIncome: "Business / Professional / Commission / Farming Income",
   rentalIncome: "Rental / AirBnB Income",
   gstHstRegistrant: "GST/HST Registrant",
