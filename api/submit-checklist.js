@@ -260,7 +260,8 @@ function makeClientKey({ firstName, lastName, email }) {
     .replace(/\./g, "_")
     .replace(/\s+/g, "_");
 
-  return `${safeFirst}_${safeLast}__${safeEmail}`;
+  // return `${safeFirst}_${safeLast}__${safeEmail}`;
+  return `${safeFirst}_${safeLast}`;
 }
 
 // Accepts either raw base64 OR a data URL

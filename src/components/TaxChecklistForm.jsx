@@ -1736,7 +1736,7 @@ const blobToBase64 = (blob) =>
         <>
           <div className="overlay" onClick={handleCloseAlert}></div>
           <CustomAlert
-            message="The checklist is downloaded on your computer. We'll email your secure upload link shortly."
+            message="The checklist is downloaded on your computer. Please check your download folder. We'll email your secure upload link shortly."
             onClose={handleCloseAlert}
           />
         </>
