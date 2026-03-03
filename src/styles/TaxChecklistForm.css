@@ -7,6 +7,7 @@
     border-radius: 8px;
     background-color: #f9f9f9;
     margin-top: 10rem;
+    margin-bottom: 10rem;
   }
   
   h1 {
@@ -36,13 +37,12 @@
   }
 
   .checklist-container {
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Space between the two checklists */
+    /* display: flex; 
+    justify-content: space-between;  */
   }
   
   .existing-checklist,
   .new-checklist {
-    width: 48%; /* Adjust width as needed */
     padding: 10px;
     border: 1px solid #ccc; /* Optional: Add a border */
     border-radius: 5px; /* Optional: Add rounded corners */

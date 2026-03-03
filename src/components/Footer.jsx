@@ -77,7 +77,7 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2025 Nova Tax LLP. All rights reserved. Site by Jinny K</p>
+        <p>&copy; 2026 Nova Tax LLP. All rights reserved. Site by Jinny B</p>
       </div>
     </footer>
   );

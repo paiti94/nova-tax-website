@@ -55,20 +55,14 @@ const ITEM_LABELS = {
   homeRenovationCredit: "Multigenerational Home Renovation Credit",
 };
 
-const CustomAlert = ({ message, onClose, onDownload, onUpload }) => {
-    return (
-        <div className="custom-alert">
-          <button onClick={onClose} className="close-button">
-                <CloseIcon /> {/* Use the Close icon here */}
-            </button> {/* X icon */}
-            <p>{message}</p>
-            <div className="button-container-submit">
-               
-                <button onClick={onUpload} className="upload-button">Upload to Client Portal</button>
-            </div>
-        </div>
-    );
-};
+const CustomAlert = ({ message, onClose }) => (
+  <div className="custom-alert">
+    <button onClick={onClose} className="close-button">
+      <CloseIcon />
+    </button>
+    <p>{message}</p>
+  </div>
+);
 
 const fmtPhone = (phone) => {
   const p = String(phone || "").replace(/\D/g, "");
@@ -331,7 +325,6 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
  const TaxChecklistForm =  () => {
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
-  const [pdfBlob, setPdfBlob] = useState(null); // State to hold the PDF blob
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     firstName: '',
@@ -437,84 +430,6 @@ const blobToBase64 = (blob) =>
     reader.readAsDataURL(blob);
   });
 
-const handleUploadToSharePoint = async () => {
-  try {
-    setLoading(true);
-
-    const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
-   // ✅ Create staff summary PDF (clean + readable)
-    const summaryPdfBlob = await generateIntakeSummaryPDF({
-      formData,
-      checkedItems,
-      isSpouseIncluded,
-      taxYear: "2025",
-    });
-
-    const summaryPdfBase64 = await blobToBase64(summaryPdfBlob);
-
-    const payload = {
-      meta: {
-        taxYear: "2025",
-        serviceType: "T1",
-        submittedAtISO: new Date().toISOString(),
-        formVersion: 1,
-        isSpouseIncluded,
-      },
-      client: {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        dob: formData.dob,
-        sin: formData.sin, // you asked to include ALL fields
-        address1: formData.address1,
-        address2: formData.address2,
-        city: formData.city,
-        province: formData.province,
-        postalCode: formData.postalCode,
-      },
-      spouse: isSpouseIncluded
-        ? {
-            firstName: formData.spouseFirstName,
-            lastName: formData.spouseLastName,
-            email: formData.spouseEmail,
-            phone: formData.spousePhone,
-            dob: formData.spouseDob,
-            sin: formData.spouseSin,
-          }
-        : null,
-
-      // Include the rest of your long formData fields as-is:
-      formData,        // includes everything you defined in state
-      checkedItems,    // includes every checkbox boolean
-      summaryText,
-       summaryPdf: {
-        fileName: `T1_Intake_Summary_${formData.lastName || "Client"}_${formData.firstName || ""}_2025.pdf`,
-        contentType: "application/pdf",
-        base64: summaryPdfBase64,
-      },
-    };
-
-    const res = await fetch("/api/submit-checklist", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
-
-    if (!res.ok) {
-      const text = await res.text().catch(() => "");
-      throw new Error(text || `Submit failed: ${res.status}`);
-    }
-
-    alert("Submitted! We’ll email your secure upload folder link shortly.");
-  } catch (err) {
-    console.error(err);
-    alert("Submission failed. Please try again or email us.");
-  } finally {
-    setLoading(false);
-  }
-};
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -531,42 +446,96 @@ const handleUploadToSharePoint = async () => {
     setLoading(true);
     try {
       const { generatePDF } = await import('./PDFGenerator');
-      const blob = await generatePDF(formData, checkedItems, isSpouseIncluded);
-        setPdfBlob(blob);
-        if (blob) { // Use the blob variable directly
-          const url = URL.createObjectURL(blob); // Create a Blob URL
-          const link = document.createElement('a'); // Create an anchor element
-          link.href = url; // Set the href to the Blob URL
-          link.download = `TaxChecklist-${formData.firstName}.pdf`; // Set the download filename
-          document.body.appendChild(link); // Append the link to the document
+      const clientPdfBlob = await generatePDF(formData, checkedItems, isSpouseIncluded);
 
-          link.click(); // Programmatically click the link to trigger the download
-
-          document.body.removeChild(link); // Remove the link after download
-          URL.revokeObjectURL(url); // Clean up the URL object
-      } else {
-          alert("No PDF available for download."); // Alert if no PDF blob is available
+      if (!clientPdfBlob) {
+        throw new Error("No PDF available for download.");
       }
-        setShowAlert(true);   
-    } catch (error) {
-      console.error('Error generating or sending the PDF:', error);
-      alert('Error sending email! Please try again later.');
-    } finally {
-      setLoading(false); // Stop loading after completion
-    }
-  };
 
-// Handle PDF download
-const handleDownloadPDF = async () => {
-    if (pdfBlob) {
-        const url = URL.createObjectURL(pdfBlob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `TaxChecklist-${formData.firstName}.pdf`; 
-        document.body.appendChild(link); 
-        link.click(); 
-        document.body.removeChild(link); 
-        URL.revokeObjectURL(url); 
+      const clientPdfBase64 = await blobToBase64(clientPdfBlob);
+
+      const clientUrl = URL.createObjectURL(clientPdfBlob);
+      const link = document.createElement('a');
+      link.href = clientUrl;
+      link.download = `TaxChecklist-${formData.firstName || "Client"}.pdf`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(clientUrl);
+
+      const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
+      const summaryPdfBlob = await generateIntakeSummaryPDF({
+        formData,
+        checkedItems,
+        isSpouseIncluded,
+        taxYear: "2025",
+      });
+
+      const summaryPdfBase64 = await blobToBase64(summaryPdfBlob);
+
+      const payload = {
+        meta: {
+          taxYear: "2025",
+          serviceType: "T1",
+          submittedAtISO: new Date().toISOString(),
+          formVersion: 1,
+          isSpouseIncluded,
+        },
+        client: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+          dob: formData.dob,
+          sin: formData.sin,
+          address1: formData.address1,
+          address2: formData.address2,
+          city: formData.city,
+          province: formData.province,
+          postalCode: formData.postalCode,
+        },
+        spouse: isSpouseIncluded
+          ? {
+              firstName: formData.spouseFirstName,
+              lastName: formData.spouseLastName,
+              email: formData.spouseEmail,
+              phone: formData.spousePhone,
+              dob: formData.spouseDob,
+              sin: formData.spouseSin,
+            }
+          : null,
+        formData,
+        checkedItems,
+        summaryText,
+        clientChecklistPdf: {
+          fileName: `TaxChecklist-${formData.lastName || "Client"}-${formData.firstName || "Taxpayer"}-2025.pdf`,
+          contentType: "application/pdf",
+          base64: clientPdfBase64,
+        },
+        summaryPdf: {
+          fileName: `T1_Intake_Summary_${formData.lastName || "Client"}_${formData.firstName || ""}_2025.pdf`,
+          contentType: "application/pdf",
+          base64: summaryPdfBase64,
+        },
+      };
+
+      const res = await fetch("/api/submit-checklist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        const text = await res.text().catch(() => "");
+        throw new Error(text || `Submit failed: ${res.status}`);
+      }
+
+      setShowAlert(true);
+    } catch (error) {
+      console.error('Error generating or submitting the checklist:', error);
+      alert(error.message || 'Submission failed. Please try again or email us.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -574,10 +543,6 @@ const handleDownloadPDF = async () => {
     setShowAlert(false);
     window.location.href = '/';
 };
-
-const openClientPortal = () =>{
-    window.open('https://use.clienthub.app/#/login', '_blank');
-}
 
   return (
     <div className="form-container">
@@ -1761,7 +1726,7 @@ const openClientPortal = () =>{
         </div>
         <div className="button-container">
           <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? "Downloading..." : "Download"}
+            {loading ? "Submitting..." : "Download & Submit"}
           </button>
       </div>
       </form>
@@ -1769,21 +1734,13 @@ const openClientPortal = () =>{
       {loading && <div className="spinner"></div>}
       {showAlert && (
         <>
-        <div className="overlay" onClick={handleCloseAlert}></div>
-        {/* <CustomAlert
-            message="Please Upload the Checklist to your Client Shared Folder on the Client Portal."
+          <div className="overlay" onClick={handleCloseAlert}></div>
+          <CustomAlert
+            message="The checklist is downloaded on your computer. We'll email your secure upload link shortly."
             onClose={handleCloseAlert}
-            onDownload={handleDownloadPDF}
-            onUpload={openClientPortal}
-        /> */}
-       <CustomAlert
-          message="Please upload your documents securely."
-          onClose={handleCloseAlert}
-          onDownload={handleDownloadPDF}
-          onUpload={handleUploadToSharePoint}
-        />
+          />
         </>
-    )}
+      )}
     </div>
   );
 };
