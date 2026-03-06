@@ -1,142 +1,3 @@
-// export default async function handler(req, res) {
-//   if (req.method !== "POST") return res.status(405).send("Method not allowed");
-
-//   try {
-//     const tenantId = process.env.M365_TENANT_ID;
-//     const clientId = process.env.M365_CLIENT_ID;
-//     const clientSecret = process.env.M365_CLIENT_SECRET;
-//     const siteId = process.env.SP_SITE_ID;
-//     const listId = process.env.SP_LIST_ID;
-
-//     if (!tenantId || !clientId || !clientSecret || !siteId || !listId) {
-//       return res.status(500).send("Server not configured");
-//     }
-
-//     const payload = req.body;
-
-//     // ---- Basic validation ----
-//     const firstName = payload?.client?.firstName?.trim();
-//     const lastName = payload?.client?.lastName?.trim();
-//     const email = payload?.client?.email?.trim()?.toLowerCase();
-//     const taxYear = String(payload?.meta?.taxYear || "").trim();
-
-//     if (!firstName || !lastName || !email || !taxYear) {
-//       return res.status(400).json({ error: "Missing required fields" });
-//     }
-
-//     // Optional fields
-//     const summaryText = typeof payload?.summaryText === "string" ? payload.summaryText : "";
-//     // Expect base64 PDF in one of these keys:
-//     // - payload.summaryPdfBase64: "JVBERi0xLjcKJ..." (raw base64)
-//     // - payload.summaryPdfDataUrl: "data:application/pdf;base64,JVBERi0xLjcKJ..."
-//     const summaryPdfBase64 =
-//       (typeof payload?.summaryPdfBase64 === "string" && payload.summaryPdfBase64) ||
-//       (typeof payload?.summaryPdfDataUrl === "string" && payload.summaryPdfDataUrl) ||
-//       "";
-
-//     const folderName = makeFolderName({ firstName, lastName });
-//     const clientKey = makeClientKey({ firstName, lastName, email });
-//     const intakeKey = `${clientKey}-${taxYear}`;
-//     const paymentReference = `NT-${clientKey}-${taxYear}`;
-//     // ---- Get app-only token ----
-//     const accessToken = await getAppToken({ tenantId, clientId, clientSecret });
-
-//     // ---- 1) Create SharePoint list item ----
-//     const title = `${lastName}, ${firstName} - ${taxYear}`;
-
-//     const createItemRes = await graphFetch(
-//       `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
-//       {
-//         method: "POST",
-//         headers: {
-//           Authorization: `Bearer ${accessToken}`,
-//           "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//           fields: {
-//             Title: title,
-//             TaxYear: taxYear,
-//             ClientEmail: email,
-//             ClientFirstName: firstName,
-//             ClientLastName: lastName,
-//             ClientKey: clientKey,
-//             folderName: folderName,
-//             IntakeKey: intakeKey,
-//             PaymentReference: paymentReference,
-//             PayloadJson: JSON.stringify(payload),
-//             SummaryText: summaryText, 
-//             Status: "Pending",
-//           },
-//         }),
-//       }
-//     );
-
-//     const itemJson = await createItemRes.json();
-
-//     if (!createItemRes.ok) {
-//       return res.status(500).json({
-//         error: "Create item failed",
-//         details: itemJson,
-//       });
-//     }
-
-//     let uploadedSummaryPdf = null;
-
-//     if (summaryPdfBase64) {
-//       const driveRes = await graphFetch(`https://graph.microsoft.com/v1.0/sites/${siteId}/drive`, {
-//         method: "GET",
-//         headers: { Authorization: `Bearer ${accessToken}` },
-//       });
-
-//       const driveJson = await driveRes.json();
-//       if (!driveRes.ok || !driveJson?.id) {
-//         console.error("Could not resolve site drive:", driveJson);
-//       } else {
-//         const driveId = driveJson.id;
-//         const folderPath = `Clients_internal/${taxYear}/${clientKey}/02_Working_Internal`;
-//         await ensureFolderPath({ accessToken, driveId, folderPath });
-
-//         const pdfBuffer = decodePdfBase64(summaryPdfBase64);
-//         const safeName = sanitizeFileName(`T1 Intake Summary - ${lastName}, ${firstName} - ${taxYear}.pdf`);
-
-//         const uploadUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${encodePath(
-//           folderPath
-//         )}/${encodeURIComponent(safeName)}:/content`;
-
-//         const uploadRes = await graphFetch(uploadUrl, {
-//           method: "PUT",
-//           headers: {
-//             Authorization: `Bearer ${accessToken}`,
-//             "Content-Type": "application/pdf",
-//           },
-//           body: pdfBuffer,
-//         });
-
-//         const uploadJson = await uploadRes.json();
-//         if (!uploadRes.ok) {
-//           console.error("Upload summary PDF failed:", uploadJson);
-//         } else {
-//           uploadedSummaryPdf = {
-//             id: uploadJson?.id,
-//             name: uploadJson?.name,
-//             webUrl: uploadJson?.webUrl,
-//             folderPath,
-//           };
-//         }
-//       }
-//     }
-
-//     return res.status(200).json({
-//       ok: true,
-//       listItemId: itemJson?.id,
-//       clientKey,
-//       uploadedSummaryPdf,
-//     });
-//   } catch (e) {
-//     console.error(e);
-//     return res.status(500).json({ error: "Internal error" });
-//   }
-// }
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).send("Method not allowed");
 
@@ -165,7 +26,6 @@ export default async function handler(req, res) {
 
     // Optional fields
     const summaryText = typeof payload?.summaryText === "string" ? payload.summaryText : "";
-
     // Expect base64 PDF in one of these keys:
     // - payload.summaryPdfBase64: "JVBERi0xLjcKJ..." (raw base64)
     // - payload.summaryPdfDataUrl: "data:application/pdf;base64,JVBERi0xLjcKJ..."
@@ -174,89 +34,70 @@ export default async function handler(req, res) {
       (typeof payload?.summaryPdfDataUrl === "string" && payload.summaryPdfDataUrl) ||
       "";
 
-    // ---- Derived values ----
     const folderName = makeFolderName({ firstName, lastName });
     const clientKey = makeClientKey({ firstName, lastName, email });
     const intakeKey = `${clientKey}-${taxYear}`;
     const paymentReference = `NT-${clientKey}-${taxYear}`;
-    const title = `${lastName}, ${firstName} - ${taxYear}`;
-
     // ---- Get app-only token ----
     const accessToken = await getAppToken({ tenantId, clientId, clientSecret });
 
-    // ---- 1) Create or update SharePoint list item (UPSERT by IntakeKey) ----
+    // ---- 1) Create SharePoint list item ----
+    const title = `${lastName}, ${firstName} - ${taxYear}`;
+
     const existingItem = await findListItemByIntakeKey({
       accessToken,
       siteId,
       listId,
       intakeKey,
     });
-
-    let itemJson;
-    let listItemId;
-    let wasUpdated = false;
-
-    if (existingItem?.id) {
-      listItemId = existingItem.id;
-      wasUpdated = true;
-
-      // Update only intake/client metadata.
-      // Do NOT overwrite workflow flags if the row already exists.
-      const updateFields = {
-        Title: title,
-        TaxYear: taxYear,
-        ClientEmail: email,
-        ClientFirstName: firstName,
-        ClientLastName: lastName,
-        FolderName: folderName,
-        ClientKey: clientKey,
-        IntakeKey: intakeKey,
-        PaymentReference: paymentReference,
-        PayloadJson: JSON.stringify(payload),
-        SummaryText: summaryText,
-        Status: "Pending",
-      };
-
-      await updateListItemFields({
-        accessToken,
-        siteId,
-        listId,
-        itemId: listItemId,
-        fields: updateFields,
+    
+    if (existingItem) {
+      return res.status(409).json({
+        error: "Checklist already submitted",
+        message:
+          "You have already submitted your checklist. Please contact your administrator if you need to make changes.",
       });
-
-      itemJson = { id: listItemId, updated: true };
-    } else {
-      const fieldsPayload = {
-        Title: title,
-        TaxYear: taxYear,
-        ClientEmail: email,
-        ClientFirstName: firstName,
-        ClientLastName: lastName,
-        FolderName: folderName,
-        ClientKey: clientKey,
-        IntakeKey: intakeKey,
-        PaymentReference: paymentReference,
-        PayloadJson: JSON.stringify(payload),
-        SummaryText: summaryText,
-        Status: "Pending",
-      };
-
-      itemJson = await createListItem({
-        accessToken,
-        siteId,
-        listId,
-        fields: fieldsPayload,
-      });
-
-      listItemId = itemJson?.id;
     }
 
-    // ---- 2) Upload Summary PDF into client folder (if provided) ----
+    const createItemRes = await graphFetch(
+      `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          fields: {
+            Title: title,
+            TaxYear: taxYear,
+            ClientEmail: email,
+            ClientFirstName: firstName,
+            ClientLastName: lastName,
+            ClientKey: clientKey,
+            folderName: folderName,
+            IntakeKey: intakeKey,
+            PaymentReference: paymentReference,
+            PayloadJson: JSON.stringify(payload),
+            SummaryText: summaryText, 
+            Status: "Pending",
+          },
+        }),
+      }
+    );
+
+    const itemJson = await createItemRes.json();
+
+    if (!createItemRes.ok) {
+      return res.status(500).json({
+        error: "Create item failed",
+        details: itemJson,
+      });
+    }
+
     let uploadedSummaryPdf = null;
 
     if (summaryPdfBase64) {
-      // A) Get default document library drive for this site (no SP_DRIVE_ID needed)
       const driveRes = await graphFetch(`https://graph.microsoft.com/v1.0/sites/${siteId}/drive`, {
         method: "GET",
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -264,16 +105,12 @@ export default async function handler(req, res) {
 
       const driveJson = await driveRes.json();
       if (!driveRes.ok || !driveJson?.id) {
-        // Don’t fail the whole request — list item is already created/updated
         console.error("Could not resolve site drive:", driveJson);
       } else {
         const driveId = driveJson.id;
-
-        // Use folderName for staff-friendly folders
-        const folderPath = `Clients_internal/${taxYear}/${folderName}/02_Working_Internal`;
+        const folderPath = `Clients_internal/${taxYear}/${clientKey}/02_Working_Internal`;
         await ensureFolderPath({ accessToken, driveId, folderPath });
 
-        // Upload PDF file
         const pdfBuffer = decodePdfBase64(summaryPdfBase64);
         const safeName = sanitizeFileName(`T1 Intake Summary - ${lastName}, ${firstName} - ${taxYear}.pdf`);
 
@@ -306,20 +143,13 @@ export default async function handler(req, res) {
 
     return res.status(200).json({
       ok: true,
-      listItemId,
-      wasUpdated,
-      folderName,
+      listItemId: itemJson?.id,
       clientKey,
-      intakeKey,
-      paymentReference,
       uploadedSummaryPdf,
     });
   } catch (e) {
     console.error(e);
-    return res.status(500).json({
-      error: "Internal error",
-      details: e?.message || String(e),
-    });
+    return res.status(500).json({ error: "Internal error" });
   }
 }
 
