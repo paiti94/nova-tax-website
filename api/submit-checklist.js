@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     const folderName = makeFolderName({ firstName, lastName });
     const clientKey = makeClientKey({ firstName, lastName, email });
     const intakeKey = `${clientKey}-${taxYear}`;
-    const paymentReference = `NT-${clientKey}-${taxYear}`;
+    const paymentReference = `${email.trim().toLowerCase()}-${taxYear}`;
     // ---- Get app-only token ----
     const accessToken = await getAppToken({ tenantId, clientId, clientSecret });
 
@@ -50,12 +50,12 @@ export default async function handler(req, res) {
       listId,
       intakeKey,
     });
-    
+
     if (existingItem) {
       return res.status(409).json({
         error: "Checklist already submitted",
         message:
-          "You have already submitted your checklist. Please contact your administrator if you need to make changes.",
+          "You have already submitted your checklist. Please contact 'admin@novatax.ca' if you need to make changes.",
       });
     }
 
