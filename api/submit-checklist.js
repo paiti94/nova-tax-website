@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const lastName = payload?.client?.lastName?.trim();
     const email = payload?.client?.email?.trim()?.toLowerCase();
     const taxYear = String(payload?.meta?.taxYear || "").trim();
-    const taxTemplate = payload?.client?.taxTemplate || false;
+    const taxTemplate = Boolean(payload?.client?.taxTemplate);
 
     if (!firstName || !lastName || !email || !taxYear) {
       return res.status(400).json({ error: "Missing required fields" });
