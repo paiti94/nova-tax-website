@@ -1,3 +1,5 @@
+import { Business } from "@mui/icons-material";
+
 export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).send("Method not allowed");
 
@@ -19,6 +21,7 @@ export default async function handler(req, res) {
     const lastName = payload?.client?.lastName?.trim();
     const email = payload?.client?.email?.trim()?.toLowerCase();
     const taxYear = String(payload?.meta?.taxYear || "").trim();
+    const taxTemplate = payload?.client?.taxTemplate || false;
 
     if (!firstName || !lastName || !email || !taxYear) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -81,6 +84,7 @@ export default async function handler(req, res) {
             PayloadJson: JSON.stringify(payload),
             SummaryText: summaryText, 
             Status: "Pending",
+            TaxTemplate: taxTemplate
           },
         }),
       }

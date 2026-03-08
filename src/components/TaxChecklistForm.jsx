@@ -493,6 +493,7 @@ const blobToBase64 = (blob) =>
           city: formData.city,
           province: formData.province,
           postalCode: formData.postalCode,
+          taxTemplate: checkedItems.selfEmployedIncome || checkedItems.rentalIncome || checkedItems.employmentExpenses ? true: false
         },
         spouse: isSpouseIncluded
           ? {
