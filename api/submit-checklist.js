@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const lastName = payload?.client?.lastName?.trim();
     const email = payload?.client?.email?.trim()?.toLowerCase();
     const taxYear = String(payload?.meta?.taxYear || "").trim();
-    const taxTemplate = Boolean(payload?.client?.taxTemplate);
+    const taxTemplate = payload?.client?.taxTemplate?.trim();
 
     if (!firstName || !lastName || !email || !taxYear) {
       return res.status(400).json({ error: "Missing required fields" });
@@ -82,7 +82,7 @@ export default async function handler(req, res) {
             PayloadJson: JSON.stringify(payload),
             SummaryText: summaryText, 
             Status: "Pending",
-            TaxTemplate: taxTemplate
+            ExpenseTemplate: taxTemplate
           },
         }),
       }
