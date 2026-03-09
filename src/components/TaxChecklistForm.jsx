@@ -29,8 +29,8 @@ const ITEM_LABELS = {
   annualInvestmentPackage: "Annual Investment Package",
   realEstateSale: "Sold real estate in 2025 (Provide purchase & sale details)",
   realEstateChange: "Changed the use of any real estate (personal-use to rental or vice versa) in 2025",
-  selfEmployedIncome: "Business, Professional, Commission, or Farming Income",
-  rentalIncome: "Rental Income",
+  selfEmployedIncome: "Business, Professional, Commission, or Farming Income (📍Please fill out the Tax Template 2025.xlsx in your sharepoint folder - '01_Uploads')",
+  rentalIncome: "Rental Income (📍Please fill out the Tax Template 2025.xlsx in your sharepoint folder - '01_Uploads')",
   gstHstRegistrant: "GST/HST Registrant",
   childSupport: "Child or Spousal Support Received",
   stockOptions: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
@@ -219,7 +219,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
     {
       key: "propertyExemption",
       spouseKey: "spousePropertyExemption",
-      label: "Disposed property and claiming principal residence exemption in 2025?",
+      label: "Disposed real estate property in 2025?",
     },
     {
       key: "nonCanadianProperty",
@@ -856,13 +856,13 @@ const blobToBase64 = (blob) =>
             )}
             <div className="form-group">
               <FormControl fullWidth variant="outlined">
-                <InputLabel id="dependants-label">Did you have any dependants in 2025?</InputLabel>
+                <InputLabel id="dependants-label">Do you have any dependants?</InputLabel>
                 <Select
                   labelId="dependants-label"
                   name="dependants"
                   onChange={handleChange}
                   defaultValue=""
-                  label="Did you have any dependants in 2025?"
+                  label="Do you have any dependants?"
                 >
                   <MenuItem value=""><em>Select</em></MenuItem>
                   <MenuItem value="Yes">Yes</MenuItem>
@@ -1004,7 +1004,7 @@ const blobToBase64 = (blob) =>
                   )}
                 </tr>
                 <tr>
-                  <td>Did you sell/trade any Cryptocurrency in 2025?</td>
+                  <td>Did you sell/trade any cryptocurrency in 2025?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
@@ -1037,7 +1037,7 @@ const blobToBase64 = (blob) =>
                   )}
                 </tr>
                 <tr>
-                  <td>Did you dispose of a property (or properties) in 2025 for which you are claiming a principal residence exemption?</td>
+                  <td>Did you dispose of any real estate property (or properties) in 2025?</td>
                   <td>
                   <FormControl component="fieldset">
                         <RadioGroup
@@ -1136,7 +1136,7 @@ const blobToBase64 = (blob) =>
                   )}
                 </tr>
                 <tr>
-                  <td>Did you (or your spouse) open a First Home Savings Account ("FHSA) in 2025?</td>
+                  <td>Did you (or your spouse) open a First Home Savings Account ("FHSA") in 2025?</td>
                   <td>
                     <FormControl component="fieldset">
                         <RadioGroup
@@ -1454,7 +1454,7 @@ const blobToBase64 = (blob) =>
                 checked={checkedItems.selfEmployedIncome}
                 onChange={handleCheckboxChange}
               />
-              Business, Professional, Commission, or Farming Income (📍Please download and fill out 2025 Business Schedule located in the Resources section of the Client Portal)
+              Business, Professional, Commission, or Farming Income 
             </label>
           </div>
           <div className="checkbox-group">
@@ -1465,7 +1465,7 @@ const blobToBase64 = (blob) =>
                 checked={checkedItems.rentalIncome}
                 onChange={handleCheckboxChange}
               />
-              Rental or AirBnB Income (📍Please download and fill out 2025 Rental Schedule located in the Resources section of the Client Portal)
+              Rental or AirBnB Income 
             </label>
           </div>
           <div className="checkbox-group">
@@ -1476,7 +1476,7 @@ const blobToBase64 = (blob) =>
                 checked={checkedItems.gstHstRegistrant}
                 onChange={handleCheckboxChange}
               />
-              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number on the 2025 Business Schedule.
+              Are you registered for GST/HST for your business income? If so, please provide your GST/HST number.
             </label>
           </div>
           <h3>✅ Other Income</h3>
@@ -1504,7 +1504,7 @@ const blobToBase64 = (blob) =>
           </div>
         <hr/>
           <h2>Deductions & Credits (Save on Taxes!) 📝</h2>
-          <p>📌 Check the boxes that apply to your situation and upload the supporting documents for these deductions in the Client Portal.</p>
+          <p>📌 Check the boxes that apply to your situation and upload the supporting documents for these deductions in the Client Portal - The secure link will be shared.</p>
           <h3>✅ Retirement & Savings</h3>
           <div className="checkbox-group">
             <label>
@@ -1530,6 +1530,17 @@ const blobToBase64 = (blob) =>
           </div>
 
           <h3>✅ Employment & Business Expenses</h3>
+           <div className="checkbox-group">
+            <label>
+              <input   className="checkbox-input"
+                type="checkbox"
+                name="employmentExpenses"
+                checked={checkedItems.employmentExpenses}
+                onChange={handleCheckboxChange}
+              />
+              Employment or Commission Expenses (T2200 signed by employer is mandatory)
+            </label>
+          </div>
           <div className="checkbox-group">
             <label>
               <input   className="checkbox-input"
@@ -1552,17 +1563,7 @@ const blobToBase64 = (blob) =>
               Moving Expenses (If moved 40km closer to work)
             </label>
           </div>
-          <div className="checkbox-group">
-            <label>
-              <input   className="checkbox-input"
-                type="checkbox"
-                name="employmentExpenses"
-                checked={checkedItems.employmentExpenses}
-                onChange={handleCheckboxChange}
-              />
-              Employment or Commission Expenses (T2200 signed by employer is mandatory)
-            </label>
-          </div>
+         
           <div className="checkbox-group">
             <label>
               <input   className="checkbox-input"
