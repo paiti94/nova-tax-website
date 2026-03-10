@@ -225,12 +225,12 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     stockOptions: {
       label: "Stock Options, Annuities, Scholarships, Bursaries, or Research Grants",
       instructions:
-        "Provide employer or payer statements showing grant/exercise dates, fair market value at exercise, and any related T4/T4A slips.",
+        "Provide employer or payer statements showing grant/exercise dates, fair market value at exercise, and any related tax slips.",
     },
     rrspContributions: {
       label: "RRSP Contributions",
       instructions:
-        "Upload all official RRSP receipts for contributions made between March 2, 2025 and March 1, 2026, including any transfer confirmations.",
+        "Upload all official RRSP receipts for contributions made in 2025 and within the first 90 days of 2026.",
     },
     t4fhsa: {
       label: "T4FHSA - First Home Savings Account (FHSA) Contributions",
@@ -250,7 +250,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     employmentExpenses: {
       label: "Employment or Commission Expenses",
       instructions:
-        "Upload a signed 2025 T2200 or T2200S plus mileage logs, home office calculations, and receipts for deductible supplies.",
+        "Upload a signed 2025 T2200 and complete the '2025 Tax Template.xlsx' from the client portal, '01_Uploads' folder.",
     },
     investmentLosses: {
       label: "Investment Losses & Carrying Charges",
