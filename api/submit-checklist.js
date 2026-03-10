@@ -290,9 +290,8 @@ async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEm
   const normalized = (spouseEmail || "").trim().toLowerCase();
   if (!normalized) return null;
 
-  // Use tolower(...) so the filter is case-insensitive
-  const filter = `tolower(fields/SpouseEmail) eq '${normalized}'`;
-  const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$filter=${encodeURIComponent(
+  const filter = `fields/SpouseEmail eq '${normalized}'`;
+  const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?expand=fields&$filter=${encodeURIComponent(
     filter
   )}`;
 
@@ -300,9 +299,11 @@ async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEm
     method: "GET",
     headers: { Authorization: `Bearer ${accessToken}` },
   });
+
   const json = await res.json();
-  console.log("findListItemBySpouseEmail response:", json); // <-- put it here
-  
+  console.log("findListItemBySpouseEmail url:", url);
+  console.log("findListItemBySpouseEmail response:", json);
+
   return (json.value && json.value.length && json.value[0]) || null;
 }
 
