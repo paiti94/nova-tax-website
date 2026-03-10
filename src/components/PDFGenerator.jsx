@@ -335,6 +335,10 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
      },
   };
 
+  const drawBullet = (text, x = 50) => {
+  drawText(`• ${text}`, x);
+};
+
   const drawChecklistGuideSection = () => {
     drawText('Checked Items & 2025 T1 Preparation Guide', 50, true, 16);
 
@@ -377,12 +381,10 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     drawText('');
   }
   drawText('');
-  drawText('Please upload the required documents to the client portal under the "01_Uploads" folder.', 50);
-  drawText('');
-  drawText("Once you are done uploading all the necessary documents in \"01_Uploads\" folder,", 50);
-  drawText("Please make sure the file \"DONE_UPLOADS.txt\" is moved into the \"DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE\" folder.", 50); 
-  drawText('');
-  drawText("After that, you can proceed with the next steps outlined in the instruction email.", 50); 
+  drawBullet('Please upload the required documents to the client portal under the "01_Uploads" folder.');
+  drawBullet('Once you are done uploading all the necessary documents in "01_Uploads" folder,');
+  drawBullet('Please make sure the file "DONE_UPLOADS.txt" is moved into the "DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE" folder.');
+  drawBullet('After that, you can proceed with the next steps outlined in the instruction email.');
   drawText('');
   drawChecklistGuideSection();
 
@@ -462,8 +464,6 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   //   drawText(`Spouse claiming disability tax credit? ${formData.spouseDisabilityCredit}`);
   //   drawText('');
   // }
-
-  drawText('Thanks for using Nova Tax! We look forward to preparing your 2025 tax return and maximizing your refund!', 150);
 
   // Convert PDF to Blob
   const pdfBytes = await pdfDoc.save();
