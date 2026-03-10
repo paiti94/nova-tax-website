@@ -135,7 +135,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     T4PS: {
       label: "T4PS - Employee Profit-Sharing Plan",
       instructions:
-        "Provide the CRA-issued T4PS showing profit-sharing allocations and any related employer statements.",
+        "Provide the T4PS showing profit-sharing allocations and any related employer statements.",
     },
     T4AOAS: {
       label: "T4A(OAS) - Old Age Security",
@@ -205,12 +205,12 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     selfEmployedIncome: {
       label: "Business, Professional, Commission, or Farming Income",
       instructions:
-        "Complete the 2025 Business Schedule from the client portal and attach your income/expense ledger plus receipts for major purchases.",
+        "Complete the '2025 Tax Template.xlsx' from the client portal, '01_Uploads' folder.",
     },
     rentalIncome: {
       label: "Rental or AirBnB Income",
       instructions:
-        "Complete the 2025 Rental Schedule and provide rent collected, expense receipts, mortgage, insurance, and property tax statements for each property.",
+        "Complete the '2025 Tax Template.xlsx' from the client portal, '01_Uploads' folder.",
     },
     gstHstRegistrant: {
       label: "GST/HST Registrant",
@@ -327,6 +327,11 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
       instructions:
         "Upload receipts for eligible tools purchased in 2025 and the signed employer certification (T2200/T2200S) confirming that the tools are required.",
     },
+    spouseNetIncome236000: {
+       label: "Spouse's net income from line 23600 of their 2025 tax return",
+       instructions:
+         "Provide a copy of your spouse’s 2025 tax return showing the line 23600 net income amount.",
+     },
   };
 
   const drawChecklistGuideSection = () => {
@@ -334,7 +339,14 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     drawText('Gather the slips or records below for every option you selected:');
 
     const selectedGuides = Object.entries(checkedItems || {}).filter(([, value]) => value === true);
+    const isMarriedOrCommonLaw =
+    formData?.maritalStatus === "Married" || formData?.maritalStatus === "Common-law";
 
+  const shouldIncludeSpouseNetIncome = isMarriedOrCommonLaw && !isSpouseIncluded;
+
+  if (shouldIncludeSpouseNetIncome) {
+    selectedGuides.push(["spouseNetIncome236000", true]);
+  }
     if (selectedGuides.length === 0) {
       drawText('* No checklist items were selected.');
     } else {
@@ -355,9 +367,13 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   drawText('Personal Information', 50, true, 16);
   drawText(`First Name: ${formData.firstName}`, 50, true);
   drawText(`Last Name: ${formData.lastName}`);
-  drawText(`DOB (YYYY-MM-DD): ${formData.dob}`);
-  drawText(`Email: ${formData.email}`);
-  drawText(`Phone: ${formData.phone}`);
+ if (isSpouseIncluded) {
+    drawText('');
+    drawText('Spouse Information', 50, true, 16);
+    drawText(`First Name: ${formData.spouseFirstName}`, 50, true);
+    drawText(`Last Name: ${formData.spouseLastName}`);
+    drawText('');
+  }
   drawText('');
   drawChecklistGuideSection();
 

@@ -191,24 +191,68 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: white;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  background-color: #fff;
+  border: 1px solid rgba(40, 167, 69, 0.4);
+  border-left: 6px solid #28a745;
+  border-radius: 12px;
+  padding: 18px 20px 16px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.25);
   z-index: 1000; /* Ensure it appears above other content */
-  width: 300px; /* Set a width for the alert */
-  max-width: 90%; /* Responsive max width */
+  width: min(360px, 90%); /* Responsive width */
+  max-width: 90%;
   display: flex;
   flex-direction: column;
-  /* align-items: flex-start; */
-  align-items: center;
+  align-items: stretch;
+  font-family: inherit;
 }
 
-.custom-alert p {
-  margin-bottom: 15px;
+.custom-alert-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.custom-alert-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.custom-alert-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: #1d3d3a;
+}
+
+.custom-alert-message {
+  margin: 0;
+  margin-bottom: 18px;
   text-align: center;
-  margin-left: 0px;
+  color: #333;
+  line-height: 1.4;
+}
+
+.custom-alert-action {
+  align-self: center;
+  padding: 10px 18px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+  width: 100%;
+  max-width: 220px;
+}
+
+.custom-alert-action:hover {
+  background-color: #1e7e34;
+}
+
+.custom-alert-action:focus {
+  outline: 2px solid rgba(40, 167, 69, 0.7);
+  outline-offset: 2px;
 }
 
 .download-button {

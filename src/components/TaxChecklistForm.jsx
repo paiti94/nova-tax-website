@@ -53,14 +53,27 @@ const ITEM_LABELS = {
   alimony: "Alimony/Spousal Support Paid",
   covidRepayment: "COVID-19 Benefits Repayment",
   homeRenovationCredit: "Multigenerational Home Renovation Credit",
+  spouseNetIncome236000: "Spouse's net income from line 23600 of their 2025 tax return",
 };
 
 const CustomAlert = ({ message, onClose }) => (
   <div className="custom-alert">
-    <button onClick={onClose} className="close-button">
-      <CloseIcon />
+    <button onClick={onClose} className="close-button" aria-label="Close">
+      <CloseIcon fontSize="small" />
     </button>
-    <p>{message}</p>
+
+    <div className="custom-alert-header">
+      <span className="custom-alert-icon" role="img" aria-label="Success">
+        ✅
+      </span>
+      <span className="custom-alert-title">Checklist ready</span>
+    </div>
+
+    <p className="custom-alert-message">{message}</p>
+
+    <button type="button" className="custom-alert-action" onClick={onClose}>
+      Got it
+    </button>
   </div>
 );
 
@@ -74,6 +87,11 @@ const line = (label, value) => (value ? `${label}: ${value}` : null);
 
 const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
   // ---- Categorize checked items (using your keys) ----
+  const isMarriedOrCommonLaw =
+        formData.maritalStatus === "Married" ||
+        formData.maritalStatus === "Common-law";
+
+  const shouldIncludeSpouseNetIncome = isMarriedOrCommonLaw && !isSpouseIncluded;
   const CATEGORIES = [
     {
       title: "Income Documents (Slips & Statements)",
@@ -144,6 +162,15 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
 
   // fallback: if you ever add new keys and forget categorizing them
   const categorizedKeys = new Set(CATEGORIES.flatMap((c) => c.keys));
+   if (shouldIncludeSpouseNetIncome) {
+    sections.unshift(
+      [
+        "Spouse Return Checklist",
+        `  • ${ITEM_LABELS.spouseNetIncome236000}`,
+        "",
+      ].join("\n")
+    );
+  }
   const uncategorized = Object.entries(checkedItems || {})
     .filter(([k, v]) => v === true && !categorizedKeys.has(k))
     .map(([k]) => ITEM_LABELS[k] || k);
@@ -464,6 +491,7 @@ const blobToBase64 = (blob) =>
       URL.revokeObjectURL(clientUrl);
 
       const summaryText = makeSummaryText({ formData, checkedItems, isSpouseIncluded });
+
       const summaryPdfBlob = await generateIntakeSummaryPDF({
         formData,
         checkedItems,
@@ -1529,7 +1557,7 @@ const blobToBase64 = (blob) =>
             </label>
           </div>
 
-          <h3>✅ Employment & Business Expenses</h3>
+          <h3>✅ Employment & Investmemt Expenses</h3>
            <div className="checkbox-group">
             <label>
               <input   className="checkbox-input"
@@ -1607,7 +1635,7 @@ const blobToBase64 = (blob) =>
                 checked={checkedItems.medicalExpenses}
                 onChange={handleCheckboxChange}
               />
-              Medical & Dental Expenses (Including private health insurance premiums)
+              Out of Pocket Medical & Dental Expenses (Including private health insurance premiums)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1618,7 +1646,7 @@ const blobToBase64 = (blob) =>
                 checked={checkedItems.disabilityTaxCredit}
                 onChange={handleCheckboxChange}
               />
-              Disability Tax Credit (For you or a dependant)
+              Disability Tax Credit (For you or a dependant, please include CRA letter confirming eligibility or Form T2201)
             </label>
           </div>
           <div className="checkbox-group">
@@ -1738,7 +1766,7 @@ const blobToBase64 = (blob) =>
         <>
           <div className="overlay" onClick={handleCloseAlert}></div>
           <CustomAlert
-            message="The checklist is downloaded on your computer. Please check your download folder. We'll email your secure upload link shortly."
+            message="‼️The checklist has been downloaded to your computer. Please check your download folder. We'll email your secure upload link shortly‼️"
             onClose={handleCloseAlert}
           />
         </>
