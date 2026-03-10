@@ -78,7 +78,7 @@ export default async function handler(req, res) {
         accessToken,
         siteId,
         listId,
-        email,
+        spouseEmail: email,
       });
 
     if (existingSpouseItem) {
@@ -287,22 +287,16 @@ async function findListItemByIntakeKey({ accessToken, siteId, listId, intakeKey 
 }
 
 async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEmail }) {
-  const filter = encodeURIComponent(`fields/SpouseEmail eq '${escapeODataString(spouseEmail)}'`);
-  const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$filter=${filter}`;
+  const normalized = (spouseEmail || "").trim().toLowerCase();
+  const filterValue = escapeODataString(normalized);
 
-  const res = await graphFetch(url, {
-    method: "GET",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-    },
-  });
+  const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$filter=${encodeURIComponent(
+    `fields/SpouseEmail eq '${filterValue}'`
+  )}`;
 
+  const res = await graphFetch(url, { method: "GET", headers: { Authorization: `Bearer ${accessToken}` } });
   const json = await res.json();
-  if (!res.ok) {
-    throw new Error(`Find IntakeKey failed: ${JSON.stringify(json)}`);
-  }
-
-  return json?.value?.[0] || null;
+  return (json.value && json.value.length && json.value[0]) || null;
 }
 
 async function createListItem({ accessToken, siteId, listId, fields }) {
