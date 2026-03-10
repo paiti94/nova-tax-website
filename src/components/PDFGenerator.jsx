@@ -295,7 +295,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     firstTimeHomeBuyer: {
       label: "First-Time Home Buyer's Tax Credit",
       instructions:
-        "Provide the purchase agreement, closing statement, and confirmation that neither spouse owned a home in the prior four years.",
+        "Provide the purchase agreement, closing statement, and confirmation that neither you (or your spouse, if applicable) owned a home in the prior four years.",
     },
     clergyDeduction: {
       label: "Clergy Residence Deduction (Attach Form T1223)",
