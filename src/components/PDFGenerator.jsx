@@ -235,7 +235,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     t4fhsa: {
       label: "T4FHSA - First Home Savings Account (FHSA) Contributions",
       instructions:
-        "Attach T4FHSA slips plus December 31 statements for each FHSA that you or your spouse hold.",
+        "Attach T4FHSA slips.",
     },
     unionDues: {
       label: "Union or Professional Dues",
@@ -305,7 +305,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     charitableDonations: {
       label: "Charitable & Political Donations",
       instructions:
-        "Provide official donation receipts issued in 2025 (include CRA registration numbers) and any political contribution slips.",
+        "Provide official donation receipts issued in 2025 and any political contribution slips.",
     },
     alimony: {
       label: "Alimony/Spousal Support Paid",
@@ -453,6 +453,13 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   //   drawText('');
   // }
   drawText('Thank you for submitting your tax checklist!', 150);
+  drawText('Please upload the required documents to the client portal under the "01_Uploads" folder.', 50);
+ drawText(
+    "Once you are done uploading all the necessary documents in \"01_Uploads\" folder, please make sure the file \"DONE_UPLOADS.txt\" is moved into the \"DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE\" folder and proceed with the next steps - Engagement Sign and Pay Retainer. Please refer to the Instruction email for this.",
+    50,
+    false,
+    10
+  );
 
   // Convert PDF to Blob
   const pdfBytes = await pdfDoc.save();
