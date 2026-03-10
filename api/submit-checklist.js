@@ -75,11 +75,11 @@ export default async function handler(req, res) {
     }
 
     const existingSpouseItem = await findListItemBySpouseEmail({
-        accessToken,
-        siteId,
-        listId,
-        spouseEmail: email,
-      });
+      accessToken,
+      siteId,
+      listId,
+      spouseEmail: email,
+    });
 
     if (existingSpouseItem) {
       return res.status(409).json({
@@ -288,13 +288,18 @@ async function findListItemByIntakeKey({ accessToken, siteId, listId, intakeKey 
 
 async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEmail }) {
   const normalized = (spouseEmail || "").trim().toLowerCase();
-  const filterValue = escapeODataString(normalized);
+  if (!normalized) return null;
 
+  // Use tolower(...) so the filter is case-insensitive
+  const filter = `tolower(fields/SpouseEmail) eq '${normalized}'`;
   const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$filter=${encodeURIComponent(
-    `fields/SpouseEmail eq '${filterValue}'`
+    filter
   )}`;
 
-  const res = await graphFetch(url, { method: "GET", headers: { Authorization: `Bearer ${accessToken}` } });
+  const res = await graphFetch(url, {
+    method: "GET",
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
   const json = await res.json();
   return (json.value && json.value.length && json.value[0]) || null;
 }
