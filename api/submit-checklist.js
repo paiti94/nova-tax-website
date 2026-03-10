@@ -301,6 +301,8 @@ async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEm
     headers: { Authorization: `Bearer ${accessToken}` },
   });
   const json = await res.json();
+  console.log("findListItemBySpouseEmail response:", json); // <-- put it here
+  
   return (json.value && json.value.length && json.value[0]) || null;
 }
 
