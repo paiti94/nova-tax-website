@@ -5,13 +5,11 @@
  * @param {boolean} isSpouseIncluded - Whether the spouse's information is included
  * @returns {Promise<Blob>} - The generated PDF as a Blob
  */
-import { PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 
 export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
-  // const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib'); // Lazy load
+  const { PDFDocument, rgb, StandardFonts } = await import('pdf-lib'); // Lazy load
   
-  // const pdfDoc = await PDFDocument.create();
-    const pdfDoc = await PDFDocument.create();
+  const pdfDoc = await PDFDocument.create();
   const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
   const fontSize = 12;
   const lineHeight = 20;
