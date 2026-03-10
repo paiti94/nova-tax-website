@@ -231,7 +231,7 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     rrspContributions: {
       label: "RRSP Contributions",
       instructions:
-        "Upload all official RRSP receipts for contributions made in 2025 and within the first 90 days of 2026.",
+        "Upload all official RRSP receipts for contributions made in 2025 and within the first 60 days of 2026.",
     },
     t4fhsa: {
       label: "T4FHSA - First Home Savings Account (FHSA) Contributions",
@@ -337,7 +337,8 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
 
   const drawChecklistGuideSection = () => {
     drawText('Checked Items & 2025 T1 Preparation Guide', 50, true, 16);
-    drawText('Gather the slips or records below for every option you selected:');
+
+    drawText('Please use this as an internal guide to gather the slips or records below for each item you selected:');
 
     const selectedGuides = Object.entries(checkedItems || {}).filter(([, value]) => value === true);
     const isMarriedOrCommonLaw =
@@ -454,14 +455,11 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
   //   drawText(`Spouse claiming disability tax credit? ${formData.spouseDisabilityCredit}`);
   //   drawText('');
   // }
-  drawText('Thank you for submitting your tax checklist!', 150);
+
   drawText('Please upload the required documents to the client portal under the "01_Uploads" folder.', 50);
- drawText(
-    "Once you are done uploading all the necessary documents in \"01_Uploads\" folder, please make sure the file \"DONE_UPLOADS.txt\" is moved into the \"DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE\" folder and proceed with the next steps - Engagement Sign and Pay Retainer. Please refer to the Instruction email for this.",
-    50,
-    false,
-    10
-  );
+  drawText("Once you are done uploading all the necessary documents in \"01_Uploads\" folder,", 50);
+  drawText("Please make sure the file \"DONE_UPLOADS.txt\" is moved into the \"DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE\" folder.", 50); 
+  drawText("After that, you can proceed with the next steps outlined in the instruction email.", 50); 
 
   // Convert PDF to Blob
   const pdfBytes = await pdfDoc.save();
