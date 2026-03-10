@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       (typeof payload?.summaryPdfDataUrl === "string" && payload.summaryPdfDataUrl) ||
       "";
 
-    const folderName = makeFolderName({ firstName, lastName });
+    let folderName = makeFolderName({ firstName, lastName });
     const clientKey = makeClientKey({ firstName, lastName, email });
     const intakeKey = `${clientKey}-${taxYear}`;
     const paymentReference = `${email.trim().toLowerCase()}-${taxYear}`;
@@ -41,10 +41,10 @@ export default async function handler(req, res) {
     const accessToken = await getAppToken({ tenantId, clientId, clientSecret });
 
     // ---- 1) Create SharePoint list item ----
-    const title = `${lastName}, ${firstName} - ${taxYear}`;
-    const spouseFirstName = "";
-    const spouseLastName = "";
-    const spouseEmail = "";
+    let title = `${lastName}, ${firstName} - ${taxYear}`;
+    let spouseFirstName = "";
+    let spouseLastName = "";
+    let spouseEmail = "";
 
     // if spouse is included
      if(isSpouseIncluded && payload?.spouse) {
