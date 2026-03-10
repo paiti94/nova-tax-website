@@ -19,17 +19,15 @@ export default async function handler(req, res) {
     const lastName = payload?.client?.lastName?.trim();
     const email = payload?.client?.email?.trim()?.toLowerCase();
     const taxYear = String(payload?.meta?.taxYear || "").trim();
+    const isSpouseIncluded = payload?.meta?.isSpouseIncluded === true;
     const taxTemplate = payload?.client?.taxTemplate?.trim();
-
+   
     if (!firstName || !lastName || !email || !taxYear) {
       return res.status(400).json({ error: "Missing required fields" });
     }
 
     // Optional fields
     const summaryText = typeof payload?.summaryText === "string" ? payload.summaryText : "";
-    // Expect base64 PDF in one of these keys:
-    // - payload.summaryPdfBase64: "JVBERi0xLjcKJ..." (raw base64)
-    // - payload.summaryPdfDataUrl: "data:application/pdf;base64,JVBERi0xLjcKJ..."
     const summaryPdfBase64 =
       (typeof payload?.summaryPdfBase64 === "string" && payload.summaryPdfBase64) ||
       (typeof payload?.summaryPdfDataUrl === "string" && payload.summaryPdfDataUrl) ||
@@ -44,6 +42,22 @@ export default async function handler(req, res) {
 
     // ---- 1) Create SharePoint list item ----
     const title = `${lastName}, ${firstName} - ${taxYear}`;
+    const spouseFirstName = "";
+    const spouseLastName = "";
+    const spouseEmail = "";
+
+    // if spouse is included
+     if(isSpouseIncluded && payload?.spouse) {
+       spouseFirstName = payload?.spouse?.firstName?.trim();
+       spouseLastName = payload?.spouse?.lastName?.trim();
+       spouseEmail = payload?.spouse?.email?.trim()?.toLowerCase();
+      if(!spouseFirstName || !spouseLastName || !spouseEmail) {
+        return res.status(400).json({ error: "Missing required spouse fields" });
+      }
+       folderName = makeFolderNameWithSpouse({ firstName, lastName, spouseFirstName, spouseLastName });
+       title = `${lastName}, ${firstName} & ${spouseFirstName} ${spouseLastName} - ${taxYear}`;
+    }
+
 
     const existingItem = await findListItemByIntakeKey({
       accessToken,
@@ -82,7 +96,10 @@ export default async function handler(req, res) {
             PayloadJson: JSON.stringify(payload),
             SummaryText: summaryText, 
             Status: "Pending",
-            ExpenseTemplate: taxTemplate
+            ExpenseTemplate: taxTemplate,
+            SpouseEmail: spouseEmail,
+            SpouseFirstName: spouseFirstName,
+            SpouseLastName: spouseLastName,
           },
         }),
       }
@@ -180,21 +197,6 @@ async function graphFetch(url, options) {
   return fetch(url, options);
 }
 
-// Matches your observed format: Jinny_Bouhamya__paiti94_at_gmail_com
-// function makeClientKey({ firstName, lastName, email }) {
-//   const safeFirst = (firstName || "").trim().replace(/\s+/g, "_");
-//   const safeLast = (lastName || "").trim().replace(/\s+/g, "_");
-
-//   const safeEmail = (email || "")
-//     .trim()
-//     .toLowerCase()
-//     .replace(/@/g, "_at_")
-//     .replace(/\./g, "_")
-//     .replace(/\s+/g, "_");
-
-//   // return `${safeFirst}_${safeLast}__${safeEmail}`;
-//   return `${safeFirst}_${safeLast}_${safeEmail}`;
-// }
 function makeClientKey({ firstName, lastName, email }) {
   const folderName = makeFolderName({ firstName, lastName });
   const safeEmail = sanitizeEmailForKey(email);
@@ -204,6 +206,13 @@ function makeClientKey({ firstName, lastName, email }) {
 function makeFolderName({ firstName, lastName }) {
   return `${sanitizeName(firstName)}_${sanitizeName(lastName)}`;
 }
+
+function makeFolderNameWithSpouse({ firstName, lastName, spouseFirstName, spouseLastName }) {
+  const primaryName = `${sanitizeName(firstName)}_${sanitizeName(lastName)}`;
+  const spouseName = `${sanitizeName(spouseFirstName)}_${sanitizeName(spouseLastName)}`;
+  return `${primaryName}&${spouseName}`;
+}
+
 function sanitizeEmailForKey(email) {
   return (email || "")
     .trim()
