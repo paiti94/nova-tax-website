@@ -74,6 +74,21 @@ export default async function handler(req, res) {
       });
     }
 
+    const existingSpouseItem = await findListItemBySpouseEmail({
+        accessToken,
+        siteId,
+        listId,
+        email,
+      });
+
+    if (existingSpouseItem) {
+      return res.status(409).json({
+        error: "Your email and checklist is already created for another spouse in the system.",
+        message: "That email is already associated with another checklist record in the system. Please contact 'admin@novatax.ca' if you need to make changes.",
+      });
+    }
+
+
     const createItemRes = await graphFetch(
       `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
       {
@@ -270,6 +285,16 @@ async function findListItemByIntakeKey({ accessToken, siteId, listId, intakeKey 
 
   return json?.value?.[0] || null;
 }
+
+async function findListItemBySpouseEmail({ accessToken, siteId, listId, spouseEmail }) {
+  const url = `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?expand=fields&$filter=fields/spouseEmail eq '${encodeURIComponent(
+    spouseEmail
+  )}'`;
+  const res = await graphFetch(url, { method: "GET", headers: { Authorization: `Bearer ${accessToken}` } });
+  const json = await res.json();
+  return (json.value && json.value.length && json.value[0]) || null;
+}
+
 
 async function createListItem({ accessToken, siteId, listId, fields }) {
   const res = await graphFetch(
