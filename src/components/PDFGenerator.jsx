@@ -381,10 +381,9 @@ export const generatePDF = async (formData, checkedItems, isSpouseIncluded) => {
     drawText('');
   }
   drawText('');
-  drawBullet('Please upload the required documents to the client portal under the "01_Uploads" folder.');
-  drawBullet('Once you are done uploading all the necessary documents in "01_Uploads" folder,');
-  drawBullet('Please make sure the file "DONE_UPLOADS.txt" is moved into the "DO_NOT_DELETE_Move_DONE_UPLOAD_file_in_HERE" folder.');
-  drawBullet('After that, you can proceed with the next steps outlined in the instruction email.');
+  drawBullet('Please follow the instruction email sent to you for pre-requisite steps.');
+  drawBullet('Please upload the required documents to the this folder ("01_Uploads").');
+  drawBullet('Once you are done uploading all the necessary documents in "01_Uploads" folder, please move the file "Done_Uploading.txt" into "Done_Uploading_Folder" folder to notify us that you are done uploading. This will trigger the next steps of our process.');
   drawText('');
   drawChecklistGuideSection();
 

@@ -56,6 +56,7 @@ const ITEM_LABELS = {
   spouseNetIncome236000: "Spouse's net income from line 23600 of their 2025 tax return",
 };
 
+
 const CustomAlert = ({ message, onClose }) => (
   <div className="custom-alert">
     <button onClick={onClose} className="close-button" aria-label="Close">
@@ -458,6 +459,18 @@ const blobToBase64 = (blob) =>
   });
 
   const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === 'maritalStatusChangeDate' && value) {
+      const isIn2025 = value >= '2025-01-01' && value <= '2025-12-31';
+      if (!isIn2025) {
+        setDateError('Date must be within 2025.');
+        setFormData({ ...formData, [name]: '' });
+        return;
+      }
+      setDateError('');
+    }
+
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
@@ -781,6 +794,7 @@ const blobToBase64 = (blob) =>
                     max: "2025-12-31",
                   }}
               />
+               {dateError && <p style={{ color: 'red', marginTop: 4 }}>{dateError}</p>}
             </div>
             )}
             {(formData.maritalStatus === 'Married' || formData.maritalStatus === 'Common-law') && (
@@ -1766,7 +1780,7 @@ const blobToBase64 = (blob) =>
         <>
           <div className="overlay" onClick={handleCloseAlert}></div>
           <CustomAlert
-            message="‼️The checklist has been downloaded to your computer. Please check your download folder. We'll email your secure upload link shortly‼️"
+            message="‼️Thanks for submitting the checklist for 2025. We'll email your secure upload link shortly‼️"
             onClose={handleCloseAlert}
           />
         </>
