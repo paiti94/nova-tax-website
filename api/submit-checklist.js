@@ -88,6 +88,49 @@ export default async function handler(req, res) {
       });
     }
 
+    // adding client checklistPDF
+    const clientChecklistPdfBase64 =
+    (typeof payload?.clientChecklistPdf?.base64 === "string" && payload.clientChecklistPdf.base64) ||
+    "";
+
+    const clientChecklistPdfFileName =
+    (typeof payload?.clientChecklistPdf?.fileName === "string" && payload.clientChecklistPdf.fileName) ||
+    `TaxChecklist-${lastName}-${firstName}-2025.pdf`;
+
+  if (clientChecklistPdfBase64) {
+    const driveRes = await graphFetch(`https://graph.microsoft.com/v1.0/sites/${siteId}/drive`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    const driveJson = await driveRes.json();
+    if (driveRes.ok && driveJson?.id) {
+      const driveId = driveJson.id;
+      const folderPath = `Clients_internal/${folderName}/${taxYear}/01_Client_Uploads`;
+      await ensureFolderPath({ accessToken, driveId, folderPath });
+
+      const pdfBuffer = decodePdfBase64(clientChecklistPdfBase64);
+      const safeName = sanitizeFileName(clientChecklistPdfFileName);
+
+      const uploadUrl = `https://graph.microsoft.com/v1.0/drives/${driveId}/root:/${encodePath(
+        folderPath
+      )}/${encodeURIComponent(safeName)}:/content`;
+
+      const uploadRes = await graphFetch(uploadUrl, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          "Content-Type": "application/pdf",
+        },
+        body: pdfBuffer,
+      });
+
+      const uploadJson = await uploadRes.json();
+      if (!uploadRes.ok) {
+        console.error("Upload checklist PDF failed:", uploadJson);
+      }
+    }
+  }
 
     const createItemRes = await graphFetch(
       `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
