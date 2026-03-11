@@ -351,6 +351,7 @@ const makeSummaryText = ({ formData, checkedItems, isSpouseIncluded }) => {
 };
 
  const TaxChecklistForm =  () => {
+  const [dateError, setDateError] = useState("");
   const [isSpouseIncluded, setIsSpouseIncluded] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -462,15 +463,14 @@ const blobToBase64 = (blob) =>
     const { name, value } = e.target;
 
     if (name === 'maritalStatusChangeDate' && value) {
-      const isIn2025 = value >= '2025-01-01' && value <= '2025-12-31';
-      if (!isIn2025) {
-        setDateError('Date must be within 2025.');
-        setFormData({ ...formData, [name]: '' });
-        return;
-      }
-      setDateError('');
+     const isIn2025 = value >= '2025-01-01' && value <= '2025-12-31';
+     if (!isIn2025) {
+       setDateError('Date must be within 2025.');
+       setFormData({ ...formData, [name]: '' });
+       return;
+     }
+     setDateError('');
     }
-
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
